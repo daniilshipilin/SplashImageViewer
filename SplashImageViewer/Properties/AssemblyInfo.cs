@@ -30,6 +30,7 @@ namespace SplashImageViewer
         public static string AppAuthor { get; } = _copyright.Copyright;
         public static string AppDescription { get; } = _description.Description;
         public static string AppGUID { get; } = _guid.Value;
+        public static string GitHubUrl { get; } = "https://github.com/daniilshipilin/SplashImageViewer";
 
         /// <summary>
         /// Formatted application info string.

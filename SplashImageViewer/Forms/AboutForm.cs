@@ -1,5 +1,6 @@
 using SplashImageViewer.Helpers;
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Updater;
 
@@ -19,6 +20,14 @@ namespace SplashImageViewer.Forms
 
             toolTip.SetToolTip(checkUpdatesButton, "Check updates");
             toolTip.SetToolTip(updatesInfoLabel, "Press, to force program update");
+            toolTip.SetToolTip(linkLabel, "Visit project source code repository on github.com");
+        }
+
+        private void ShowExceptionMessage(Exception ex)
+        {
+            updatesInfoLabel.Text = "Exception encountered";
+            MessageBox.Show(ex.Message, ex.GetType().ToString(),
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -51,8 +60,7 @@ namespace SplashImageViewer.Forms
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, ex.GetType().ToString(),
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowExceptionMessage(ex);
                 }
             }
         }
@@ -93,9 +101,23 @@ namespace SplashImageViewer.Forms
             }
             catch (Exception ex)
             {
-                updatesInfoLabel.Text = "Exception encountered";
-                MessageBox.Show(ex.Message, ex.GetType().ToString(),
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            // specify that the link was visited
+            linkLabel.LinkVisited = true;
+
+            try
+            {
+                // navigate to a URL
+                Process.Start(AssemblyInfo.GitHubUrl);
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
             }
         }
     }
