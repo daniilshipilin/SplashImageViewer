@@ -331,9 +331,9 @@ namespace SplashImageViewer.Forms
                 AppSettings.UpdatesLastChecked = DateTime.Now;
 
                 var upd = new ProgramUpdater(Version.Parse(GitVersionInformation.SemVer),
-                                             AssemblyInfo.BaseDirectory,
-                                             AssemblyInfo.AppPath,
-                                             Guid.Parse(AssemblyInfo.AppGUID));
+                                             ApplicationInfo.BaseDirectory,
+                                             ApplicationInfo.AppPath,
+                                             ApplicationInfo.AppGUID);
 
                 if (await upd.CheckUpdateIsAvailable())
                 {

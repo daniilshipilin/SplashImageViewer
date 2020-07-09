@@ -27,9 +27,9 @@ namespace SplashImageViewer
         static void Main(string[] args)
         {
             // check, if there is another instance running
-            if (CheckAnotherInstanceIsRunning(AssemblyInfo.AppTitle))
+            if (CheckAnotherInstanceIsRunning(ApplicationInfo.AppTitle))
             {
-                Console.WriteLine($"Another instance of '{AssemblyInfo.AppTitle}' is running");
+                Console.WriteLine($"Another instance of '{ApplicationInfo.AppTitle}' is running");
                 Environment.Exit((int)ExitCode.AnotherInstanceRunning);
             }
 
@@ -39,13 +39,14 @@ namespace SplashImageViewer
                 // handle special case, when we pass single argument
                 if (args.Length == 1 && args[0] == "/?")
                 {
-                    Console.WriteLine(AssemblyInfo.AppInfoFormatted);
+                    Console.WriteLine(ApplicationInfo.AppInfoFormatted);
                     ProgramExit((int)ExitCode.Success);
                 }
 
                 CmdArgs = args;
             }
 
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

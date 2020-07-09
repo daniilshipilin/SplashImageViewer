@@ -15,7 +15,7 @@ namespace SplashImageViewer.Forms
 
         private void AboutForm_Load(object sender, EventArgs e)
         {
-            aboutLabel.Text = AssemblyInfo.AppInfoFormatted;
+            aboutLabel.Text = ApplicationInfo.AppInfoFormatted;
             updatesInfoLabel.Text = "Need to check for available updates";
 
             toolTip.SetToolTip(checkUpdatesButton, "Check updates");
@@ -50,9 +50,9 @@ namespace SplashImageViewer.Forms
                 try
                 {
                     var upd = new ProgramUpdater(Version.Parse(GitVersionInformation.SemVer),
-                                                 AssemblyInfo.BaseDirectory,
-                                                 AssemblyInfo.AppPath,
-                                                 Guid.Parse(AssemblyInfo.AppGUID));
+                                                 ApplicationInfo.BaseDirectory,
+                                                 ApplicationInfo.AppPath,
+                                                 ApplicationInfo.AppGUID);
 
                     updatesInfoLabel.Text = "Update in progress";
                     await upd.ForceUpdate();
@@ -73,9 +73,9 @@ namespace SplashImageViewer.Forms
                 updatesInfoLabel.Text = "Checking updates";
 
                 var upd = new ProgramUpdater(Version.Parse(GitVersionInformation.SemVer),
-                                             AssemblyInfo.BaseDirectory,
-                                             AssemblyInfo.AppPath,
-                                             Guid.Parse(AssemblyInfo.AppGUID));
+                                             ApplicationInfo.BaseDirectory,
+                                             ApplicationInfo.AppPath,
+                                             ApplicationInfo.AppGUID);
 
                 if (await upd.CheckUpdateIsAvailable())
                 {
@@ -113,7 +113,7 @@ namespace SplashImageViewer.Forms
             try
             {
                 // navigate to a URL
-                Process.Start(AssemblyInfo.GitHubUrl);
+                Process.Start(ApplicationInfo.GitHubUrl);
             }
             catch (Exception ex)
             {

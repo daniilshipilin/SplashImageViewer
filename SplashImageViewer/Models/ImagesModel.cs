@@ -286,7 +286,7 @@ namespace SplashImageViewer.Models
                 var item = Image.GetPropertyItem((int)ExifTag.Software);
 
                 // set image software version tag
-                var bytes = System.Text.Encoding.ASCII.GetBytes(AssemblyInfo.AppHeader + '\0');
+                var bytes = System.Text.Encoding.ASCII.GetBytes(ApplicationInfo.AppHeader + '\0');
                 item.Len = bytes.Length;
                 item.Value = bytes;
                 Image.SetPropertyItem(item);
