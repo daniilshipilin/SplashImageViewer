@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -11,8 +13,8 @@ namespace SplashImageViewer
         static readonly AssemblyDescriptionAttribute _description = _ass.GetCustomAttributes<AssemblyDescriptionAttribute>().FirstOrDefault();
         static readonly AssemblyCopyrightAttribute _copyright = _ass.GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault();
 
-        public static string BaseDirectory => AppDomain.CurrentDomain.BaseDirectory;
-        public static string AppPath => _ass.Location;
+        public static string BaseDirectory => Path.GetDirectoryName(ExePath)!;
+        public static string ExePath => Process.GetCurrentProcess().MainModule.FileName;
         public static string AppTitle => _title.Title;
         public static string AppHeader => $"{_title.Title} v{GitVersionInformation.SemVer}";
         public static string AppAuthor => _copyright.Copyright;

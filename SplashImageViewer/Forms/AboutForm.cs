@@ -1,6 +1,7 @@
 using SplashImageViewer.Helpers;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using Updater;
 
@@ -51,12 +52,12 @@ namespace SplashImageViewer.Forms
                 {
                     var upd = new ProgramUpdater(Version.Parse(GitVersionInformation.SemVer),
                                                  ApplicationInfo.BaseDirectory,
-                                                 ApplicationInfo.AppPath,
+                                                 ApplicationInfo.ExePath,
                                                  ApplicationInfo.AppGUID);
 
                     updatesInfoLabel.Text = "Update in progress";
                     await upd.ForceUpdate();
-                    Program.ProgramExit((int)Program.ExitCode.Success);
+                    Program.ProgramExit(ExitCode.Success);
                 }
                 catch (Exception ex)
                 {
@@ -74,7 +75,7 @@ namespace SplashImageViewer.Forms
 
                 var upd = new ProgramUpdater(Version.Parse(GitVersionInformation.SemVer),
                                              ApplicationInfo.BaseDirectory,
-                                             ApplicationInfo.AppPath,
+                                             ApplicationInfo.ExePath,
                                              ApplicationInfo.AppGUID);
 
                 if (await upd.CheckUpdateIsAvailable())
@@ -91,7 +92,7 @@ namespace SplashImageViewer.Forms
                     {
                         updatesInfoLabel.Text = "Update in progress";
                         await upd.Update();
-                        Program.ProgramExit((int)Program.ExitCode.Success);
+                        Program.ProgramExit(ExitCode.Success);
                     }
                 }
                 else

@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using SplashImageViewer.Helpers;
+using SplashImageViewer.Models;
 
 namespace SplashImageViewer.Forms
 {
@@ -8,16 +9,18 @@ namespace SplashImageViewer.Forms
     {
         const int TIMER_INTERVAL_MS = 10000;
 
-        Timer _hideInfoLabelTimer;
-        Timer _hideBottomLabelsTimer;
+        readonly Timer _hideInfoLabelTimer;
+        readonly Timer _hideBottomLabelsTimer;
         readonly Screen _screen;
         readonly bool _slideshowIsEnabled;
 
         public FullscreenForm(Screen screen, bool slideshowIsEnabled)
         {
+            InitializeComponent();
+            _hideInfoLabelTimer = new Timer();
+            _hideBottomLabelsTimer = new Timer();
             _screen = screen;
             _slideshowIsEnabled = slideshowIsEnabled;
-            InitializeComponent();
         }
 
         private void FullscreenForm_Load(object sender, EventArgs e)
@@ -29,7 +32,7 @@ namespace SplashImageViewer.Forms
             //Bounds = Screen.PrimaryScreen.Bounds;
             Bounds = _screen.Bounds; // use passed-in screen reference bounds
 
-            fullscreenPictureBox.Image = MainForm.Img.Image;
+            fullscreenPictureBox.Image = ImagesModel.Singleton.Image;
             fullscreenPictureBox.BackColor = AppSettings.ThemeColor;
 
             CheckFormSize();
@@ -37,20 +40,19 @@ namespace SplashImageViewer.Forms
             // change totalFilesLabel parent
             totalFilesLabel.Parent = fullscreenPictureBox;
             //totalFilesLabel.Location = new Point(fullscreenPictureBox.Size.Width - totalFilesLabel.Size.Width,
-            //    fullscreenPictureBox.Size.Height - totalFilesLabel.Size.Height);
+            //                                     fullscreenPictureBox.Size.Height - totalFilesLabel.Size.Height);
 
             // change infoLabel parent
             infoLabel.Parent = fullscreenPictureBox;
 
             // change infoLabel parent
             filePathLabel.Parent = fullscreenPictureBox;
-            filePathLabel.Text = MainForm.Img.CurrentFilePath;
+            filePathLabel.Text = ImagesModel.Singleton.CurrentFilePath;
 
-            MainForm.Img.CurrentFilePathIndexChanged += SetPictureBoxEvent;
+            ImagesModel.Singleton.CurrentFilePathIndexChanged += UpdatePictureBoxEvent;
 
             UpdateBottomLabels();
             InitTimers();
-            SetFullscreenMode();
 
             if (_slideshowIsEnabled)
             {
@@ -60,12 +62,10 @@ namespace SplashImageViewer.Forms
 
         private void InitTimers()
         {
-            _hideInfoLabelTimer = new Timer();
             _hideInfoLabelTimer.Tick += HideInfoLabel;
             _hideInfoLabelTimer.Interval = TIMER_INTERVAL_MS;
             _hideInfoLabelTimer.Start();
 
-            _hideBottomLabelsTimer = new Timer();
             _hideBottomLabelsTimer.Tick += HideBottomLabels;
             _hideBottomLabelsTimer.Interval = TIMER_INTERVAL_MS;
             _hideBottomLabelsTimer.Start();
@@ -73,31 +73,35 @@ namespace SplashImageViewer.Forms
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Escape || keyData == Keys.F)
+            switch (keyData)
             {
-                ResetFullscreenMode();
-                Close();
-            }
-            else if (keyData == Keys.Left || keyData == Keys.Down)
-            {
-                MainForm.Img.SelectPreviousImageIndex();
-                RestartHideBottomLabelsTimer();
-            }
-            else if (keyData == Keys.Right || keyData == Keys.Up)
-            {
-                MainForm.Img.SelectNextImageIndex();
-                RestartHideBottomLabelsTimer();
-            }
-            else if (keyData == Keys.R)
-            {
-                MainForm.Img.SelectRandomImageIndex();
-                RestartHideBottomLabelsTimer();
-            }
-            else
-            {
-                RestartHideInfoLabeTimer();
-                RestartHideBottomLabelsTimer();
-                Update();
+                case Keys.Escape:
+                case Keys.F:
+                    Close();
+                    break;
+
+                case Keys.Left:
+                case Keys.Down:
+                    ImagesModel.Singleton.SelectPreviousImageIndex();
+                    RestartHideBottomLabelsTimer();
+                    break;
+
+                case Keys.Right:
+                case Keys.Up:
+                    ImagesModel.Singleton.SelectNextImageIndex();
+                    RestartHideBottomLabelsTimer();
+                    break;
+
+                case Keys.R:
+                    ImagesModel.Singleton.SelectRandomImageIndex();
+                    RestartHideBottomLabelsTimer();
+                    break;
+
+                default:
+                    RestartHideInfoLabeTimer();
+                    RestartHideBottomLabelsTimer();
+                    Update();
+                    break;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
@@ -118,14 +122,14 @@ namespace SplashImageViewer.Forms
             _hideBottomLabelsTimer.Start();
         }
 
-        private void HideInfoLabel(object sender, EventArgs e)
+        private void HideInfoLabel(object? sender, EventArgs e)
         {
             infoLabel.Visible = false;
             _hideInfoLabelTimer.Stop();
             Update();
         }
 
-        private void HideBottomLabels(object sender, EventArgs e)
+        private void HideBottomLabels(object? sender, EventArgs e)
         {
             filePathLabel.Visible = false;
             totalFilesLabel.Visible = false;
@@ -133,33 +137,33 @@ namespace SplashImageViewer.Forms
             Update();
         }
 
-        private void SetPictureBoxEvent(object sender)
+        private void UpdatePictureBoxEvent(object sender)
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<object>(SetPictureBoxEvent), new object[] { this });
+                Invoke((MethodInvoker)delegate { UpdatePictureBoxEvent(sender); });
                 return;
             }
 
-            if (MainForm.Img.FilePaths.Count == 0)
-            {
-                ResetFullscreenMode();
-                Close();
-            }
+            UpdatePictureBox();
+        }
+
+        private void UpdatePictureBox()
+        {
+            if (ImagesModel.Singleton.FilePaths.Count == 0) { Close(); }
 
             try
             {
-                MainForm.Img.LoadImage();
+                ImagesModel.Singleton.LoadImage();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                ResetFullscreenMode();
-                throw new Exception("Couldn't open file");
+                throw ex;
             }
 
-            if (MainForm.Img.Image != null)
+            if (ImagesModel.Singleton.Image is object)
             {
-                fullscreenPictureBox.Image = MainForm.Img.Image;
+                fullscreenPictureBox.Image = ImagesModel.Singleton.Image;
                 CheckFormSize();
                 UpdateBottomLabels();
             }
@@ -167,8 +171,6 @@ namespace SplashImageViewer.Forms
 
         private void CheckFormSize()
         {
-            if (fullscreenPictureBox.Image == null) { return; }
-
             if (fullscreenPictureBox.ClientSize.Width < fullscreenPictureBox.Image.Width ||
                 fullscreenPictureBox.ClientSize.Height < fullscreenPictureBox.Image.Height)
             {
@@ -182,18 +184,8 @@ namespace SplashImageViewer.Forms
 
         private void UpdateBottomLabels()
         {
-            totalFilesLabel.Text = $"{MainForm.Img.CurrentFilePathIndex + 1} / {MainForm.Img.FilePaths.Count}";
-            filePathLabel.Text = MainForm.Img.CurrentFilePath;
-        }
-
-        private void SetFullscreenMode()
-        {
-            Cursor.Hide();
-        }
-
-        private void ResetFullscreenMode()
-        {
-            Cursor.Show();
+            totalFilesLabel.Text = $"{ImagesModel.Singleton.CurrentFilePathIndex + 1} / {ImagesModel.Singleton.FilePaths.Count}";
+            filePathLabel.Text = ImagesModel.Singleton.CurrentFilePath;
         }
 
         /// <summary>
@@ -208,14 +200,13 @@ namespace SplashImageViewer.Forms
                 components.Dispose();
             }
 
-            fullscreenPictureBox?.Image.Dispose();
+            fullscreenPictureBox.Image.Dispose();
 
             _hideInfoLabelTimer.Tick -= HideInfoLabel;
             _hideBottomLabelsTimer.Tick -= HideBottomLabels;
-            MainForm.Img.CurrentFilePathIndexChanged -= SetPictureBoxEvent;
-
-            _hideInfoLabelTimer?.Dispose();
-            _hideBottomLabelsTimer?.Dispose();
+            ImagesModel.Singleton.CurrentFilePathIndexChanged -= UpdatePictureBoxEvent;
+            _hideInfoLabelTimer.Dispose();
+            _hideBottomLabelsTimer.Dispose();
 
             // free native resources
             base.Dispose(disposing);

@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace SplashImageViewer.Models
 {
-    public class ImagesModel : IDisposable
+    public class ImagesModel
     {
+        #region ExitTag enum
+
         // Exif file format: https://www.media.mit.edu/pia/Research/deepview/exif.html
         // Check image rotation flags:
         // 0x010e - ImageDescription - ascii string - Describes image
@@ -26,14 +28,37 @@ namespace SplashImageViewer.Models
             Copyright = 0x8298
         }
 
+        #endregion
+
+        #region Private fields
+
+        readonly string[] _fileExtensions = new string[] { ".jpg", ".jpe", ".jpeg", ".jfif", ".bmp", ".png", ".gif", ".ico" };
+        static readonly Random _rnd = new Random();
+        readonly object _locker;
+        readonly object _locker2;
+
+        int _index;
+        List<string> _filePaths;
+        FileSystemWatcher? _fileWatcher;
+        SearchOption _so;
+
+        #endregion
+
         public delegate void CustomEventHandler(object sender);
-        public CustomEventHandler CurrentFilePathIndexChanged;
+        public CustomEventHandler? CurrentFilePathIndexChanged;
+
+        #region Properties
+
+        /// <summary>
+        /// ImagesModel singleton instance.
+        /// </summary>
+        public static ImagesModel Singleton { get; } = new ImagesModel();
 
         public IReadOnlyList<string> FilePaths => _filePaths.AsReadOnly();
-        public Image Image { get; private set; }
-        public ImageFormat ImageRawFormat { get; private set; }
-        public string ImageFormatDescription { get; private set; }
-        public string CurrentFilePath => (CurrentFilePathIndex < _filePaths.Count) ? _filePaths[CurrentFilePathIndex] : null;
+        public Image? Image { get; private set; }
+        public ImageFormat? ImageRawFormat { get; private set; }
+        public string? ImageFormatDescription { get; private set; }
+        public string CurrentFilePath => (_index < _filePaths.Count) ? _filePaths[_index] : string.Empty;
         public int CurrentFilePathIndex
         {
             get => _index;
@@ -49,17 +74,29 @@ namespace SplashImageViewer.Models
             }
         }
 
-        int _index;
-        List<string> _filePaths;
-        readonly string[] _fileExtensions = new string[] { ".jpg", ".jpe", ".jpeg", ".jfif", ".bmp", ".png", ".gif", ".ico" };
-        static readonly Random _rnd = new Random();
-        readonly object _locker = new object();
-        readonly object _locker2 = new object();
-        readonly FileSystemWatcher _fileWatcher;
-        readonly SearchOption _so;
+        #endregion
 
-        public ImagesModel(string dir, SearchOption so)
+        /// <summary>
+        /// ImagesModel constructor.
+        /// </summary>
+        private ImagesModel()
         {
+            _locker = new object();
+            _locker2 = new object();
+            _filePaths = new List<string>();
+        }
+
+        #region Public methods
+
+        /// <summary>
+        /// Initializes required fields/properties.
+        /// </summary>
+        public void Init(string path, SearchOption so)
+        {
+            // get the file attributes for file or directory
+            var fa = File.GetAttributes(path);
+            string? dir = fa.HasFlag(FileAttributes.Directory) ? path : Path.GetDirectoryName(path);
+
             _filePaths = Directory.EnumerateFiles(dir, "*.*", so)
                                  .Where(s => _fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
 
@@ -88,19 +125,123 @@ namespace SplashImageViewer.Models
 
             // start monitoring
             _fileWatcher.EnableRaisingEvents = true;
+
+            if (!fa.HasFlag(FileAttributes.Directory))
+            {
+                int index = _filePaths.IndexOf(path);
+
+                if (index == -1)
+                {
+                    throw new Exception($"Unsupported file type: '{path}'");
+                }
+
+                CurrentFilePathIndex = index;
+            }
         }
 
-        public ImagesModel(string dir, string filePath, SearchOption so) : this(dir, so)
+        /// <summary>
+        /// Releases used resources.
+        /// </summary>
+        public void DisposeResources()
         {
-            int index = _filePaths.IndexOf(filePath);
-
-            if (index == -1)
+            if (Image is object)
             {
-                throw new Exception($"Cannot find '{filePath}'");
+                Image.Dispose();
+                Image = null;
             }
 
-            CurrentFilePathIndex = index;
+            if (_fileWatcher is object)
+            {
+                _fileWatcher.EnableRaisingEvents = false;
+                _fileWatcher.Created -= FileCreatedOrDeletedEvent;
+                _fileWatcher.Deleted -= FileCreatedOrDeletedEvent;
+                _fileWatcher.Renamed -= FileRenamedEvent;
+                _fileWatcher.Dispose();
+                _fileWatcher = null;
+            }
         }
+
+        public void SelectNextImageIndex()
+        {
+            if (FilePaths.Count > 1)
+            {
+                CurrentFilePathIndex = (CurrentFilePathIndex == FilePaths.Count - 1) ? 0 : ++CurrentFilePathIndex;
+            }
+        }
+
+        public void SelectPreviousImageIndex()
+        {
+            if (FilePaths.Count > 1)
+            {
+                CurrentFilePathIndex = (CurrentFilePathIndex == 0) ? FilePaths.Count - 1 : --CurrentFilePathIndex;
+            }
+        }
+
+        public void SelectRandomImageIndex()
+        {
+            if (FilePaths.Count > 1)
+            {
+                while (true)
+                {
+                    int tmp = _rnd.Next(FilePaths.Count);
+
+                    if (CurrentFilePathIndex != tmp)
+                    {
+                        CurrentFilePathIndex = tmp;
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void LoadImage()
+        {
+            Image?.Dispose();
+
+            //open file in read only mode
+            using var fs = new FileStream(CurrentFilePath, FileMode.Open, FileAccess.Read);
+            // get a binary reader for the file stream
+            using var br = new BinaryReader(fs);
+            // copy the content of the file into a memory stream
+            var ms = new MemoryStream(br.ReadBytes((int)fs.Length));
+            Image = Image.FromStream(ms);
+            //Image = new Bitmap(ms);
+
+            //Image = Image.FromFile(CurrentFilePath);
+            ImageRawFormat = new ImageFormat(Image.RawFormat.Guid);
+            ImageFormatDescription = GetImageFormatDescription(Image.RawFormat);
+            ProcessImageMetadata(Image);
+        }
+
+        public void OverwriteImage()
+        {
+            if (Image is null) { throw new NullReferenceException(nameof(Image)); }
+
+            ModifyImageMetadata(Image);
+
+            var ici = GetEncoder(ImageRawFormat);
+
+            // Create an Encoder object based on the GUID for the Quality parameter category.
+            var encoder = Encoder.Quality;
+
+            // Create an EncoderParameters object. An EncoderParameters object has an array of EncoderParameter objects. In this case, there is only one EncoderParameter object in the array.
+            using var encoderParameters = new EncoderParameters(1);
+            encoderParameters.Param[0] = new EncoderParameter(encoder, (long)100);
+
+            Image.Save(CurrentFilePath, ici, encoderParameters);
+        }
+
+        public void DeleteImage()
+        {
+            lock (_locker2)
+            {
+                File.Delete(CurrentFilePath);
+            }
+        }
+
+        #endregion
+
+        #region Private methods
 
         private void FileCreatedOrDeletedEvent(object sender, FileSystemEventArgs e)
         {
@@ -214,117 +355,53 @@ namespace SplashImageViewer.Models
             return true;
         }
 
-        public void SelectNextImageIndex()
-        {
-            if (_filePaths.Count <= 1) { return; }
-
-            CurrentFilePathIndex = (CurrentFilePathIndex == _filePaths.Count - 1) ? 0 : ++CurrentFilePathIndex;
-        }
-
-        public void SelectPreviousImageIndex()
-        {
-            if (_filePaths.Count <= 1) { return; }
-
-            CurrentFilePathIndex = (CurrentFilePathIndex == 0) ? _filePaths.Count - 1 : --CurrentFilePathIndex;
-        }
-
-        public void SelectRandomImageIndex()
-        {
-            if (_filePaths.Count <= 1) { return; }
-
-            while (true)
-            {
-                int tmp = _rnd.Next(0, _filePaths.Count);
-
-                if (CurrentFilePathIndex != tmp)
-                {
-                    CurrentFilePathIndex = tmp;
-                    break;
-                }
-            }
-        }
-
-        public void LoadImage()
-        {
-            Image?.Dispose();
-
-            //open file in read only mode
-            using var fs = new FileStream(CurrentFilePath, FileMode.Open, FileAccess.Read);
-            // get a binary reader for the file stream
-            using var br = new BinaryReader(fs);
-            // copy the content of the file into a memory stream
-            var ms = new MemoryStream(br.ReadBytes((int)fs.Length));
-            Image = Image.FromStream(ms);
-            //Image = new Bitmap(ms);
-
-            //Image = Image.FromFile(CurrentFilePath);
-            ImageRawFormat = new ImageFormat(Image.RawFormat.Guid);
-            ImageFormatDescription = GetImageFormatDescription(Image.RawFormat);
-            ProcessImageMetadata();
-        }
-
-        private void ProcessImageMetadata()
+        private void ProcessImageMetadata(Image img)
         {
             //var items = Image.PropertyItems;
-            if (Image.PropertyIdList.Contains((int)ExifTag.Orientation))
+            if (img.PropertyIdList.Contains((int)ExifTag.Orientation))
             {
-                var item = Image.GetPropertyItem((int)ExifTag.Orientation);
+                var item = img.GetPropertyItem((int)ExifTag.Orientation);
 
                 if (item.Value[0] != 1)
                 {
-                    if (item.Value[0] == 3) { Image.RotateFlip(RotateFlipType.Rotate180FlipNone); }
-                    else if (item.Value[0] == 6) { Image.RotateFlip(RotateFlipType.Rotate90FlipNone); }
-                    else if (item.Value[0] == 8) { Image.RotateFlip(RotateFlipType.Rotate270FlipNone); }
+                    if (item.Value[0] == 3) { img.RotateFlip(RotateFlipType.Rotate180FlipNone); }
+                    else if (item.Value[0] == 6) { img.RotateFlip(RotateFlipType.Rotate90FlipNone); }
+                    else if (item.Value[0] == 8) { img.RotateFlip(RotateFlipType.Rotate270FlipNone); }
                 }
             }
         }
 
-        private void ModifyImageMetadata()
+        private void ModifyImageMetadata(Image img)
         {
-            if (Image.PropertyIdList.Contains((int)ExifTag.Software))
+            if (img.PropertyIdList.Contains((int)ExifTag.Software))
             {
-                var item = Image.GetPropertyItem((int)ExifTag.Software);
+                var item = img.GetPropertyItem((int)ExifTag.Software);
 
                 // set image software version tag
                 var bytes = System.Text.Encoding.ASCII.GetBytes(ApplicationInfo.AppHeader + '\0');
                 item.Len = bytes.Length;
                 item.Value = bytes;
-                Image.SetPropertyItem(item);
+                img.SetPropertyItem(item);
             }
 
-            if (Image.PropertyIdList.Contains((int)ExifTag.Orientation))
+            if (img.PropertyIdList.Contains((int)ExifTag.Orientation))
             {
-                var item = Image.GetPropertyItem((int)ExifTag.Orientation);
+                var item = img.GetPropertyItem((int)ExifTag.Orientation);
 
                 // set image orientation tag
                 item.Value[0] = 1;
-                Image.SetPropertyItem(item);
-                //Image.RemovePropertyItem((int)ExifTag.Orientation);
+                img.SetPropertyItem(item);
+                //img.RemovePropertyItem((int)ExifTag.Orientation);
             }
         }
 
-        public void OverwriteImage()
-        {
-            ModifyImageMetadata();
-
-            var ici = GetEncoder(ImageRawFormat);
-
-            // Create an Encoder object based on the GUID for the Quality parameter category.
-            var encoder = Encoder.Quality;
-
-            // Create an EncoderParameters object. An EncoderParameters object has an array of EncoderParameter objects. In this case, there is only one EncoderParameter object in the array.
-            using var encoderParameters = new EncoderParameters(1);
-            encoderParameters.Param[0] = new EncoderParameter(encoder, (long)100);
-            Image.Save(CurrentFilePath, ici, encoderParameters);
-        }
-
-        private ImageCodecInfo GetEncoder(ImageFormat format)
+        private ImageCodecInfo? GetEncoder(ImageFormat? format)
         {
             var codecs = ImageCodecInfo.GetImageDecoders();
 
             foreach (var codec in codecs)
             {
-                if (codec.FormatID == format.Guid)
+                if (codec.FormatID == format?.Guid)
                 {
                     return codec;
                 }
@@ -348,22 +425,6 @@ namespace SplashImageViewer.Models
             return "UNKNOWN";
         }
 
-        public void DeleteImage()
-        {
-            lock (_locker2)
-            {
-                File.Delete(CurrentFilePath);
-            }
-        }
-
-        public void Dispose()
-        {
-            Image?.Dispose();
-            _fileWatcher.EnableRaisingEvents = false;
-            _fileWatcher.Created -= FileCreatedOrDeletedEvent;
-            _fileWatcher.Deleted -= FileCreatedOrDeletedEvent;
-            _fileWatcher.Renamed -= FileRenamedEvent;
-            _fileWatcher?.Dispose();
-        }
+        #endregion
     }
 }

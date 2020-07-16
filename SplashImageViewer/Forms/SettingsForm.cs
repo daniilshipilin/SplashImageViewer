@@ -80,7 +80,7 @@ namespace SplashImageViewer.Forms
             try
             {
                 AppSettings.ThemeColor = colorDialog.Color;
-                AppSettings.SlideshowTransitionMs = int.Parse(slideshowTransitionSecComboBox.SelectedItem.ToString()) * 1000;
+                AppSettings.SlideshowTransitionMs = int.Parse(slideshowTransitionSecComboBox.SelectedItem.ToString()!) * 1000;
                 AppSettings.SlideshowOrderIsRandom = randomizeCheckBox.Checked;
                 AppSettings.SearchInSubdirs = (searchOptionCheckBox.Checked) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
                 AppSettings.ShowFileDeletePrompt = showFileDeletePromptCheckBox.Checked;

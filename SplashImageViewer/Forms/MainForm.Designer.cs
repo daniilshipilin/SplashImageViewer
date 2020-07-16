@@ -318,7 +318,6 @@ namespace SplashImageViewer.Forms
 			this.mainPanel.Name = "mainPanel";
 			this.mainPanel.Size = new System.Drawing.Size(1008, 610);
 			this.mainPanel.TabIndex = 0;
-			this.mainPanel.MouseEnter += new System.EventHandler(this.MainPanel_MouseEnter);
 			this.mainPanel.Resize += new System.EventHandler(this.MainPanel_Resize);
 			// 
 			// zoomButton
