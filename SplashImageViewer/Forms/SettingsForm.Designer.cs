@@ -30,6 +30,7 @@ namespace SplashImageViewer.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.label1 = new System.Windows.Forms.Label();
             this.slideshowTransitionSecComboBox = new System.Windows.Forms.ComboBox();
             this.randomizeCheckBox = new System.Windows.Forms.CheckBox();
@@ -144,7 +145,7 @@ namespace SplashImageViewer.Forms
             // 
             this.okButton.FlatAppearance.BorderSize = 0;
             this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.okButton.Image = global::SplashImageViewer.Properties.Resources.Commit_img;
+            this.okButton.Image = ((System.Drawing.Image)(resources.GetObject("okButton.Image")));
             this.okButton.Location = new System.Drawing.Point(179, 207);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(32, 32);
@@ -166,7 +167,7 @@ namespace SplashImageViewer.Forms
             // 
             // colorLabel
             // 
-            this.colorLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.colorLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.colorLabel.Location = new System.Drawing.Point(102, 15);
             this.colorLabel.Margin = new System.Windows.Forms.Padding(3);
             this.colorLabel.Name = "colorLabel";
@@ -203,7 +204,7 @@ namespace SplashImageViewer.Forms
             this.Controls.Add(this.randomizeCheckBox);
             this.Controls.Add(this.slideshowTransitionSecComboBox);
             this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);

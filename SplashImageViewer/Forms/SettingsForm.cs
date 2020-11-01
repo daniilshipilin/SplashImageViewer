@@ -1,10 +1,10 @@
-using System;
-using System.IO;
-using System.Windows.Forms;
-using SplashImageViewer.Helpers;
-
 namespace SplashImageViewer.Forms
 {
+    using System;
+    using System.IO;
+    using System.Windows.Forms;
+    using SplashImageViewer.Helpers;
+
     public partial class SettingsForm : Form
     {
         public SettingsForm()
@@ -14,7 +14,7 @@ namespace SplashImageViewer.Forms
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            Text = $"[{AppSettings.REGISTRY_BASE_KEY_FULL}]";
+            Text = $"[{AppSettings.RegistryBaseKeyFull}]";
 
             colorDialog.Color = AppSettings.ThemeColor;
             colorSelectLabel.BackColor = colorDialog.Color;
@@ -22,7 +22,7 @@ namespace SplashImageViewer.Forms
 
             slideshowTransitionSecComboBox.SelectedIndex = slideshowTransitionSecComboBox.FindStringExact((AppSettings.SlideshowTransitionMs / 1000).ToString());
             randomizeCheckBox.Checked = AppSettings.SlideshowOrderIsRandom;
-            searchOptionCheckBox.Checked = (AppSettings.SearchInSubdirs == SearchOption.AllDirectories);
+            searchOptionCheckBox.Checked = AppSettings.SearchInSubdirs == SearchOption.AllDirectories;
             showFileDeletePromptCheckBox.Checked = AppSettings.ShowFileDeletePrompt;
             showFileOverwritePromptCheckBox.Checked = AppSettings.ShowFileOverwritePrompt;
             forceCheckUpdatesCheckBox.Checked = AppSettings.ForceCheckUpdates;
@@ -80,9 +80,9 @@ namespace SplashImageViewer.Forms
             try
             {
                 AppSettings.ThemeColor = colorDialog.Color;
-                AppSettings.SlideshowTransitionMs = int.Parse(slideshowTransitionSecComboBox.SelectedItem.ToString()!) * 1000;
+                AppSettings.SlideshowTransitionMs = int.Parse((string)slideshowTransitionSecComboBox.SelectedItem) * 1000;
                 AppSettings.SlideshowOrderIsRandom = randomizeCheckBox.Checked;
-                AppSettings.SearchInSubdirs = (searchOptionCheckBox.Checked) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+                AppSettings.SearchInSubdirs = searchOptionCheckBox.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
                 AppSettings.ShowFileDeletePrompt = showFileDeletePromptCheckBox.Checked;
                 AppSettings.ShowFileOverwritePrompt = showFileOverwritePromptCheckBox.Checked;
                 AppSettings.ForceCheckUpdates = forceCheckUpdatesCheckBox.Checked;

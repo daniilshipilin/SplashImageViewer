@@ -1,25 +1,25 @@
-using SplashImageViewer.Forms;
-using System;
-using System.Diagnostics;
-using System.Windows.Forms;
-
 namespace SplashImageViewer
 {
+    using System;
+    using System.Diagnostics;
+    using System.Windows.Forms;
+    using SplashImageViewer.Forms;
+
     /// <summary>
-    /// Exitcode enum.
+    /// ExitCode enum.
     /// </summary>
     public enum ExitCode
     {
         Success = 0,
         AnotherInstanceRunning = 1,
         IncorrectArgs = 2,
-        Error = 4
+        Error = 4,
     }
 
-    static class Program
+    public static class Program
     {
         [STAThread]
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
@@ -28,8 +28,11 @@ namespace SplashImageViewer
             // check, if there is another instance running
             if (CheckAnotherInstanceIsRunning(ApplicationInfo.AppTitle))
             {
-                MessageBox.Show($"Another instance of '{ApplicationInfo.AppTitle}' is running",
-                                "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    $"Another instance of '{ApplicationInfo.AppTitle}' is running",
+                    "Warning",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
                 ProgramExit(ExitCode.AnotherInstanceRunning);
             }
@@ -37,8 +40,11 @@ namespace SplashImageViewer
             // handle special case, when we pass single argument
             if (args.Length == 1 && args[0].Equals("/?"))
             {
-                MessageBox.Show(ApplicationInfo.AppInfoFormatted, "Information",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    ApplicationInfo.AppInfoFormatted,
+                    "Information",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
             else
             {
@@ -48,14 +54,14 @@ namespace SplashImageViewer
             ProgramExit(ExitCode.Success);
         }
 
-        private static bool CheckAnotherInstanceIsRunning(string programName)
-        {
-            return Process.GetProcessesByName(programName).Length > 1;
-        }
-
         public static void ProgramExit(ExitCode exitCode = ExitCode.Success)
         {
             Environment.Exit((int)exitCode);
+        }
+
+        private static bool CheckAnotherInstanceIsRunning(string programName)
+        {
+            return Process.GetProcessesByName(programName).Length > 1;
         }
     }
 }

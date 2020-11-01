@@ -1,17 +1,26 @@
-using SplashImageViewer.Helpers;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Windows.Forms;
-using Updater;
-
 namespace SplashImageViewer.Forms
 {
+    using System;
+    using System.Diagnostics;
+    using System.Windows.Forms;
+    using SplashImageViewer.Helpers;
+    using Updater;
+
     public partial class AboutForm : Form
     {
         public AboutForm()
         {
             InitializeComponent();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                Close();
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void AboutForm_Load(object sender, EventArgs e)
@@ -27,33 +36,30 @@ namespace SplashImageViewer.Forms
         private void ShowExceptionMessage(Exception ex)
         {
             updatesInfoLabel.Text = "Exception encountered";
-            MessageBox.Show(ex.Message, ex.GetType().ToString(),
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            if (keyData == Keys.Escape)
-            {
-                Close();
-            }
-
-            return base.ProcessCmdKey(ref msg, keyData);
+            MessageBox.Show(
+                ex.Message,
+                ex.GetType().ToString(),
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
 
         private async void UpdatesInfoLabel_Click(object sender, EventArgs e)
         {
-            var dr = MessageBox.Show($"Force program update?", "Program update",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var dr = MessageBox.Show(
+                $"Force program update?",
+                "Program update",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
             if (dr == DialogResult.Yes)
             {
                 try
                 {
-                    var upd = new ProgramUpdater(Version.Parse(GitVersionInformation.SemVer),
-                                                 ApplicationInfo.BaseDirectory,
-                                                 ApplicationInfo.ExePath,
-                                                 ApplicationInfo.AppGUID);
+                    var upd = new ProgramUpdater(
+                        Version.Parse(GitVersionInformation.SemVer),
+                        ApplicationInfo.BaseDirectory,
+                        ApplicationInfo.ExePath,
+                        ApplicationInfo.AppGUID);
 
                     updatesInfoLabel.Text = "Update in progress";
                     await upd.ForceUpdate();
@@ -70,23 +76,27 @@ namespace SplashImageViewer.Forms
         {
             try
             {
-                AppSettings.UpdatesLastChecked = DateTime.Now;
+                AppSettings.UpdateUpdatesLastCheckedUtcTimestamp();
                 updatesInfoLabel.Text = "Checking updates";
 
-                var upd = new ProgramUpdater(Version.Parse(GitVersionInformation.SemVer),
-                                             ApplicationInfo.BaseDirectory,
-                                             ApplicationInfo.ExePath,
-                                             ApplicationInfo.AppGUID);
+                var upd = new ProgramUpdater(
+                    Version.Parse(GitVersionInformation.SemVer),
+                    ApplicationInfo.BaseDirectory,
+                    ApplicationInfo.ExePath,
+                    ApplicationInfo.AppGUID);
 
                 if (await upd.CheckUpdateIsAvailable())
                 {
                     updatesInfoLabel.Text = $"Newer program version available: v{upd.ProgramVerServer}";
 
-                    var dr = MessageBox.Show($"Newer program version available.\n" +
+                    var dr = MessageBox.Show(
+                        $"Newer program version available.\n" +
                         $"Current: {GitVersionInformation.SemVer}\n" +
                         $"Available: {upd.ProgramVerServer}\n\n" +
-                        $"Update program?", "Program update",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        $"Update program?",
+                        "Program update",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
 
                     if (dr == DialogResult.Yes)
                     {

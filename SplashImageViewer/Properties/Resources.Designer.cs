@@ -63,9 +63,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Commit_img {
+        internal static System.Drawing.Bitmap Commit_32x32 {
             get {
-                object obj = ResourceManager.GetObject("Commit_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Commit_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Cross_img {
+        internal static System.Drawing.Bitmap Cross_32x32 {
             get {
-                object obj = ResourceManager.GetObject("Cross_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Cross_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Delete_img {
+        internal static System.Drawing.Bitmap Delete_48x48 {
             get {
-                object obj = ResourceManager.GetObject("Delete_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Delete_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Dice_img {
+        internal static System.Drawing.Bitmap Dice_48x48 {
             get {
-                object obj = ResourceManager.GetObject("Dice_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Dice_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Error_img {
+        internal static System.Drawing.Bitmap Error_64x64 {
             get {
-                object obj = ResourceManager.GetObject("Error_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Error_64x64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Exit_img {
+        internal static System.Drawing.Bitmap Exit_32x32 {
             get {
-                object obj = ResourceManager.GetObject("Exit_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Exit_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +123,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap File_img {
+        internal static System.Drawing.Bitmap File_32x32 {
             get {
-                object obj = ResourceManager.GetObject("File_img", resourceCulture);
+                object obj = ResourceManager.GetObject("File_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +133,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Flip_img {
+        internal static System.Drawing.Bitmap Flip_48x48 {
             get {
-                object obj = ResourceManager.GetObject("Flip_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Flip_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +143,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Forder_img {
+        internal static System.Drawing.Bitmap Folder_32x32 {
             get {
-                object obj = ResourceManager.GetObject("Forder_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Folder_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +153,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Fullscreen_img {
+        internal static System.Drawing.Bitmap Fullscreen_48x48 {
             get {
-                object obj = ResourceManager.GetObject("Fullscreen_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Fullscreen_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,9 +163,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Next_img {
+        internal static System.Drawing.Bitmap Next_48x48 {
             get {
-                object obj = ResourceManager.GetObject("Next_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Next_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,9 +173,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Play_img {
+        internal static System.Drawing.Bitmap Play_48x48 {
             get {
-                object obj = ResourceManager.GetObject("Play_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Play_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -183,9 +183,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Previous_img {
+        internal static System.Drawing.Bitmap Previous_48x48 {
             get {
-                object obj = ResourceManager.GetObject("Previous_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Previous_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,9 +193,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Refresh_img {
+        internal static System.Drawing.Bitmap Recent_32x32 {
             get {
-                object obj = ResourceManager.GetObject("Refresh_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Recent_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +203,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Settings_img {
+        internal static System.Drawing.Bitmap Refresh_32x32 {
             get {
-                object obj = ResourceManager.GetObject("Settings_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Refresh_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -213,9 +213,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Splash_img {
+        internal static System.Drawing.Bitmap Settings_48x48 {
             get {
-                object obj = ResourceManager.GetObject("Splash_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Settings_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +223,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Stop_img {
+        internal static System.Drawing.Bitmap Splash_100x100 {
             get {
-                object obj = ResourceManager.GetObject("Stop_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Splash_100x100", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,9 +233,9 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ZoomIn_img {
+        internal static System.Drawing.Bitmap Stop_48x48 {
             get {
-                object obj = ResourceManager.GetObject("ZoomIn_img", resourceCulture);
+                object obj = ResourceManager.GetObject("Stop_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -243,9 +243,19 @@ namespace SplashImageViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ZoomOut_img {
+        internal static System.Drawing.Bitmap ZoomIn_48x48 {
             get {
-                object obj = ResourceManager.GetObject("ZoomOut_img", resourceCulture);
+                object obj = ResourceManager.GetObject("ZoomIn_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ZoomOut_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("ZoomOut_48x48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

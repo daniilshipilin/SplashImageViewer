@@ -1,29 +1,35 @@
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-
 namespace SplashImageViewer
 {
+    using System;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Reflection;
+
     public static class ApplicationInfo
     {
-        static readonly Assembly _ass = Assembly.GetExecutingAssembly();
-        static readonly AssemblyTitleAttribute _title = _ass.GetCustomAttributes<AssemblyTitleAttribute>().FirstOrDefault();
-        static readonly AssemblyDescriptionAttribute _description = _ass.GetCustomAttributes<AssemblyDescriptionAttribute>().FirstOrDefault();
-        static readonly AssemblyCopyrightAttribute _copyright = _ass.GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault();
+        private static readonly Assembly Ass = Assembly.GetExecutingAssembly();
+        private static readonly AssemblyTitleAttribute Title = Ass.GetCustomAttributes<AssemblyTitleAttribute>().FirstOrDefault();
+        private static readonly AssemblyDescriptionAttribute Description = Ass.GetCustomAttributes<AssemblyDescriptionAttribute>().FirstOrDefault();
+        private static readonly AssemblyCopyrightAttribute Copyright = Ass.GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault();
 
-        public static string BaseDirectory => Path.GetDirectoryName(ExePath)!;
-        public static string ExePath => Process.GetCurrentProcess().MainModule.FileName;
-        public static string AppTitle => _title.Title;
-        public static string AppHeader => $"{_title.Title} v{GitVersionInformation.SemVer}";
-        public static string AppAuthor => _copyright.Copyright;
-        public static string AppDescription => _description.Description;
-        public static Guid AppGUID => new Guid("8e3acb01-f0a7-4434-946f-de5e21f4c247");
-        public static string GitHubUrl => "https://github.com/daniilshipilin/SplashImageViewer";
+        public static string BaseDirectory { get; } = Environment.CurrentDirectory;
+
+        public static string ExePath { get; } = Process.GetCurrentProcess().MainModule.FileName;
+
+        public static string AppTitle { get; } = Title.Title;
+
+        public static string AppHeader { get; } = $"{Title.Title} v{GitVersionInformation.SemVer}";
+
+        public static string AppAuthor { get; } = Copyright.Copyright;
+
+        public static string AppDescription { get; } = Description.Description;
+
+        public static Guid AppGUID { get; } = new Guid("8e3acb01-f0a7-4434-946f-de5e21f4c247");
+
+        public static string GitHubUrl { get; } = "https://github.com/daniilshipilin/SplashImageViewer";
 
         /// <summary>
-        /// Formatted application info string.
+        /// Gets application info formatted string.
         /// </summary>
         public static string AppInfoFormatted { get; } =
             $"{AppHeader}{Environment.NewLine}" +

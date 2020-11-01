@@ -1,92 +1,75 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace SplashImageViewer.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    public enum ExifTag : int
+    {
+        // Exif file format: https://www.media.mit.edu/pia/Research/deepview/exif.html
+        ImageDescription = 0x010e, // ascii string - Describes image
+        Orientation = 0x0112,      // unsigned short - The orientation of the camera relative to the scene, when the image was captured. The start point of stored data is, '1' means upper left, '3' lower right, '6' upper right, '8' lower left, '9' undefined.
+        Software = 0x0131,         // ascii string - Shows firmware(internal software of digicam) version number.
+        Copyright = 0x8298,        // ascii string - Shows copyright information.
+    }
+
     public class ImagesModel
     {
-        #region ExitTag enum
+        private readonly IReadOnlyList<string> fileExtensions = new string[] { ".jpg", ".jpe", ".jpeg", ".jfif", ".bmp", ".png", ".gif", ".ico" };
+        private readonly Random rnd = new Random();
+        private readonly object locker;
+        private readonly object locker2;
 
-        // Exif file format: https://www.media.mit.edu/pia/Research/deepview/exif.html
-        // Check image rotation flags:
-        // 0x010e - ImageDescription - ascii string - Describes image
-        // 0x0112 - Orientation - unsigned short - The orientation of the camera relative to the scene, when the image was captured. The start point of stored data is, '1' means upper left, '3' lower right, '6' upper right, '8' lower left, '9' undefined.
-        // 0x0131 - Software - ascii string - Shows firmware(internal software of digicam) version number.
-        // 0x8298 - Copyright - ascii string - Shows copyright information.
+        private int index;
+        private List<string> filePaths;
+        private FileSystemWatcher? fileWatcher;
+        private SearchOption searchOption;
 
-        public enum ExifTag : int
+        private ImagesModel()
         {
-            ImageDescription = 0x010e,
-            Orientation = 0x0112,
-            Software = 0x0131,
-            Copyright = 0x8298
+            locker = new object();
+            locker2 = new object();
+            filePaths = new List<string>();
         }
 
-        #endregion
-
-        #region Private fields
-
-        readonly string[] _fileExtensions = new string[] { ".jpg", ".jpe", ".jpeg", ".jfif", ".bmp", ".png", ".gif", ".ico" };
-        static readonly Random _rnd = new Random();
-        readonly object _locker;
-        readonly object _locker2;
-
-        int _index;
-        List<string> _filePaths;
-        FileSystemWatcher? _fileWatcher;
-        SearchOption _so;
-
-        #endregion
-
         public delegate void CustomEventHandler(object sender);
-        public CustomEventHandler? CurrentFilePathIndexChanged;
-
-        #region Properties
 
         /// <summary>
-        /// ImagesModel singleton instance.
+        /// Gets ImagesModel singleton instance.
         /// </summary>
         public static ImagesModel Singleton { get; } = new ImagesModel();
 
-        public IReadOnlyList<string> FilePaths => _filePaths.AsReadOnly();
+        public CustomEventHandler? CurrentFilePathIndexChanged { get; set; }
+
+        public IReadOnlyList<string> FilePaths => filePaths.AsReadOnly();
+
         public Image? Image { get; private set; }
+
         public ImageFormat? ImageRawFormat { get; private set; }
+
         public string? ImageFormatDescription { get; private set; }
-        public string CurrentFilePath => (_index < _filePaths.Count) ? _filePaths[_index] : string.Empty;
+
+        public string CurrentFilePath => (index < filePaths.Count) ? filePaths[index] : string.Empty;
+
         public int CurrentFilePathIndex
         {
-            get => _index;
+            get => index;
             private set
             {
-                _index = value;
+                index = value;
 
-                lock (_locker)
+                lock (locker)
                 {
                     // notify event subscribers (if they exist), that current file index has changed
                     CurrentFilePathIndexChanged?.Invoke(this);
                 }
             }
         }
-
-        #endregion
-
-        /// <summary>
-        /// ImagesModel constructor.
-        /// </summary>
-        private ImagesModel()
-        {
-            _locker = new object();
-            _locker2 = new object();
-            _filePaths = new List<string>();
-        }
-
-        #region Public methods
 
         /// <summary>
         /// Initializes required fields/properties.
@@ -97,38 +80,36 @@ namespace SplashImageViewer.Models
             var fa = File.GetAttributes(path);
             string? dir = fa.HasFlag(FileAttributes.Directory) ? path : Path.GetDirectoryName(path);
 
-            _filePaths = Directory.EnumerateFiles(dir, "*.*", so)
-                                 .Where(s => _fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
+            filePaths = Directory.EnumerateFiles(dir, "*.*", so)
+                                 .Where(s => fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
 
-            if (_filePaths.Count == 0)
+            if (filePaths.Count == 0)
             {
                 throw new Exception($"'{dir}' directory has no images");
             }
 
-            _so = so;
+            searchOption = so;
 
             // create a new FileSystemWatcher and set its properties
-            _fileWatcher = new FileSystemWatcher
+            fileWatcher = new FileSystemWatcher
             {
                 Path = dir,
                 Filter = "*.*",
-                // watch both files and subdirectories
-                IncludeSubdirectories = (so == SearchOption.AllDirectories),
-                // watch for all changes specified in the NotifyFilters enumeration
-                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName
+                IncludeSubdirectories = so == SearchOption.AllDirectories, // watch both files and subdirectories
+                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName, // watch for all changes specified in the NotifyFilters enumeration
             };
 
             // add event handlers
-            _fileWatcher.Created += FileCreatedOrDeletedEvent;
-            _fileWatcher.Deleted += FileCreatedOrDeletedEvent;
-            _fileWatcher.Renamed += FileRenamedEvent;
+            fileWatcher.Created += FileCreatedOrDeletedEvent;
+            fileWatcher.Deleted += FileCreatedOrDeletedEvent;
+            fileWatcher.Renamed += FileRenamedEvent;
 
             // start monitoring
-            _fileWatcher.EnableRaisingEvents = true;
+            fileWatcher.EnableRaisingEvents = true;
 
             if (!fa.HasFlag(FileAttributes.Directory))
             {
-                int index = _filePaths.IndexOf(path);
+                int index = filePaths.IndexOf(path);
 
                 if (index == -1)
                 {
@@ -150,14 +131,14 @@ namespace SplashImageViewer.Models
                 Image = null;
             }
 
-            if (_fileWatcher is object)
+            if (fileWatcher is object)
             {
-                _fileWatcher.EnableRaisingEvents = false;
-                _fileWatcher.Created -= FileCreatedOrDeletedEvent;
-                _fileWatcher.Deleted -= FileCreatedOrDeletedEvent;
-                _fileWatcher.Renamed -= FileRenamedEvent;
-                _fileWatcher.Dispose();
-                _fileWatcher = null;
+                fileWatcher.EnableRaisingEvents = false;
+                fileWatcher.Created -= FileCreatedOrDeletedEvent;
+                fileWatcher.Deleted -= FileCreatedOrDeletedEvent;
+                fileWatcher.Renamed -= FileRenamedEvent;
+                fileWatcher.Dispose();
+                fileWatcher = null;
             }
         }
 
@@ -183,7 +164,7 @@ namespace SplashImageViewer.Models
             {
                 while (true)
                 {
-                    int tmp = _rnd.Next(FilePaths.Count);
+                    int tmp = rnd.Next(FilePaths.Count);
 
                     if (CurrentFilePathIndex != tmp)
                     {
@@ -198,16 +179,10 @@ namespace SplashImageViewer.Models
         {
             Image?.Dispose();
 
-            //open file in read only mode
-            using var fs = new FileStream(CurrentFilePath, FileMode.Open, FileAccess.Read);
-            // get a binary reader for the file stream
-            using var br = new BinaryReader(fs);
-            // copy the content of the file into a memory stream
-            var ms = new MemoryStream(br.ReadBytes((int)fs.Length));
+            using var fs = new FileStream(CurrentFilePath, FileMode.Open, FileAccess.Read); // open file in read only mode
+            using var br = new BinaryReader(fs); // get a binary reader for the file stream
+            var ms = new MemoryStream(br.ReadBytes((int)fs.Length)); // copy the content of the file into a memory stream
             Image = Image.FromStream(ms);
-            //Image = new Bitmap(ms);
-
-            //Image = Image.FromFile(CurrentFilePath);
             ImageRawFormat = new ImageFormat(Image.RawFormat.Guid);
             ImageFormatDescription = GetImageFormatDescription(Image.RawFormat);
             ProcessImageMetadata(Image);
@@ -215,7 +190,10 @@ namespace SplashImageViewer.Models
 
         public void OverwriteImage()
         {
-            if (Image is null) { throw new NullReferenceException(nameof(Image)); }
+            if (Image is null)
+            {
+                throw new NullReferenceException(nameof(Image));
+            }
 
             ModifyImageMetadata(Image);
 
@@ -226,33 +204,29 @@ namespace SplashImageViewer.Models
 
             // Create an EncoderParameters object. An EncoderParameters object has an array of EncoderParameter objects. In this case, there is only one EncoderParameter object in the array.
             using var encoderParameters = new EncoderParameters(1);
-            encoderParameters.Param[0] = new EncoderParameter(encoder, (long)100);
+            encoderParameters.Param[0] = new EncoderParameter(encoder, 100L);
 
             Image.Save(CurrentFilePath, ici, encoderParameters);
         }
 
         public void DeleteImage()
         {
-            lock (_locker2)
+            lock (locker2)
             {
                 File.Delete(CurrentFilePath);
             }
         }
 
-        #endregion
-
-        #region Private methods
-
         private void FileCreatedOrDeletedEvent(object sender, FileSystemEventArgs e)
         {
-            lock (_locker2)
+            lock (locker2)
             {
                 if (e.ChangeType == WatcherChangeTypes.Created)
                 {
                     // wait until file is fully written and released by the os
                     if (CheckFileIsLocked(e.FullPath))
                     {
-                        //throw new Exception($"'{e.FullPath}' file is locked");
+                        // throw new Exception($"'{e.FullPath}' file is locked");
                         return;
                     }
                 }
@@ -261,23 +235,23 @@ namespace SplashImageViewer.Models
                 string previousFilePath = CurrentFilePath;
                 int previousIndex = CurrentFilePathIndex;
 
-                _filePaths = Directory.EnumerateFiles(Path.GetDirectoryName(e.FullPath), "*.*", _so)
-                                  .Where(s => _fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
+                filePaths = Directory.EnumerateFiles(Path.GetDirectoryName(e.FullPath), "*.*", searchOption)
+                                  .Where(s => fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
 
-                if (_filePaths.Count == 0)
+                if (filePaths.Count == 0)
                 {
                     // invoke CurrentFilePathIndexChanged event on different thread, so that this method is not blocked and (filewatcher dispose)
                     Task.Run(() => { CurrentFilePathIndex = 0; });
                     return;
                 }
 
-                int index = _filePaths.IndexOf(previousFilePath);
+                int index = filePaths.IndexOf(previousFilePath);
 
                 if (index != -1)
                 {
                     CurrentFilePathIndex = index;
                 }
-                else if (_filePaths.Count > previousIndex)
+                else if (filePaths.Count > previousIndex)
                 {
                     CurrentFilePathIndex = previousIndex;
                 }
@@ -290,14 +264,14 @@ namespace SplashImageViewer.Models
 
         private void FileRenamedEvent(object sender, RenamedEventArgs e)
         {
-            lock (_locker2)
+            lock (locker2)
             {
                 if (e.ChangeType == WatcherChangeTypes.Renamed)
                 {
                     // wait until file is fully written and released by the os
                     if (CheckFileIsLocked(e.FullPath))
                     {
-                        //throw new Exception($"'{e.FullPath}' file is locked");
+                        // throw new Exception($"'{e.FullPath}' file is locked");
                         return;
                     }
                 }
@@ -306,23 +280,23 @@ namespace SplashImageViewer.Models
                 string previousFilePath = CurrentFilePath;
                 int previousIndex = CurrentFilePathIndex;
 
-                _filePaths = Directory.EnumerateFiles(Path.GetDirectoryName(e.FullPath), "*.*", _so)
-                                  .Where(s => _fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
+                filePaths = Directory.EnumerateFiles(Path.GetDirectoryName(e.FullPath), "*.*", searchOption)
+                                  .Where(s => fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
 
-                if (_filePaths.Count == 0)
+                if (filePaths.Count == 0)
                 {
                     // invoke CurrentFilePathIndexChanged event on different thread, so that this method is not blocked and (filewatcher dispose)
                     Task.Run(() => { CurrentFilePathIndex = 0; });
                     return;
                 }
 
-                int index = _filePaths.IndexOf(previousFilePath);
+                int index = filePaths.IndexOf(previousFilePath);
 
                 if (index != -1)
                 {
                     CurrentFilePathIndex = index;
                 }
-                else if (_filePaths.Count > previousIndex)
+                else if (filePaths.Count > previousIndex)
                 {
                     CurrentFilePathIndex = previousIndex;
                 }
@@ -357,16 +331,25 @@ namespace SplashImageViewer.Models
 
         private void ProcessImageMetadata(Image img)
         {
-            //var items = Image.PropertyItems;
+            // var items = Image.PropertyItems;
             if (img.PropertyIdList.Contains((int)ExifTag.Orientation))
             {
                 var item = img.GetPropertyItem((int)ExifTag.Orientation);
 
                 if (item.Value[0] != 1)
                 {
-                    if (item.Value[0] == 3) { img.RotateFlip(RotateFlipType.Rotate180FlipNone); }
-                    else if (item.Value[0] == 6) { img.RotateFlip(RotateFlipType.Rotate90FlipNone); }
-                    else if (item.Value[0] == 8) { img.RotateFlip(RotateFlipType.Rotate270FlipNone); }
+                    if (item.Value[0] == 3)
+                    {
+                        img.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                    }
+                    else if (item.Value[0] == 6)
+                    {
+                        img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                    }
+                    else if (item.Value[0] == 8)
+                    {
+                        img.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                    }
                 }
             }
         }
@@ -391,7 +374,8 @@ namespace SplashImageViewer.Models
                 // set image orientation tag
                 item.Value[0] = 1;
                 img.SetPropertyItem(item);
-                //img.RemovePropertyItem((int)ExifTag.Orientation);
+
+                // img.RemovePropertyItem((int)ExifTag.Orientation);
             }
         }
 
@@ -424,7 +408,5 @@ namespace SplashImageViewer.Models
 
             return "UNKNOWN";
         }
-
-        #endregion
     }
 }

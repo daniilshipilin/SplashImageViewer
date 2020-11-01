@@ -1,74 +1,26 @@
-using System;
-using System.Windows.Forms;
-using SplashImageViewer.Helpers;
-using SplashImageViewer.Models;
-
 namespace SplashImageViewer.Forms
 {
+    using System;
+    using System.Windows.Forms;
+    using SplashImageViewer.Helpers;
+    using SplashImageViewer.Models;
+
     public partial class FullscreenForm : Form
     {
-        const int TIMER_INTERVAL_MS = 10000;
+        private const int TimerIntervalMs = 10000;
 
-        readonly Timer _hideInfoLabelTimer;
-        readonly Timer _hideBottomLabelsTimer;
-        readonly Screen _screen;
-        readonly bool _slideshowIsEnabled;
+        private readonly Timer hideInfoLabelTimer;
+        private readonly Timer hideBottomLabelsTimer;
+        private readonly Screen screen;
+        private readonly bool slideshowIsEnabled;
 
         public FullscreenForm(Screen screen, bool slideshowIsEnabled)
         {
             InitializeComponent();
-            _hideInfoLabelTimer = new Timer();
-            _hideBottomLabelsTimer = new Timer();
-            _screen = screen;
-            _slideshowIsEnabled = slideshowIsEnabled;
-        }
-
-        private void FullscreenForm_Load(object sender, EventArgs e)
-        {
-            totalFilesLabel.ForeColor = AppSettings.LabelsColor;
-            infoLabel.ForeColor = AppSettings.LabelsColor;
-            filePathLabel.ForeColor = AppSettings.LabelsColor;
-
-            //Bounds = Screen.PrimaryScreen.Bounds;
-            Bounds = _screen.Bounds; // use passed-in screen reference bounds
-
-            fullscreenPictureBox.Image = ImagesModel.Singleton.Image;
-            fullscreenPictureBox.BackColor = AppSettings.ThemeColor;
-
-            CheckFormSize();
-
-            // change totalFilesLabel parent
-            totalFilesLabel.Parent = fullscreenPictureBox;
-            //totalFilesLabel.Location = new Point(fullscreenPictureBox.Size.Width - totalFilesLabel.Size.Width,
-            //                                     fullscreenPictureBox.Size.Height - totalFilesLabel.Size.Height);
-
-            // change infoLabel parent
-            infoLabel.Parent = fullscreenPictureBox;
-
-            // change infoLabel parent
-            filePathLabel.Parent = fullscreenPictureBox;
-            filePathLabel.Text = ImagesModel.Singleton.CurrentFilePath;
-
-            ImagesModel.Singleton.CurrentFilePathIndexChanged += UpdatePictureBoxEvent;
-
-            UpdateBottomLabels();
-            InitTimers();
-
-            if (_slideshowIsEnabled)
-            {
-                infoLabel.Text += "\n[SLIDESHOW ENABLED]";
-            }
-        }
-
-        private void InitTimers()
-        {
-            _hideInfoLabelTimer.Tick += HideInfoLabel;
-            _hideInfoLabelTimer.Interval = TIMER_INTERVAL_MS;
-            _hideInfoLabelTimer.Start();
-
-            _hideBottomLabelsTimer.Tick += HideBottomLabels;
-            _hideBottomLabelsTimer.Interval = TIMER_INTERVAL_MS;
-            _hideBottomLabelsTimer.Start();
+            hideInfoLabelTimer = new Timer();
+            hideBottomLabelsTimer = new Timer();
+            this.screen = screen;
+            this.slideshowIsEnabled = slideshowIsEnabled;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -107,25 +59,98 @@ namespace SplashImageViewer.Forms
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                // dispose managed resources
+                components.Dispose();
+            }
+
+            fullscreenPictureBox.Image.Dispose();
+
+            hideInfoLabelTimer.Tick -= HideInfoLabel;
+            hideBottomLabelsTimer.Tick -= HideBottomLabels;
+            ImagesModel.Singleton.CurrentFilePathIndexChanged -= UpdatePictureBoxEvent;
+            hideInfoLabelTimer.Dispose();
+            hideBottomLabelsTimer.Dispose();
+
+            // free native resources
+            base.Dispose(disposing);
+        }
+
+        private void FullscreenForm_Load(object sender, EventArgs e)
+        {
+            totalFilesLabel.ForeColor = AppSettings.LabelsColor;
+            infoLabel.ForeColor = AppSettings.LabelsColor;
+            filePathLabel.ForeColor = AppSettings.LabelsColor;
+
+            // Bounds = Screen.PrimaryScreen.Bounds;
+            Bounds = screen.Bounds; // use passed-in screen reference bounds
+
+            fullscreenPictureBox.Image = ImagesModel.Singleton.Image;
+            fullscreenPictureBox.BackColor = AppSettings.ThemeColor;
+
+            CheckFormSize();
+
+            // change totalFilesLabel parent
+            totalFilesLabel.Parent = fullscreenPictureBox;
+
+            // totalFilesLabel.Location = new Point(fullscreenPictureBox.Size.Width - totalFilesLabel.Size.Width,
+            //                                     fullscreenPictureBox.Size.Height - totalFilesLabel.Size.Height);
+
+            // change infoLabel parent
+            infoLabel.Parent = fullscreenPictureBox;
+
+            // change infoLabel parent
+            filePathLabel.Parent = fullscreenPictureBox;
+            filePathLabel.Text = ImagesModel.Singleton.CurrentFilePath;
+
+            ImagesModel.Singleton.CurrentFilePathIndexChanged += UpdatePictureBoxEvent;
+
+            UpdateBottomLabels();
+            InitTimers();
+
+            if (slideshowIsEnabled)
+            {
+                infoLabel.Text += "\n[SLIDESHOW ENABLED]";
+            }
+        }
+
+        private void InitTimers()
+        {
+            hideInfoLabelTimer.Tick += HideInfoLabel;
+            hideInfoLabelTimer.Interval = TimerIntervalMs;
+            hideInfoLabelTimer.Start();
+
+            hideBottomLabelsTimer.Tick += HideBottomLabels;
+            hideBottomLabelsTimer.Interval = TimerIntervalMs;
+            hideBottomLabelsTimer.Start();
+        }
+
         private void RestartHideInfoLabeTimer()
         {
             infoLabel.Visible = true;
-            _hideInfoLabelTimer.Stop();
-            _hideInfoLabelTimer.Start();
+            hideInfoLabelTimer.Stop();
+            hideInfoLabelTimer.Start();
         }
 
         private void RestartHideBottomLabelsTimer()
         {
             filePathLabel.Visible = true;
             totalFilesLabel.Visible = true;
-            _hideBottomLabelsTimer.Stop();
-            _hideBottomLabelsTimer.Start();
+            hideBottomLabelsTimer.Stop();
+            hideBottomLabelsTimer.Start();
         }
 
         private void HideInfoLabel(object? sender, EventArgs e)
         {
             infoLabel.Visible = false;
-            _hideInfoLabelTimer.Stop();
+            hideInfoLabelTimer.Stop();
             Update();
         }
 
@@ -133,24 +158,21 @@ namespace SplashImageViewer.Forms
         {
             filePathLabel.Visible = false;
             totalFilesLabel.Visible = false;
-            _hideBottomLabelsTimer.Stop();
+            hideBottomLabelsTimer.Stop();
             Update();
         }
 
         private void UpdatePictureBoxEvent(object sender)
         {
-            if (InvokeRequired)
-            {
-                Invoke((MethodInvoker)delegate { UpdatePictureBoxEvent(sender); });
-                return;
-            }
-
             UpdatePictureBox();
         }
 
         private void UpdatePictureBox()
         {
-            if (ImagesModel.Singleton.FilePaths.Count == 0) { Close(); }
+            if (ImagesModel.Singleton.FilePaths.Count == 0)
+            {
+                Close();
+            }
 
             try
             {
@@ -186,30 +208,6 @@ namespace SplashImageViewer.Forms
         {
             totalFilesLabel.Text = $"{ImagesModel.Singleton.CurrentFilePathIndex + 1} / {ImagesModel.Singleton.FilePaths.Count}";
             filePathLabel.Text = ImagesModel.Singleton.CurrentFilePath;
-        }
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                // dispose managed resources            
-                components.Dispose();
-            }
-
-            fullscreenPictureBox.Image.Dispose();
-
-            _hideInfoLabelTimer.Tick -= HideInfoLabel;
-            _hideBottomLabelsTimer.Tick -= HideBottomLabels;
-            ImagesModel.Singleton.CurrentFilePathIndexChanged -= UpdatePictureBoxEvent;
-            _hideInfoLabelTimer.Dispose();
-            _hideBottomLabelsTimer.Dispose();
-
-            // free native resources
-            base.Dispose(disposing);
         }
     }
 }
