@@ -739,17 +739,19 @@ namespace SplashImageViewer.Forms
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (dialogResult == DialogResult.Yes)
+                if (dialogResult == DialogResult.No)
                 {
-                    try
-                    {
-                        ImagesModel.Singleton.DeleteImage();
-                    }
-                    catch (Exception ex)
-                    {
-                        ShowExceptionMessage(ex);
-                    }
+                    return;
                 }
+            }
+
+            try
+            {
+                ImagesModel.Singleton.DeleteImage();
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
             }
         }
 
