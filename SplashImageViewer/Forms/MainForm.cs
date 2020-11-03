@@ -254,7 +254,15 @@ namespace SplashImageViewer.Forms
 
         private void UpdateRecentItemsEvent(object sender)
         {
-            UpdateRecentItems();
+            // check if caller is on a different thread (invoke required)
+            if (InvokeRequired)
+            {
+                Invoke(new MethodInvoker(UpdateRecentItems));
+            }
+            else
+            {
+                UpdateRecentItems();
+            }
         }
 
         private void UpdateRecentItems()
@@ -303,7 +311,15 @@ namespace SplashImageViewer.Forms
 
         private void UpdatePictureBoxEvent(object sender)
         {
-            UpdatePictureBox();
+            // check if caller is on a different thread (invoke required)
+            if (InvokeRequired)
+            {
+                Invoke(new MethodInvoker(UpdatePictureBox));
+            }
+            else
+            {
+                UpdatePictureBox();
+            }
         }
 
         private void UpdatePictureBox()
