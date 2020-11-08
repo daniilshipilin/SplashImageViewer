@@ -5,6 +5,7 @@ namespace SplashImageViewer.Forms
     using System.Diagnostics;
     using System.Drawing;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Forms;
     using SplashImageViewer.Helpers;
@@ -16,19 +17,15 @@ namespace SplashImageViewer.Forms
     {
         private const int CheckMemoryMs = 1000;
 
-        private readonly string[] args;
-        private readonly Timer slideshowTimer;
-        private readonly Timer allocatedMemoryTimer;
+        private readonly Timer slideshowTimer = new Timer();
+        private readonly Timer allocatedMemoryTimer = new Timer();
         private bool fullscreenFormIsActive;
         private bool imageIsModified;
         private bool eventsSubscribed;
 
-        public MainForm(string[] args)
+        public MainForm()
         {
             InitializeComponent();
-            this.args = args;
-            slideshowTimer = new Timer();
-            allocatedMemoryTimer = new Timer();
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -191,7 +188,11 @@ namespace SplashImageViewer.Forms
             PopulateRecentItemsList();
 
             // check, if args exist
-            ProcessCmdArgs();
+            if (ApplicationInfo.Args.Count > 0)
+            {
+                // cmd provided filename/folder path
+                OpenImage(Path.GetFullPath(ApplicationInfo.Args.First()));
+            }
         }
 
         private void CheckScreenDimensions()
@@ -468,16 +469,6 @@ namespace SplashImageViewer.Forms
             catch (Exception ex)
             {
                 ShowExceptionMessage(ex);
-            }
-        }
-
-        private void ProcessCmdArgs()
-        {
-            if (args.Length > 0)
-            {
-                // cmd provided filename/folder path
-                string path = Path.GetFullPath(args[0]);
-                OpenImage(path);
             }
         }
 

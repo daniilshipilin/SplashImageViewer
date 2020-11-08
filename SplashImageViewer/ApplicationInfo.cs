@@ -1,6 +1,7 @@
 namespace SplashImageViewer
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
@@ -11,6 +12,8 @@ namespace SplashImageViewer
         private static readonly AssemblyTitleAttribute Title = Ass.GetCustomAttributes<AssemblyTitleAttribute>().FirstOrDefault();
         private static readonly AssemblyDescriptionAttribute Description = Ass.GetCustomAttributes<AssemblyDescriptionAttribute>().FirstOrDefault();
         private static readonly AssemblyCopyrightAttribute Copyright = Ass.GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault();
+
+        public static IList<string> Args { get; private set; } = new List<string>();
 
         public static string BaseDirectory { get; } = Environment.CurrentDirectory;
 
@@ -38,5 +41,13 @@ namespace SplashImageViewer
             $"{Environment.NewLine}" +
             $"Description:{Environment.NewLine}" +
             $"  {AppDescription}{Environment.NewLine}";
+
+        /// <summary>
+        /// Sets application command line arguments.
+        /// </summary>
+        public static void SetArgs(string[] args)
+        {
+            Args = args.ToList();
+        }
     }
 }

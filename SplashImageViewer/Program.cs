@@ -48,7 +48,8 @@ namespace SplashImageViewer
             }
             else
             {
-                Application.Run(new MainForm(args));
+                ApplicationInfo.SetArgs(args);
+                Application.Run(new MainForm());
             }
 
             ProgramExit(ExitCode.Success);
