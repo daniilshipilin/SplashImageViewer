@@ -149,12 +149,8 @@ namespace SplashImageViewer.Forms
 
             AppSettings.CheckSettings();
 
-            if (AppSettings.ForceCheckUpdates ||
-                (DateTime.UtcNow - AppSettings.UpdatesLastCheckedUtcTimestamp).Days >= 1)
-            {
-                // check for updates in the background
-                Task.Run(async () => await CheckUpdates());
-            }
+            // check for updates in the background
+            Task.Run(async () => await CheckUpdates());
 
             mainPanel.BackColor = AppSettings.ThemeColor;
             totalFilesLabel.ForeColor = AppSettings.LabelsColor;
@@ -438,37 +434,41 @@ namespace SplashImageViewer.Forms
 
         private async Task CheckUpdates()
         {
-            try
+            if ((DateTime.UtcNow - AppSettings.UpdatesLastCheckedUtcTimestamp).Days >= 1 ||
+                AppSettings.ForceCheckUpdates)
             {
-                AppSettings.UpdateUpdatesLastCheckedUtcTimestamp();
-
-                var upd = new ProgramUpdater(
-                    Version.Parse(GitVersionInformation.SemVer),
-                    ApplicationInfo.BaseDirectory,
-                    ApplicationInfo.ExePath,
-                    ApplicationInfo.AppGUID);
-
-                if (await upd.CheckUpdateIsAvailable())
+                try
                 {
-                    var dr = MessageBox.Show(
-                        $"Newer program version available.\n" +
-                        $"Current: {GitVersionInformation.SemVer}\n" +
-                        $"Available: {upd.ProgramVerServer}\n\n" +
-                        $"Update program?",
-                        "Program update",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
+                    AppSettings.UpdateUpdatesLastCheckedUtcTimestamp();
 
-                    if (dr == DialogResult.Yes)
+                    var upd = new ProgramUpdater(
+                        Version.Parse(GitVersionInformation.SemVer),
+                        ApplicationInfo.BaseDirectory,
+                        ApplicationInfo.ExePath,
+                        ApplicationInfo.AppGUID);
+
+                    if (await upd.CheckUpdateIsAvailable())
                     {
-                        await upd.Update();
-                        Program.ProgramExit();
+                        var dr = MessageBox.Show(
+                                $"Newer program version available.\n" +
+                                $"Current: {GitVersionInformation.SemVer}\n" +
+                                $"Available: {upd.ProgramVerServer}\n\n" +
+                                $"Update program?",
+                                "Program update",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Question);
+
+                        if (dr == DialogResult.Yes)
+                        {
+                            await upd.Update();
+                            Program.ProgramExit();
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                ShowExceptionMessage(ex);
+                catch (Exception ex)
+                {
+                    ShowExceptionMessage(ex);
+                }
             }
         }
 

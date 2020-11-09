@@ -42,7 +42,7 @@ namespace SplashImageViewer.Helpers
             { nameof(ShowFileDeletePrompt), "True" },
             { nameof(ShowFileOverwritePrompt), "True" },
             { nameof(ForceCheckUpdates), "False" },
-            { nameof(UpdatesLastCheckedUtcTimestamp), DateTime.UtcNow.ToString("u") },
+            { nameof(UpdatesLastCheckedUtcTimestamp), default(DateTime).ToString("u", CultureInfo.InvariantCulture) }, // assign default datetime struct value
         };
 
         public static Color LabelsColor => ((uint)ThemeColor.ToArgb() > 0xFF808080) ? Color.Black : Color.White;
