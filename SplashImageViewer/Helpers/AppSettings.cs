@@ -10,13 +10,6 @@ namespace SplashImageViewer.Helpers
 
     public static class AppSettings
     {
-        public const string RegistryBaseKeyFull =
-#if DEBUG
-            @"HKCU\SOFTWARE\Splash Image Viewer [Debug]";
-#else
-            @"HKCU\SOFTWARE\Splash Image Viewer";
-#endif
-
         public const string RegistryBaseKey =
 #if DEBUG
             @"SOFTWARE\Splash Image Viewer [Debug]";
@@ -24,26 +17,31 @@ namespace SplashImageViewer.Helpers
             @"SOFTWARE\Splash Image Viewer";
 #endif
 
-        public const int ConfigVersion = 11;
+        public const int ConfigVersion = 12;
         public const int RecentItemsCapacity = 10;
         public const string RegistryRecentItemsKey = RegistryBaseKey + "\\Recent Items";
+        public const string RegistryProgramUpdaterKey = RegistryBaseKey + "\\Program Updater";
         public const int MinScreenSizeWidth = 1024;
         public const int MinScreenSizeHeight = 768;
 
         private static readonly RegistryKey RegKeyRoot = Registry.CurrentUser.CreateSubKey(RegistryBaseKey);
         private static readonly RegistryKey RegKeyRecentItems = Registry.CurrentUser.CreateSubKey(RegistryRecentItemsKey);
+        private static readonly RegistryKey RegKeyProgramUpdater = Registry.CurrentUser.CreateSubKey(RegistryProgramUpdaterKey);
 
-        private static readonly IReadOnlyDictionary<string, string> DefaultSettingsDict = new Dictionary<string, string>()
+        private static readonly IReadOnlyDictionary<string, object> DefaultSettingsDict = new Dictionary<string, object>()
         {
+            { nameof(ConfigVersion), ConfigVersion },
             { nameof(ThemeColor), "FF000000" },
-            { nameof(SlideshowTransitionMs), "10000" },
-            { nameof(SlideshowOrderIsRandom), "False" },
-            { nameof(SearchInSubdirs), "False" },
-            { nameof(ShowFileDeletePrompt), "True" },
-            { nameof(ShowFileOverwritePrompt), "True" },
-            { nameof(ForceCheckUpdates), "False" },
+            { nameof(SlideshowTransitionMs), 10000 },
+            { nameof(SlideshowOrderIsRandom), false },
+            { nameof(SearchInSubdirs), false },
+            { nameof(ShowFileDeletePrompt), true },
+            { nameof(ShowFileOverwritePrompt), true },
+            { nameof(ForceCheckUpdates), false },
             { nameof(UpdatesLastCheckedUtcTimestamp), default(DateTime).ToString("u", CultureInfo.InvariantCulture) }, // assign default datetime struct value
         };
+
+        public static string RegistryBaseKeyFull => RegKeyRoot.Name;
 
         public static Color LabelsColor => ((uint)ThemeColor.ToArgb() > 0xFF808080) ? Color.Black : Color.White;
 
@@ -59,11 +57,11 @@ namespace SplashImageViewer.Helpers
 
         public static int SlideshowTransitionMs
         {
-            get => int.Parse((string)RegKeyRoot.GetValue(nameof(SlideshowTransitionMs)));
+            get => (int)RegKeyRoot.GetValue(nameof(SlideshowTransitionMs));
 
             set
             {
-                RegKeyRoot.SetValue(nameof(SlideshowTransitionMs), value.ToString());
+                RegKeyRoot.SetValue(nameof(SlideshowTransitionMs), value);
             }
         }
 
@@ -73,7 +71,7 @@ namespace SplashImageViewer.Helpers
 
             set
             {
-                RegKeyRoot.SetValue(nameof(SlideshowOrderIsRandom), value.ToString());
+                RegKeyRoot.SetValue(nameof(SlideshowOrderIsRandom), value);
             }
         }
 
@@ -93,7 +91,7 @@ namespace SplashImageViewer.Helpers
 
             set
             {
-                RegKeyRoot.SetValue(nameof(ShowFileDeletePrompt), value.ToString());
+                RegKeyRoot.SetValue(nameof(ShowFileDeletePrompt), value);
             }
         }
 
@@ -103,7 +101,7 @@ namespace SplashImageViewer.Helpers
 
             set
             {
-                RegKeyRoot.SetValue(nameof(ShowFileOverwritePrompt), value.ToString());
+                RegKeyRoot.SetValue(nameof(ShowFileOverwritePrompt), value);
             }
         }
 
@@ -113,11 +111,21 @@ namespace SplashImageViewer.Helpers
 
             set
             {
-                RegKeyRoot.SetValue(nameof(ForceCheckUpdates), value.ToString());
+                RegKeyRoot.SetValue(nameof(ForceCheckUpdates), value);
             }
         }
 
         public static DateTime UpdatesLastCheckedUtcTimestamp => DateTime.ParseExact((string)RegKeyRoot.GetValue(nameof(UpdatesLastCheckedUtcTimestamp)), "u", CultureInfo.InvariantCulture);
+
+        public static string AppVersionsXmlUrl
+        {
+            get => (string)RegKeyProgramUpdater.GetValue(nameof(AppVersionsXmlUrl));
+
+            private set
+            {
+                RegKeyProgramUpdater.SetValue(nameof(AppVersionsXmlUrl), value);
+            }
+        }
 
         public static void UpdateUpdatesLastCheckedUtcTimestamp()
         {
@@ -148,8 +156,12 @@ namespace SplashImageViewer.Helpers
                 RegKeyRoot.SetValue(pair.Key, pair.Value);
             }
 
-            // set current config version
-            RegKeyRoot.SetValue(nameof(ConfigVersion), ConfigVersion);
+            // check, whether required key for the Program Updater exists
+            if (AppVersionsXmlUrl is null)
+            {
+                // create key with default value
+                AppVersionsXmlUrl = string.Empty;
+            }
         }
 
         public static IList<string> GetRecentItemsFromRegistry()

@@ -4,7 +4,6 @@ namespace SplashImageViewer.Forms
     using System.Diagnostics;
     using System.Windows.Forms;
     using SplashImageViewer.Helpers;
-    using Updater;
 
     public partial class AboutForm : Form
     {
@@ -55,14 +54,8 @@ namespace SplashImageViewer.Forms
             {
                 try
                 {
-                    var upd = new ProgramUpdater(
-                        Version.Parse(GitVersionInformation.SemVer),
-                        ApplicationInfo.BaseDirectory,
-                        ApplicationInfo.ExePath,
-                        ApplicationInfo.AppGUID);
-
                     updatesInfoLabel.Text = "Update in progress";
-                    await upd.ForceUpdate();
+                    await ProgramUpdater.ForceUpdate();
                     Program.ProgramExit(ExitCode.Success);
                 }
                 catch (Exception ex)
@@ -79,20 +72,14 @@ namespace SplashImageViewer.Forms
                 AppSettings.UpdateUpdatesLastCheckedUtcTimestamp();
                 updatesInfoLabel.Text = "Checking updates";
 
-                var upd = new ProgramUpdater(
-                    Version.Parse(GitVersionInformation.SemVer),
-                    ApplicationInfo.BaseDirectory,
-                    ApplicationInfo.ExePath,
-                    ApplicationInfo.AppGUID);
-
-                if (await upd.CheckUpdateIsAvailable())
+                if (await ProgramUpdater.CheckUpdateIsAvailable())
                 {
-                    updatesInfoLabel.Text = $"Newer program version available: v{upd.ProgramVerServer}";
+                    updatesInfoLabel.Text = $"Newer program version available: v{ProgramUpdater.VersionServer}";
 
                     var dr = MessageBox.Show(
                         $"Newer program version available.\n" +
                         $"Current: {GitVersionInformation.SemVer}\n" +
-                        $"Available: {upd.ProgramVerServer}\n\n" +
+                        $"Available: {ProgramUpdater.VersionServer}\n\n" +
                         $"Update program?",
                         "Program update",
                         MessageBoxButtons.YesNo,
@@ -101,7 +88,7 @@ namespace SplashImageViewer.Forms
                     if (dr == DialogResult.Yes)
                     {
                         updatesInfoLabel.Text = "Update in progress";
-                        await upd.Update();
+                        await ProgramUpdater.Update();
                         Program.ProgramExit(ExitCode.Success);
                     }
                 }

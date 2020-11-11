@@ -38,10 +38,4 @@
         </None>
     </ItemGroup>
 
-    <ItemGroup>
-        <Reference Include="ProgramUpdater">
-            <HintPath>..\..\ProgramUpdater\ProgramUpdater\bin\Release\netcoreapp3.1\ProgramUpdater.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-
 </Project>

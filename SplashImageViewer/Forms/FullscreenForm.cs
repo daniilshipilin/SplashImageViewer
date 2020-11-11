@@ -9,16 +9,14 @@ namespace SplashImageViewer.Forms
     {
         private const int TimerIntervalMs = 10000;
 
-        private readonly Timer hideInfoLabelTimer;
-        private readonly Timer hideBottomLabelsTimer;
+        private readonly Timer hideInfoLabelTimer = new Timer();
+        private readonly Timer hideBottomLabelsTimer = new Timer();
         private readonly Screen screen;
         private readonly bool slideshowIsEnabled;
 
         public FullscreenForm(Screen screen, bool slideshowIsEnabled)
         {
             InitializeComponent();
-            hideInfoLabelTimer = new Timer();
-            hideBottomLabelsTimer = new Timer();
             this.screen = screen;
             this.slideshowIsEnabled = slideshowIsEnabled;
         }

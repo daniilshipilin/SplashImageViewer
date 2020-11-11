@@ -20,8 +20,9 @@ namespace SplashImageViewer.Models
 
     public class ImagesModel
     {
+        private static readonly Random Rnd = new Random();
+
         private readonly IReadOnlyList<string> fileExtensions = new string[] { ".jpg", ".jpe", ".jpeg", ".jfif", ".bmp", ".png", ".gif", ".ico" };
-        private readonly Random rnd = new Random();
         private readonly object locker;
         private readonly object locker2;
 
@@ -164,7 +165,7 @@ namespace SplashImageViewer.Models
             {
                 while (true)
                 {
-                    int tmp = rnd.Next(FilePaths.Count);
+                    int tmp = Rnd.Next(FilePaths.Count);
 
                     if (CurrentFilePathIndex != tmp)
                     {

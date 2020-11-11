@@ -11,7 +11,6 @@ namespace SplashImageViewer.Forms
     using SplashImageViewer.Helpers;
     using SplashImageViewer.Models;
     using SplashImageViewer.Properties;
-    using Updater;
 
     public partial class MainForm : Form
     {
@@ -441,18 +440,12 @@ namespace SplashImageViewer.Forms
                 {
                     AppSettings.UpdateUpdatesLastCheckedUtcTimestamp();
 
-                    var upd = new ProgramUpdater(
-                        Version.Parse(GitVersionInformation.SemVer),
-                        ApplicationInfo.BaseDirectory,
-                        ApplicationInfo.ExePath,
-                        ApplicationInfo.AppGUID);
-
-                    if (await upd.CheckUpdateIsAvailable())
+                    if (await ProgramUpdater.CheckUpdateIsAvailable())
                     {
                         var dr = MessageBox.Show(
                                 $"Newer program version available.\n" +
                                 $"Current: {GitVersionInformation.SemVer}\n" +
-                                $"Available: {upd.ProgramVerServer}\n\n" +
+                                $"Available: {ProgramUpdater.VersionServer}\n\n" +
                                 $"Update program?",
                                 "Program update",
                                 MessageBoxButtons.YesNo,
@@ -460,7 +453,7 @@ namespace SplashImageViewer.Forms
 
                         if (dr == DialogResult.Yes)
                         {
-                            await upd.Update();
+                            await ProgramUpdater.Update();
                             Program.ProgramExit();
                         }
                     }
