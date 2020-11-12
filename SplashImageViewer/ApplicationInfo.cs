@@ -9,23 +9,23 @@ namespace SplashImageViewer
     public static class ApplicationInfo
     {
         private static readonly Assembly Ass = Assembly.GetExecutingAssembly();
-        private static readonly AssemblyTitleAttribute Title = Ass.GetCustomAttributes<AssemblyTitleAttribute>().FirstOrDefault();
-        private static readonly AssemblyDescriptionAttribute Description = Ass.GetCustomAttributes<AssemblyDescriptionAttribute>().FirstOrDefault();
-        private static readonly AssemblyCopyrightAttribute Copyright = Ass.GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault();
+        private static readonly AssemblyTitleAttribute? Title = Ass.GetCustomAttributes<AssemblyTitleAttribute>().FirstOrDefault();
+        private static readonly AssemblyDescriptionAttribute? Description = Ass.GetCustomAttributes<AssemblyDescriptionAttribute>().FirstOrDefault();
+        private static readonly AssemblyCopyrightAttribute? Copyright = Ass.GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault();
 
         public static IList<string> Args { get; private set; } = new List<string>();
 
         public static string BaseDirectory { get; } = Environment.CurrentDirectory;
 
-        public static string ExePath { get; } = Process.GetCurrentProcess().MainModule.FileName;
+        public static string ExePath { get; } = Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty;
 
-        public static string AppTitle { get; } = Title.Title;
+        public static string AppTitle { get; } = Title?.Title ?? string.Empty;
 
-        public static string AppHeader { get; } = $"{Title.Title} v{GitVersionInformation.SemVer}";
+        public static string AppHeader { get; } = $"{Title?.Title} v{GitVersionInformation.SemVer}";
 
-        public static string AppAuthor { get; } = Copyright.Copyright;
+        public static string AppAuthor { get; } = Copyright?.Copyright ?? string.Empty;
 
-        public static string AppDescription { get; } = Description.Description;
+        public static string AppDescription { get; } = Description?.Description ?? string.Empty;
 
         public static Guid AppGUID { get; } = new Guid("8e3acb01-f0a7-4434-946f-de5e21f4c247");
 

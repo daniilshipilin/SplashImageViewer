@@ -17,12 +17,12 @@ namespace SplashImageViewer.Helpers
             return sb.ToString();
         }
 
-        public static T XmlDeserializeFromString<T>(this string objectData)
+        public static T? XmlDeserializeFromString<T>(this string objectData)
         {
             return (T)XmlDeserializeFromString(objectData, typeof(T));
         }
 
-        public static object XmlDeserializeFromString(this string objectData, Type type)
+        public static object? XmlDeserializeFromString(this string objectData, Type type)
         {
             var serializer = new XmlSerializer(type);
             using var reader = new StringReader(objectData);

@@ -25,7 +25,10 @@ namespace SplashImageViewer.Forms
         private void AboutForm_Load(object sender, EventArgs e)
         {
             aboutLabel.Text = ApplicationInfo.AppInfoFormatted;
-            updatesInfoLabel.Text = "Need to check for available updates";
+
+            updatesInfoLabel.Text = ProgramUpdater.ServerVersionIsGreater ?
+                $"Newer program version available: v{ProgramUpdater.ServerVersion}" :
+                "Program is up to date";
 
             toolTip.SetToolTip(checkUpdatesButton, "Check updates");
             toolTip.SetToolTip(updatesInfoLabel, "Press, to force program update");
@@ -74,12 +77,12 @@ namespace SplashImageViewer.Forms
 
                 if (await ProgramUpdater.CheckUpdateIsAvailable())
                 {
-                    updatesInfoLabel.Text = $"Newer program version available: v{ProgramUpdater.VersionServer}";
+                    updatesInfoLabel.Text = $"Newer program version available: v{ProgramUpdater.ServerVersion}";
 
                     var dr = MessageBox.Show(
                         $"Newer program version available.\n" +
                         $"Current: {GitVersionInformation.SemVer}\n" +
-                        $"Available: {ProgramUpdater.VersionServer}\n\n" +
+                        $"Available: {ProgramUpdater.ServerVersion}\n\n" +
                         $"Update program?",
                         "Program update",
                         MessageBoxButtons.YesNo,
@@ -95,6 +98,11 @@ namespace SplashImageViewer.Forms
                 else
                 {
                     updatesInfoLabel.Text = "Program is up to date";
+                    var dr = MessageBox.Show(
+                        "Program is up to date",
+                        "Program update",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)

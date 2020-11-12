@@ -47,7 +47,7 @@ namespace SplashImageViewer.Helpers
 
         public static Color ThemeColor
         {
-            get => Color.FromArgb(Convert.ToInt32((string)RegKeyRoot.GetValue(nameof(ThemeColor)), 16));
+            get => Color.FromArgb(Convert.ToInt32((string?)RegKeyRoot.GetValue(nameof(ThemeColor)) ?? string.Empty, 16));
 
             set
             {
@@ -57,7 +57,7 @@ namespace SplashImageViewer.Helpers
 
         public static int SlideshowTransitionMs
         {
-            get => (int)RegKeyRoot.GetValue(nameof(SlideshowTransitionMs));
+            get => (int?)RegKeyRoot.GetValue(nameof(SlideshowTransitionMs)) ?? default;
 
             set
             {
@@ -67,7 +67,7 @@ namespace SplashImageViewer.Helpers
 
         public static bool SlideshowOrderIsRandom
         {
-            get => bool.Parse((string)RegKeyRoot.GetValue(nameof(SlideshowOrderIsRandom)));
+            get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(SlideshowOrderIsRandom)) ?? string.Empty);
 
             set
             {
@@ -77,7 +77,7 @@ namespace SplashImageViewer.Helpers
 
         public static SearchOption SearchInSubdirs
         {
-            get => bool.Parse((string)RegKeyRoot.GetValue(nameof(SearchInSubdirs))) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(SearchInSubdirs)) ?? string.Empty) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
             set
             {
@@ -87,7 +87,7 @@ namespace SplashImageViewer.Helpers
 
         public static bool ShowFileDeletePrompt
         {
-            get => bool.Parse((string)RegKeyRoot.GetValue(nameof(ShowFileDeletePrompt)));
+            get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(ShowFileDeletePrompt)) ?? string.Empty);
 
             set
             {
@@ -97,7 +97,7 @@ namespace SplashImageViewer.Helpers
 
         public static bool ShowFileOverwritePrompt
         {
-            get => bool.Parse((string)RegKeyRoot.GetValue(nameof(ShowFileOverwritePrompt)));
+            get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(ShowFileOverwritePrompt)) ?? string.Empty);
 
             set
             {
@@ -107,7 +107,7 @@ namespace SplashImageViewer.Helpers
 
         public static bool ForceCheckUpdates
         {
-            get => bool.Parse((string)RegKeyRoot.GetValue(nameof(ForceCheckUpdates)));
+            get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(ForceCheckUpdates)) ?? string.Empty);
 
             set
             {
@@ -115,11 +115,11 @@ namespace SplashImageViewer.Helpers
             }
         }
 
-        public static DateTime UpdatesLastCheckedUtcTimestamp => DateTime.ParseExact((string)RegKeyRoot.GetValue(nameof(UpdatesLastCheckedUtcTimestamp)), "u", CultureInfo.InvariantCulture);
+        public static DateTime UpdatesLastCheckedUtcTimestamp => DateTime.ParseExact((string?)RegKeyRoot.GetValue(nameof(UpdatesLastCheckedUtcTimestamp)) ?? string.Empty, "u", CultureInfo.InvariantCulture);
 
         public static string AppVersionsXmlUrl
         {
-            get => (string)RegKeyProgramUpdater.GetValue(nameof(AppVersionsXmlUrl));
+            get => (string?)RegKeyProgramUpdater.GetValue(nameof(AppVersionsXmlUrl)) ?? string.Empty;
 
             private set
             {
@@ -134,7 +134,7 @@ namespace SplashImageViewer.Helpers
 
         public static void CheckSettings()
         {
-            object version = RegKeyRoot.GetValue(nameof(ConfigVersion));
+            object? version = RegKeyRoot.GetValue(nameof(ConfigVersion));
 
             if (version is null || (int)version != ConfigVersion)
             {

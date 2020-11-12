@@ -139,6 +139,33 @@ namespace SplashImageViewer.Forms
             base.Dispose(disposing);
         }
 
+        private static string GetFileSizeString(long fileSizeBytes)
+        {
+            if (fileSizeBytes < 1024)
+            {
+                return $"{fileSizeBytes} byte(s)";
+            }
+            else if (fileSizeBytes < 1048576)
+            {
+                return $"{fileSizeBytes / 1024.0:0.0} KB";
+            }
+            else
+            {
+                return $"{fileSizeBytes / 1048576.0:0.00} MB";
+            }
+        }
+
+        private static long GetTotalAllocatedMemoryInBytes()
+        {
+            using var p = Process.GetCurrentProcess();
+            return p.PrivateMemorySize64;
+        }
+
+        private static double GetTotalAllocatedMemoryInMBytes()
+        {
+            return GetTotalAllocatedMemoryInBytes() / 1048576.0;
+        }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             CheckScreenDimensions();
@@ -375,7 +402,7 @@ namespace SplashImageViewer.Forms
             }
         }
 
-        private void PictureBox_MouseWheel(object sender, MouseEventArgs e)
+        private void PictureBox_MouseWheel(object? sender, MouseEventArgs e)
         {
             if (pictureBox.Image is object)
             {
@@ -445,7 +472,7 @@ namespace SplashImageViewer.Forms
                         var dr = MessageBox.Show(
                                 $"Newer program version available.\n" +
                                 $"Current: {GitVersionInformation.SemVer}\n" +
-                                $"Available: {ProgramUpdater.VersionServer}\n\n" +
+                                $"Available: {ProgramUpdater.ServerVersion}\n\n" +
                                 $"Update program?",
                                 "Program update",
                                 MessageBoxButtons.YesNo,
@@ -520,22 +547,6 @@ namespace SplashImageViewer.Forms
             imageDimensionsLabel.Text = string.Empty;
             UpdateTotalFilesLabel();
             GC.Collect();
-        }
-
-        private string GetFileSizeString(long fileSizeBytes)
-        {
-            if (fileSizeBytes < 1024)
-            {
-                return $"{fileSizeBytes} byte(s)";
-            }
-            else if (fileSizeBytes < 1048576)
-            {
-                return $"{fileSizeBytes / 1024.0:0.0} KB";
-            }
-            else
-            {
-                return $"{fileSizeBytes / 1048576.0:0.00} MB";
-            }
         }
 
         private void UpdateFilePathText()
@@ -882,17 +893,6 @@ namespace SplashImageViewer.Forms
         private void MainForm_FormClosing(object? sender = null, FormClosingEventArgs? e = null)
         {
             CheckImageModified();
-        }
-
-        private long GetTotalAllocatedMemoryInBytes()
-        {
-            using var p = Process.GetCurrentProcess();
-            return p.PrivateMemorySize64;
-        }
-
-        private double GetTotalAllocatedMemoryInMBytes()
-        {
-            return GetTotalAllocatedMemoryInBytes() / 1048576.0;
         }
     }
 }

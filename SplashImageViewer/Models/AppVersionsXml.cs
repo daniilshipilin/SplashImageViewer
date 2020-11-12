@@ -23,6 +23,9 @@ namespace SplashImageViewer.Models
 
             [XmlElement("downloadurl")]
             public string DownloadUrl { get; set; } = string.Empty;
+
+            [XmlElement("packagesha256")]
+            public string PackageSha256 { get; set; } = string.Empty;
         }
     }
 }

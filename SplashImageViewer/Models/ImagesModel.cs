@@ -53,7 +53,7 @@ namespace SplashImageViewer.Models
 
         public ImageFormat? ImageRawFormat { get; private set; }
 
-        public string? ImageFormatDescription { get; private set; }
+        public string ImageFormatDescription { get; private set; } = string.Empty;
 
         public string CurrentFilePath => (index < filePaths.Count) ? filePaths[index] : string.Empty;
 
@@ -79,7 +79,7 @@ namespace SplashImageViewer.Models
         {
             // get the file attributes for file or directory
             var fa = File.GetAttributes(path);
-            string? dir = fa.HasFlag(FileAttributes.Directory) ? path : Path.GetDirectoryName(path);
+            string dir = fa.HasFlag(FileAttributes.Directory) ? path : Path.GetDirectoryName(path) ?? string.Empty;
 
             filePaths = Directory.EnumerateFiles(dir, "*.*", so)
                                  .Where(s => fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
@@ -198,14 +198,19 @@ namespace SplashImageViewer.Models
 
             ModifyImageMetadata(Image);
 
-            var ici = GetEncoder(ImageRawFormat);
-
             // Create an Encoder object based on the GUID for the Quality parameter category.
             var encoder = Encoder.Quality;
 
             // Create an EncoderParameters object. An EncoderParameters object has an array of EncoderParameter objects. In this case, there is only one EncoderParameter object in the array.
             using var encoderParameters = new EncoderParameters(1);
             encoderParameters.Param[0] = new EncoderParameter(encoder, 100L);
+
+            var ici = GetEncoder(ImageRawFormat);
+
+            if (ici is null)
+            {
+                throw new NullReferenceException(nameof(ici));
+            }
 
             Image.Save(CurrentFilePath, ici, encoderParameters);
         }
@@ -216,6 +221,114 @@ namespace SplashImageViewer.Models
             {
                 File.Delete(CurrentFilePath);
             }
+        }
+
+        private static bool CheckFileIsLocked(string path)
+        {
+            int tries = 0;
+
+            while (tries < 5)
+            {
+                ++tries;
+
+                try
+                {
+                    using var fs = new FileStream(path, FileMode.Open, FileAccess.Read);
+                    return false;
+                }
+                catch
+                {
+                    Thread.Sleep(100);
+                }
+            }
+
+            return true;
+        }
+
+        private static void ProcessImageMetadata(Image img)
+        {
+            // var items = Image.PropertyItems;
+            if (img.PropertyIdList.Contains((int)ExifTag.Orientation))
+            {
+                var item = img.GetPropertyItem((int)ExifTag.Orientation);
+
+                if (item is not null && item.Value is not null)
+                {
+                    if (item.Value[0] == 3)
+                    {
+                        img.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                    }
+                    else if (item.Value[0] == 6)
+                    {
+                        img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                    }
+                    else if (item.Value[0] == 8)
+                    {
+                        img.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                    }
+                }
+            }
+        }
+
+        private static void ModifyImageMetadata(Image img)
+        {
+            if (img.PropertyIdList.Contains((int)ExifTag.Software))
+            {
+                var item = img.GetPropertyItem((int)ExifTag.Software);
+
+                if (item is not null)
+                {
+                    // set image software version tag
+                    var bytes = System.Text.Encoding.ASCII.GetBytes(ApplicationInfo.AppHeader + '\0');
+                    item.Len = bytes.Length;
+                    item.Value = bytes;
+                    img.SetPropertyItem(item);
+                }
+            }
+
+            if (img.PropertyIdList.Contains((int)ExifTag.Orientation))
+            {
+                var item = img.GetPropertyItem((int)ExifTag.Orientation);
+
+                if (item is not null && item.Value is not null)
+                {
+                    // set image orientation tag
+                    item.Value[0] = 1;
+                    img.SetPropertyItem(item);
+
+                    // img.RemovePropertyItem((int)ExifTag.Orientation);
+                }
+            }
+        }
+
+        private static ImageCodecInfo? GetEncoder(ImageFormat? format)
+        {
+            var codecs = ImageCodecInfo.GetImageDecoders();
+
+            foreach (var codec in codecs)
+            {
+                if (codec.FormatID == format?.Guid)
+                {
+                    return codec;
+                }
+            }
+
+            return null;
+        }
+
+        private static string GetImageFormatDescription(ImageFormat format)
+        {
+            var codecs = ImageCodecInfo.GetImageDecoders();
+
+            foreach (var codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec.FormatDescription ?? string.Empty;
+                }
+            }
+
+            return string.Empty;
         }
 
         private void FileCreatedOrDeletedEvent(object sender, FileSystemEventArgs e)
@@ -236,7 +349,14 @@ namespace SplashImageViewer.Models
                 string previousFilePath = CurrentFilePath;
                 int previousIndex = CurrentFilePathIndex;
 
-                filePaths = Directory.EnumerateFiles(Path.GetDirectoryName(e.FullPath), "*.*", searchOption)
+                string? dir = Path.GetDirectoryName(e.FullPath);
+
+                if (dir is null)
+                {
+                    throw new NullReferenceException(nameof(dir));
+                }
+
+                filePaths = Directory.EnumerateFiles(dir, "*.*", searchOption)
                                   .Where(s => fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
 
                 if (filePaths.Count == 0)
@@ -281,7 +401,14 @@ namespace SplashImageViewer.Models
                 string previousFilePath = CurrentFilePath;
                 int previousIndex = CurrentFilePathIndex;
 
-                filePaths = Directory.EnumerateFiles(Path.GetDirectoryName(e.FullPath), "*.*", searchOption)
+                string? dir = Path.GetDirectoryName(e.FullPath);
+
+                if (dir is null)
+                {
+                    throw new NullReferenceException(nameof(dir));
+                }
+
+                filePaths = Directory.EnumerateFiles(dir, "*.*", searchOption)
                                   .Where(s => fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
 
                 if (filePaths.Count == 0)
@@ -306,108 +433,6 @@ namespace SplashImageViewer.Models
                     --CurrentFilePathIndex;
                 }
             }
-        }
-
-        private bool CheckFileIsLocked(string path)
-        {
-            int tries = 0;
-
-            while (tries < 5)
-            {
-                ++tries;
-
-                try
-                {
-                    using var fs = new FileStream(path, FileMode.Open, FileAccess.Read);
-                    return false;
-                }
-                catch
-                {
-                    Thread.Sleep(100);
-                }
-            }
-
-            return true;
-        }
-
-        private void ProcessImageMetadata(Image img)
-        {
-            // var items = Image.PropertyItems;
-            if (img.PropertyIdList.Contains((int)ExifTag.Orientation))
-            {
-                var item = img.GetPropertyItem((int)ExifTag.Orientation);
-
-                if (item.Value[0] != 1)
-                {
-                    if (item.Value[0] == 3)
-                    {
-                        img.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                    }
-                    else if (item.Value[0] == 6)
-                    {
-                        img.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                    }
-                    else if (item.Value[0] == 8)
-                    {
-                        img.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                    }
-                }
-            }
-        }
-
-        private void ModifyImageMetadata(Image img)
-        {
-            if (img.PropertyIdList.Contains((int)ExifTag.Software))
-            {
-                var item = img.GetPropertyItem((int)ExifTag.Software);
-
-                // set image software version tag
-                var bytes = System.Text.Encoding.ASCII.GetBytes(ApplicationInfo.AppHeader + '\0');
-                item.Len = bytes.Length;
-                item.Value = bytes;
-                img.SetPropertyItem(item);
-            }
-
-            if (img.PropertyIdList.Contains((int)ExifTag.Orientation))
-            {
-                var item = img.GetPropertyItem((int)ExifTag.Orientation);
-
-                // set image orientation tag
-                item.Value[0] = 1;
-                img.SetPropertyItem(item);
-
-                // img.RemovePropertyItem((int)ExifTag.Orientation);
-            }
-        }
-
-        private ImageCodecInfo? GetEncoder(ImageFormat? format)
-        {
-            var codecs = ImageCodecInfo.GetImageDecoders();
-
-            foreach (var codec in codecs)
-            {
-                if (codec.FormatID == format?.Guid)
-                {
-                    return codec;
-                }
-            }
-
-            return null;
-        }
-
-        private string GetImageFormatDescription(ImageFormat format)
-        {
-            var codecs = ImageCodecInfo.GetImageDecoders();
-
-            foreach (var codec in codecs)
-            {
-                if (codec.FormatID == format.Guid)
-                {
-                    return codec.FormatDescription;
-                }
-            }
-
-            return "UNKNOWN";
         }
     }
 }

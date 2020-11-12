@@ -6,6 +6,7 @@ namespace SplashImageViewer.Helpers
     using System.IO.Compression;
     using System.Linq;
     using System.Net.Http;
+    using System.Security.Cryptography;
     using System.Text;
     using System.Threading.Tasks;
     using SplashImageViewer.Models;
@@ -13,7 +14,7 @@ namespace SplashImageViewer.Helpers
     public static class ProgramUpdater
     {
         private static readonly HttpClient Client = new HttpClient();
-        private static readonly Version VersionClient = Version.Parse(GitVersionInformation.SemVer);
+        private static readonly Version ClientVersion = Version.Parse(GitVersionInformation.SemVer);
         private static readonly string TmpDir = Path.Combine(ApplicationInfo.BaseDirectory, "update");
         private static readonly string ArchivesDir = Path.Combine(TmpDir, "Archives");
         private static readonly string ExtractedDir = Path.Combine(TmpDir, "Extracted");
@@ -23,7 +24,12 @@ namespace SplashImageViewer.Helpers
         /// <summary>
         /// Gets latest program version, that resides on the server.
         /// </summary>
-        public static Version? VersionServer { get; private set; }
+        public static Version? ServerVersion { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether server program version is greater, than the current program version.
+        /// </summary>
+        public static bool ServerVersionIsGreater { get; private set; } = false;
 
         /// <summary>
         /// Checks, whether update is available.
@@ -40,7 +46,7 @@ namespace SplashImageViewer.Helpers
 
             if (response.IsSuccessStatusCode)
             {
-                string fileName = response.Content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
+                string? fileName = response.Content.Headers.ContentDisposition?.FileName?.Replace("\"", string.Empty);
                 using var sr = new StreamReader(await response.Content.ReadAsStreamAsync(), Encoding.UTF8);
                 string xml = sr.ReadToEnd();
 
@@ -48,7 +54,7 @@ namespace SplashImageViewer.Helpers
                 var xmlObj = XmlUtils.XmlDeserializeFromString<AppVersionsXml>(xml);
 
                 // find specific record, based on GUID
-                appRecord = xmlObj.AppRecords.FirstOrDefault(x => x.GUID.Equals(ApplicationInfo.AppGUID));
+                appRecord = xmlObj?.AppRecords?.FirstOrDefault(x => x.GUID.Equals(ApplicationInfo.AppGUID));
 
                 if (appRecord is null)
                 {
@@ -56,14 +62,15 @@ namespace SplashImageViewer.Helpers
                     throw new Exception($"'{ApplicationInfo.AppGUID}' guid was not found in '{fileName}'");
                 }
 
-                VersionServer = Version.Parse(appRecord.SemVer);
+                ServerVersion = Version.Parse(appRecord.SemVer);
+                ServerVersionIsGreater = ServerVersion.CompareTo(ClientVersion) > 0;
             }
             else
             {
                 throw new Exception(response.ReasonPhrase);
             }
 
-            return VersionServer.CompareTo(VersionClient) > 0;
+            return ServerVersion.CompareTo(ClientVersion) > 0;
         }
 
         /// <summary>
@@ -82,7 +89,7 @@ namespace SplashImageViewer.Helpers
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static async Task Update()
         {
-            if (VersionServer is object && appRecord is object)
+            if (ServerVersion is object && appRecord is object)
             {
                 CleanTmpDirectory();
                 CreateDirectoryStructure();
@@ -92,7 +99,13 @@ namespace SplashImageViewer.Helpers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string fileName = response.Content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
+                    string? fileName = response.Content.Headers.ContentDisposition?.FileName?.Replace("\"", string.Empty);
+
+                    if (fileName is null)
+                    {
+                        throw new NullReferenceException(nameof(fileName));
+                    }
+
                     filePath = Path.Combine(ArchivesDir, fileName);
                     using var sr = await response.Content.ReadAsStreamAsync();
 
@@ -100,6 +113,16 @@ namespace SplashImageViewer.Helpers
                     using var fs = File.Create(filePath);
                     sr.Seek(0, SeekOrigin.Begin);
                     sr.CopyTo(fs);
+                    sr.Position = 0;
+
+                    // check downloaded package hash
+                    using var sha256 = SHA256.Create();
+                    string hash = BitConverter.ToString(sha256.ComputeHash(sr)).Replace("-", string.Empty).ToLower();
+
+                    if (!hash.Equals(appRecord.PackageSha256.ToLower()))
+                    {
+                        throw new Exception("Downloaded package hash sum mismatch");
+                    }
                 }
                 else
                 {

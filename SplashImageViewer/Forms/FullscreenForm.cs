@@ -180,14 +180,7 @@ namespace SplashImageViewer.Forms
                 Close();
             }
 
-            try
-            {
-                ImagesModel.Singleton.LoadImage();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            ImagesModel.Singleton.LoadImage();
 
             if (ImagesModel.Singleton.Image is object)
             {
