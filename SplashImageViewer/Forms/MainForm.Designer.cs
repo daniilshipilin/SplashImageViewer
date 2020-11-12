@@ -67,6 +67,7 @@ namespace SplashImageViewer.Forms
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.copyPathMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setDesktopBackgroundMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.statusStrip.SuspendLayout();
@@ -308,8 +309,8 @@ namespace SplashImageViewer.Forms
             // 
             // mainPanel
             // 
-            this.mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mainPanel.AutoScroll = true;
             this.mainPanel.Controls.Add(this.totalFilesLabel);
@@ -383,7 +384,8 @@ namespace SplashImageViewer.Forms
             this.fileNameMenuItem,
             this.toolStripSeparator4,
             this.copyPathMenuItem,
-            this.copyFileMenuItem});
+            this.copyFileMenuItem,
+            this.setDesktopBackgroundMenuItem});
             this.rightClickMenuStrip.Name = "rightClickContextMenuStrip";
             this.rightClickMenuStrip.Size = new System.Drawing.Size(194, 76);
             // 
@@ -412,6 +414,13 @@ namespace SplashImageViewer.Forms
             this.copyFileMenuItem.Size = new System.Drawing.Size(193, 22);
             this.copyFileMenuItem.Text = "Copy File To Clipboard";
             this.copyFileMenuItem.Click += new System.EventHandler(this.CopyFileMenuItem_Click);
+            // 
+            // setDesktopBackgroundMenuItem
+            // 
+            this.setDesktopBackgroundMenuItem.Name = "setDesktopBackgroundMenuItem";
+            this.setDesktopBackgroundMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.setDesktopBackgroundMenuItem.Text = "Set As Desktop Background";
+            this.setDesktopBackgroundMenuItem.Click += new System.EventHandler(this.SetDesktopBackgroundMenuItem_Click);
             // 
             // MainForm
             // 
@@ -485,6 +494,7 @@ namespace SplashImageViewer.Forms
         private ToolStripSeparator toolStripSeparator3;
         private ContextMenuStrip rightClickMenuStrip;
         private ToolStripMenuItem copyPathMenuItem;
+        private ToolStripMenuItem setDesktopBackgroundMenuItem;
         private ToolStripMenuItem copyFileMenuItem;
         private ToolStripMenuItem fileNameMenuItem;
         private ToolStripSeparator toolStripSeparator4;

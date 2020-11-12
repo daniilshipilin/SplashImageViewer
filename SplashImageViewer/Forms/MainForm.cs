@@ -860,7 +860,7 @@ namespace SplashImageViewer.Forms
             {
                 if (rightClickMenuStrip.Enabled)
                 {
-                    fileNameMenuItem.Text = $"--- {Path.GetFileName(ImagesModel.Singleton.CurrentFilePath)} ---";
+                    fileNameMenuItem.Text = $"--- {ImagesModel.Singleton.CurrentFileName} ---";
                     rightClickMenuStrip.Show(this, new Point(e.X, e.Y)); // places the menu at the pointer position
                 }
             }
@@ -883,6 +883,21 @@ namespace SplashImageViewer.Forms
             try
             {
                 Clipboard.SetData(DataFormats.FileDrop, new string[] { ImagesModel.Singleton.CurrentFilePath });
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void SetDesktopBackgroundMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ImagesModel.Singleton.Image is not null)
+                {
+                    Wallpaper.SetDesktopBackground(ImagesModel.Singleton.Image);
+                }
             }
             catch (Exception ex)
             {

@@ -57,6 +57,8 @@ namespace SplashImageViewer.Models
 
         public string CurrentFilePath => (index < filePaths.Count) ? filePaths[index] : string.Empty;
 
+        public string CurrentFileName => (index < filePaths.Count) ? Path.GetFileName(filePaths[index]) : string.Empty;
+
         public int CurrentFilePathIndex
         {
             get => index;
