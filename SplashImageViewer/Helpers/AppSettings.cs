@@ -117,13 +117,13 @@ namespace SplashImageViewer.Helpers
 
         public static DateTime UpdatesLastCheckedUtcTimestamp => DateTime.ParseExact((string?)RegKeyRoot.GetValue(nameof(UpdatesLastCheckedUtcTimestamp)) ?? string.Empty, "u", CultureInfo.InvariantCulture);
 
-        public static string AppVersionsXmlUrl
+        public static string? AppVersionsXmlUrl
         {
-            get => (string?)RegKeyProgramUpdater.GetValue(nameof(AppVersionsXmlUrl)) ?? string.Empty;
+            get => (string?)RegKeyProgramUpdater.GetValue(nameof(AppVersionsXmlUrl));
 
             private set
             {
-                RegKeyProgramUpdater.SetValue(nameof(AppVersionsXmlUrl), value);
+                RegKeyProgramUpdater.SetValue(nameof(AppVersionsXmlUrl), value ?? string.Empty);
             }
         }
 
