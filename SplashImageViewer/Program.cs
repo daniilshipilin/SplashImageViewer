@@ -29,6 +29,7 @@ namespace SplashImageViewer
             if (CheckAnotherInstanceIsRunning(ApplicationInfo.AppTitle))
             {
                 MessageBox.Show(
+                    new Form { TopMost = true },
                     $"Another instance of '{ApplicationInfo.AppTitle}' is running",
                     "Warning",
                     MessageBoxButtons.OK,
@@ -41,6 +42,7 @@ namespace SplashImageViewer
             if (args.Length == 1 && args[0].Equals("/?"))
             {
                 MessageBox.Show(
+                    new Form { TopMost = true },
                     ApplicationInfo.AppInfoFormatted,
                     "Information",
                     MessageBoxButtons.OK,

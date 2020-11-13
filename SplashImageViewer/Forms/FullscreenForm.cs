@@ -7,7 +7,7 @@ namespace SplashImageViewer.Forms
 
     public partial class FullscreenForm : Form
     {
-        private const int TimerIntervalMs = 10000;
+        private const int HideInfoTimerIntervalMs = 10000;
 
         private readonly Timer hideInfoLabelTimer = new Timer();
         private readonly Timer hideBottomLabelsTimer = new Timer();
@@ -63,7 +63,7 @@ namespace SplashImageViewer.Forms
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (components is not null))
             {
                 // dispose managed resources
                 components.Dispose();
@@ -122,11 +122,11 @@ namespace SplashImageViewer.Forms
         private void InitTimers()
         {
             hideInfoLabelTimer.Tick += HideInfoLabel;
-            hideInfoLabelTimer.Interval = TimerIntervalMs;
+            hideInfoLabelTimer.Interval = HideInfoTimerIntervalMs;
             hideInfoLabelTimer.Start();
 
             hideBottomLabelsTimer.Tick += HideBottomLabels;
-            hideBottomLabelsTimer.Interval = TimerIntervalMs;
+            hideBottomLabelsTimer.Interval = HideInfoTimerIntervalMs;
             hideBottomLabelsTimer.Start();
         }
 
@@ -182,7 +182,7 @@ namespace SplashImageViewer.Forms
 
             ImagesModel.Singleton.LoadImage();
 
-            if (ImagesModel.Singleton.Image is object)
+            if (ImagesModel.Singleton.Image is not null)
             {
                 fullscreenPictureBox.Image = ImagesModel.Singleton.Image;
                 CheckFormSize();

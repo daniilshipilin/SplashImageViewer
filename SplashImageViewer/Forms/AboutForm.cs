@@ -26,9 +26,18 @@ namespace SplashImageViewer.Forms
         {
             aboutLabel.Text = ApplicationInfo.AppInfoFormatted;
 
-            updatesInfoLabel.Text = ProgramUpdater.ServerVersionIsGreater ?
-                $"Newer program version available: v{ProgramUpdater.ServerVersion}" :
-                "Program is up to date";
+            if (ProgramUpdater.ServerVersion is null)
+            {
+                updatesInfoLabel.Text = "Need to check for avalilable updates";
+            }
+            else if (ProgramUpdater.ServerVersionIsGreater)
+            {
+                updatesInfoLabel.Text = $"Newer program version available: v{ProgramUpdater.ServerVersion}";
+            }
+            else
+            {
+                updatesInfoLabel.Text = "Program is up to date";
+            }
 
             toolTip.SetToolTip(checkUpdatesButton, "Check updates");
             toolTip.SetToolTip(updatesInfoLabel, "Press, to force program update");
@@ -38,7 +47,9 @@ namespace SplashImageViewer.Forms
         private void ShowExceptionMessage(Exception ex)
         {
             updatesInfoLabel.Text = "Exception encountered";
+
             MessageBox.Show(
+                new Form { TopMost = true },
                 ex.Message,
                 ex.GetType().ToString(),
                 MessageBoxButtons.OK,
@@ -48,6 +59,7 @@ namespace SplashImageViewer.Forms
         private async void UpdatesInfoLabel_Click(object sender, EventArgs e)
         {
             var dr = MessageBox.Show(
+                new Form { TopMost = true },
                 $"Force program update?",
                 "Program update",
                 MessageBoxButtons.YesNo,
@@ -78,12 +90,14 @@ namespace SplashImageViewer.Forms
                 if (await ProgramUpdater.CheckUpdateIsAvailable())
                 {
                     updatesInfoLabel.Text = $"Newer program version available: v{ProgramUpdater.ServerVersion}";
-
-                    var dr = MessageBox.Show(
-                        $"Newer program version available.\n" +
+                    string message = $"Newer program version available.\n" +
                         $"Current: {GitVersionInformation.SemVer}\n" +
                         $"Available: {ProgramUpdater.ServerVersion}\n\n" +
-                        $"Update program?",
+                        $"Update program?";
+
+                    var dr = MessageBox.Show(
+                        new Form { TopMost = true },
+                        message,
                         "Program update",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question);
@@ -99,6 +113,7 @@ namespace SplashImageViewer.Forms
                 {
                     updatesInfoLabel.Text = "Program is up to date";
                     var dr = MessageBox.Show(
+                        new Form { TopMost = true },
                         "Program is up to date",
                         "Program update",
                         MessageBoxButtons.OK,

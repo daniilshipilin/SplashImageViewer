@@ -221,7 +221,7 @@ namespace SplashImageViewer.Forms
             this.programInfoLabel.Size = new System.Drawing.Size(331, 20);
             this.programInfoLabel.Spring = true;
             this.programInfoLabel.Text = "programInfoLabel";
-            this.programInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.programInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // totalFilesLabel
             // 

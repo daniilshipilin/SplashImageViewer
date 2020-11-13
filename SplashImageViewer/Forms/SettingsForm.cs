@@ -89,7 +89,12 @@ namespace SplashImageViewer.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    new Form { TopMost = true },
+                    ex.Message,
+                    ex.GetType().ToString(),
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
 
             Close();
@@ -97,7 +102,12 @@ namespace SplashImageViewer.Forms
 
         private void DefaultSettingsButton_Click(object sender, EventArgs e)
         {
-            var dr = MessageBox.Show("Reset settings?", "Default settings", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var dr = MessageBox.Show(
+                new Form { TopMost = true },
+                "Reset settings?",
+                "Default settings",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
             if (dr == DialogResult.Yes)
             {
@@ -107,7 +117,12 @@ namespace SplashImageViewer.Forms
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(
+                        new Form { TopMost = true },
+                        ex.Message,
+                        ex.GetType().ToString(),
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                 }
 
                 Close();
