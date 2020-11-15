@@ -4,6 +4,7 @@ namespace SplashImageViewer.Forms
     using System.Diagnostics;
     using System.Windows.Forms;
     using SplashImageViewer.Helpers;
+    using SplashImageViewer.Properties;
 
     public partial class AboutForm : Form
     {
@@ -24,29 +25,35 @@ namespace SplashImageViewer.Forms
 
         private void AboutForm_Load(object sender, EventArgs e)
         {
+            LocalizeUIElements();
+        }
+
+        private void LocalizeUIElements()
+        {
+            Text = Strings.About;
             aboutLabel.Text = ApplicationInfo.AppInfoFormatted;
 
             if (ProgramUpdater.ServerVersion is null)
             {
-                updatesInfoLabel.Text = "Need to check for avalilable updates";
+                updatesInfoLabel.Text = Strings.CheckForAvailableUpdates;
             }
             else if (ProgramUpdater.ServerVersionIsGreater)
             {
-                updatesInfoLabel.Text = $"Newer program version available: v{ProgramUpdater.ServerVersion}";
+                updatesInfoLabel.Text = Strings.NewerProgramVersionAvailable;
             }
             else
             {
-                updatesInfoLabel.Text = "Program is up to date";
+                updatesInfoLabel.Text = Strings.ProgramIsUpToDate;
             }
 
-            toolTip.SetToolTip(checkUpdatesButton, "Check updates");
-            toolTip.SetToolTip(updatesInfoLabel, "Press, to force program update");
-            toolTip.SetToolTip(linkLabel, "Visit project source code repository on github.com");
+            toolTip.SetToolTip(checkUpdatesButton, Strings.CheckUpdatesButtonToolTip);
+            toolTip.SetToolTip(updatesInfoLabel, Strings.ForceProgramUpdateToolTip);
+            toolTip.SetToolTip(linkLabel, Strings.SourceCodeRepoToolTip);
         }
 
         private void ShowExceptionMessage(Exception ex)
         {
-            updatesInfoLabel.Text = "Exception encountered";
+            updatesInfoLabel.Text = Strings.GeneralException;
 
             MessageBox.Show(
                 new Form { TopMost = true },
@@ -60,8 +67,8 @@ namespace SplashImageViewer.Forms
         {
             var dr = MessageBox.Show(
                 new Form { TopMost = true },
-                $"Force program update?",
-                "Program update",
+                Strings.ForceProgramUpdatePrompt,
+                Strings.ProgramUpdate,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
@@ -69,7 +76,7 @@ namespace SplashImageViewer.Forms
             {
                 try
                 {
-                    updatesInfoLabel.Text = "Update in progress";
+                    updatesInfoLabel.Text = Strings.UpdateInProgress;
                     await ProgramUpdater.ForceUpdate();
                     Program.ProgramExit(ExitCode.Success);
                 }
@@ -85,37 +92,33 @@ namespace SplashImageViewer.Forms
             try
             {
                 AppSettings.UpdateUpdatesLastCheckedUtcTimestamp();
-                updatesInfoLabel.Text = "Checking updates";
+                updatesInfoLabel.Text = Strings.CheckingForUpdates;
 
                 if (await ProgramUpdater.CheckUpdateIsAvailable())
                 {
-                    updatesInfoLabel.Text = $"Newer program version available: v{ProgramUpdater.ServerVersion}";
-                    string message = $"Newer program version available.\n" +
-                        $"Current: {GitVersionInformation.SemVer}\n" +
-                        $"Available: {ProgramUpdater.ServerVersion}\n\n" +
-                        $"Update program?";
+                    updatesInfoLabel.Text = Strings.NewerProgramVersionAvailable;
 
                     var dr = MessageBox.Show(
                         new Form { TopMost = true },
-                        message,
-                        "Program update",
+                        ProgramUpdater.UpdatePromptFormatted,
+                        Strings.ProgramUpdate,
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question);
 
                     if (dr == DialogResult.Yes)
                     {
-                        updatesInfoLabel.Text = "Update in progress";
+                        updatesInfoLabel.Text = Strings.UpdateInProgress;
                         await ProgramUpdater.Update();
                         Program.ProgramExit(ExitCode.Success);
                     }
                 }
                 else
                 {
-                    updatesInfoLabel.Text = "Program is up to date";
+                    updatesInfoLabel.Text = Strings.ProgramIsUpToDate;
                     var dr = MessageBox.Show(
                         new Form { TopMost = true },
-                        "Program is up to date",
-                        "Program update",
+                        Strings.ProgramIsUpToDate,
+                        Strings.ProgramUpdate,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
                 }

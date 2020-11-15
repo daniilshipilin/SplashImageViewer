@@ -5,11 +5,13 @@ namespace SplashImageViewer
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
+    using SplashImageViewer.Properties;
 
     public static class ApplicationInfo
     {
         private static readonly Assembly Ass = Assembly.GetExecutingAssembly();
         private static readonly AssemblyTitleAttribute? Title = Ass.GetCustomAttributes<AssemblyTitleAttribute>().FirstOrDefault();
+        private static readonly AssemblyProductAttribute? Product = Ass.GetCustomAttributes<AssemblyProductAttribute>().FirstOrDefault();
         private static readonly AssemblyDescriptionAttribute? Description = Ass.GetCustomAttributes<AssemblyDescriptionAttribute>().FirstOrDefault();
         private static readonly AssemblyCopyrightAttribute? Copyright = Ass.GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault();
 
@@ -20,6 +22,8 @@ namespace SplashImageViewer
         public static string ExePath { get; } = Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty;
 
         public static string AppTitle { get; } = Title?.Title ?? string.Empty;
+
+        public static string AppProduct { get; } = Product?.Product ?? string.Empty;
 
         public static string AppHeader { get; } = $"{Title?.Title} v{GitVersionInformation.SemVer}";
 
@@ -34,13 +38,12 @@ namespace SplashImageViewer
         /// <summary>
         /// Gets application info formatted string.
         /// </summary>
-        public static string AppInfoFormatted { get; } =
+        public static string AppInfoFormatted =>
             $"{AppHeader}{Environment.NewLine}" +
             $"{GitVersionInformation.InformationalVersion}{Environment.NewLine}" +
-            $"Author: {AppAuthor}{Environment.NewLine}" +
-            $"{Environment.NewLine}" +
-            $"Description:{Environment.NewLine}" +
-            $"  {AppDescription}{Environment.NewLine}";
+            $"{Strings.Author}: {AppAuthor}{Environment.NewLine}{Environment.NewLine}" +
+            $"{Strings.Description}:{Environment.NewLine}" +
+            $"  {Strings.AppDescription}";
 
         /// <summary>
         /// Sets application command line arguments.

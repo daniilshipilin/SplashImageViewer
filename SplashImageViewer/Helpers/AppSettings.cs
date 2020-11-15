@@ -2,7 +2,6 @@ namespace SplashImageViewer.Helpers
 {
     using System;
     using System.Collections.Generic;
-    using System.Drawing;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -17,12 +16,25 @@ namespace SplashImageViewer.Helpers
             @"SOFTWARE\Splash Image Viewer";
 #endif
 
-        public const int ConfigVersion = 12;
+        public const int ConfigVersion = 13;
         public const int RecentItemsCapacity = 10;
         public const string RegistryRecentItemsKey = RegistryBaseKey + "\\Recent Items";
         public const string RegistryProgramUpdaterKey = RegistryBaseKey + "\\Program Updater";
         public const int MinScreenSizeWidth = 1024;
         public const int MinScreenSizeHeight = 768;
+        public const int FullscreenFormHideInfoTimerIntervalMs = 10000;
+        public const int MainFormCheckMemoryMs = 1000;
+
+        public static readonly IReadOnlyList<CultureInfo> CultureInfos = new List<CultureInfo>()
+        {
+            CultureInfo.GetCultureInfo("en"),
+            CultureInfo.GetCultureInfo("ru"),
+        };
+
+        public static readonly IReadOnlyList<int> SlideshowTransitionsSec = new List<int>()
+        {
+            1, 2, 5, 10, 30, 60, 300, 600, 3600,
+        };
 
         private static readonly RegistryKey RegKeyRoot = Registry.CurrentUser.CreateSubKey(RegistryBaseKey);
         private static readonly RegistryKey RegKeyRecentItems = Registry.CurrentUser.CreateSubKey(RegistryRecentItemsKey);
@@ -31,37 +43,38 @@ namespace SplashImageViewer.Helpers
         private static readonly IReadOnlyDictionary<string, object> DefaultSettingsDict = new Dictionary<string, object>()
         {
             { nameof(ConfigVersion), ConfigVersion },
-            { nameof(ThemeColor), "FF000000" },
-            { nameof(SlideshowTransitionMs), 10000 },
+            { nameof(ThemeColorArgb), unchecked((int)0xFF000000) }, // black
+            { nameof(SlideshowTransitionSec), SlideshowTransitionsSec[3] }, // 10 sec.
             { nameof(SlideshowOrderIsRandom), false },
             { nameof(SearchInSubdirs), false },
             { nameof(ShowFileDeletePrompt), true },
             { nameof(ShowFileOverwritePrompt), true },
             { nameof(ForceCheckUpdates), false },
             { nameof(UpdatesLastCheckedUtcTimestamp), default(DateTime).ToString("u", CultureInfo.InvariantCulture) }, // assign default datetime struct value
+            { nameof(CurrentUICulture), CultureInfos[0] }, // en
         };
 
         public static string RegistryBaseKeyFull => RegKeyRoot.Name;
 
-        public static Color LabelsColor => ((uint)ThemeColor.ToArgb() > 0xFF808080) ? Color.Black : Color.White;
+        public static int LabelsColorArgb => (ThemeColorArgb > unchecked((int)0xFF808080)) ? unchecked((int)0xFF000000) : unchecked((int)0xFFFFFFFF);
 
-        public static Color ThemeColor
+        public static int ThemeColorArgb
         {
-            get => Color.FromArgb(Convert.ToInt32((string?)RegKeyRoot.GetValue(nameof(ThemeColor)) ?? string.Empty, 16));
+            get => (int?)RegKeyRoot.GetValue(nameof(ThemeColorArgb)) ?? 0;
 
             set
             {
-                RegKeyRoot.SetValue(nameof(ThemeColor), Convert.ToString(value.ToArgb(), 16).ToUpper());
+                RegKeyRoot.SetValue(nameof(ThemeColorArgb), value);
             }
         }
 
-        public static int SlideshowTransitionMs
+        public static int SlideshowTransitionSec
         {
-            get => (int?)RegKeyRoot.GetValue(nameof(SlideshowTransitionMs)) ?? default;
+            get => (int?)RegKeyRoot.GetValue(nameof(SlideshowTransitionSec)) ?? 0;
 
             set
             {
-                RegKeyRoot.SetValue(nameof(SlideshowTransitionMs), value);
+                RegKeyRoot.SetValue(nameof(SlideshowTransitionSec), value);
             }
         }
 
@@ -116,6 +129,16 @@ namespace SplashImageViewer.Helpers
         }
 
         public static DateTime UpdatesLastCheckedUtcTimestamp => DateTime.ParseExact((string?)RegKeyRoot.GetValue(nameof(UpdatesLastCheckedUtcTimestamp)) ?? string.Empty, "u", CultureInfo.InvariantCulture);
+
+        public static CultureInfo CurrentUICulture
+        {
+            get => CultureInfo.GetCultureInfo((string?)RegKeyRoot.GetValue(nameof(CurrentUICulture)) ?? string.Empty);
+
+            set
+            {
+                RegKeyRoot.SetValue(nameof(CurrentUICulture), value.Name);
+            }
+        }
 
         public static string? AppVersionsXmlUrl
         {

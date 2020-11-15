@@ -10,16 +10,21 @@ namespace SplashImageViewer.Helpers
     using System.Text;
     using System.Threading.Tasks;
     using SplashImageViewer.Models;
+    using SplashImageViewer.Properties;
 
     public static class ProgramUpdater
     {
         private static readonly HttpClient Client = new HttpClient();
-        private static readonly Version ClientVersion = Version.Parse(GitVersionInformation.SemVer);
         private static readonly string TmpDir = Path.Combine(ApplicationInfo.BaseDirectory, "update");
         private static readonly string ArchivesDir = Path.Combine(TmpDir, "Archives");
         private static readonly string ExtractedDir = Path.Combine(TmpDir, "Extracted");
 
         private static AppVersionsXml.Record? appRecord;
+
+        /// <summary>
+        /// Gets current program version.
+        /// </summary>
+        public static Version ClientVersion { get; } = Version.Parse(GitVersionInformation.SemVer);
 
         /// <summary>
         /// Gets latest program version, that resides on the server.
@@ -30,6 +35,15 @@ namespace SplashImageViewer.Helpers
         /// Gets a value indicating whether server program version is greater, than the current program version.
         /// </summary>
         public static bool ServerVersionIsGreater { get; private set; } = false;
+
+        /// <summary>
+        /// Gets a pre-formatted update prompt string.
+        /// </summary>
+        public static string UpdatePromptFormatted =>
+            $"{Strings.NewerProgramVersionAvailable}.{Environment.NewLine}" +
+            $"{Strings.Current}: {ClientVersion}{Environment.NewLine}" +
+            $"{Strings.Available}: {ServerVersion}{Environment.NewLine}{Environment.NewLine}" +
+            $"{Strings.UpdateProgramPrompt}";
 
         /// <summary>
         /// Checks, whether update is available.
@@ -59,7 +73,7 @@ namespace SplashImageViewer.Helpers
                 if (appRecord is null)
                 {
                     // guid was not found - throw exception
-                    throw new Exception($"'{ApplicationInfo.AppGUID}' guid was not found in '{fileName}'");
+                    throw new Exception($"'{ApplicationInfo.AppGUID}' {Strings.GuidWasNotFound} '{fileName}'");
                 }
 
                 ServerVersion = Version.Parse(appRecord.SemVer);
@@ -121,7 +135,7 @@ namespace SplashImageViewer.Helpers
 
                     if (!hash.Equals(appRecord.PackageSha256.ToLower()))
                     {
-                        throw new Exception("Downloaded package hash sum mismatch");
+                        throw new Exception(Strings.HashSumMismatch);
                     }
                 }
                 else
@@ -137,7 +151,7 @@ namespace SplashImageViewer.Helpers
             }
             else
             {
-                throw new Exception($"'{nameof(CheckUpdateIsAvailable)}()' method needs to be called first");
+                throw new Exception($"'{nameof(CheckUpdateIsAvailable)}' {Strings.MethodNeedsToBeCalledFirst}");
             }
         }
 

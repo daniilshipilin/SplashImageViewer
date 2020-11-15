@@ -14,8 +14,6 @@ namespace SplashImageViewer.Forms
 
     public partial class MainForm : Form
     {
-        private const int CheckMemoryMs = 1000;
-
         private readonly Timer slideshowTimer = new Timer();
         private readonly Timer allocatedMemoryTimer = new Timer();
         private bool fullscreenFormIsActive;
@@ -139,19 +137,19 @@ namespace SplashImageViewer.Forms
             base.Dispose(disposing);
         }
 
-        private static string GetFileSizeString(long fileSizeBytes)
+        private static string GetFileSizeString(long bytes)
         {
-            if (fileSizeBytes < 1024)
+            if (bytes < 1024)
             {
-                return $"{fileSizeBytes} byte(s)";
+                return $"{bytes} {Strings.Byte}";
             }
-            else if (fileSizeBytes < 1048576)
+            else if (bytes < 1048576)
             {
-                return $"{fileSizeBytes / 1024.0:0.0} KB";
+                return $"{bytes / 1024D:0.00} {Strings.KByte}";
             }
             else
             {
-                return $"{fileSizeBytes / 1048576.0:0.00} MB";
+                return $"{bytes / 1048576D:0.00} {Strings.MByte}";
             }
         }
 
@@ -161,25 +159,26 @@ namespace SplashImageViewer.Forms
             return p.PrivateMemorySize64;
         }
 
-        private static double GetTotalAllocatedMemoryInMBytes()
-        {
-            return GetTotalAllocatedMemoryInBytes() / 1048576.0;
-        }
-
         private void MainForm_Load(object sender, EventArgs e)
         {
+            AppSettings.CheckSettings();
+
+            // set current language culture
+            System.Threading.Thread.CurrentThread.CurrentUICulture = AppSettings.CurrentUICulture;
+
+            // ui controls translate
+            LocalizeUIElements();
+
             CheckScreenDimensions();
 
             programInfoLabel.Text = ApplicationInfo.AppHeader;
             imageDimensionsLabel.Text = string.Empty;
 
-            AppSettings.CheckSettings();
-
             // check for updates in the background
             Task.Run(async () => await CheckUpdates());
 
-            mainPanel.BackColor = AppSettings.ThemeColor;
-            totalFilesLabel.ForeColor = AppSettings.LabelsColor;
+            mainPanel.BackColor = Color.FromArgb(AppSettings.ThemeColorArgb);
+            totalFilesLabel.ForeColor = Color.FromArgb(AppSettings.LabelsColorArgb);
 
             SetControls(false);
 
@@ -191,16 +190,6 @@ namespace SplashImageViewer.Forms
 
             UpdateTotalFilesLabel();
             InitTimers();
-
-            toolTip.SetToolTip(previousButton, "Previous image [LEFT ARROW]");
-            toolTip.SetToolTip(nextButton, "Next image [RIGHT ARROW]");
-            toolTip.SetToolTip(slideshowButton, "Start/stop slideshow [SPACE]");
-            toolTip.SetToolTip(randomButton, "Select random image [R]");
-            toolTip.SetToolTip(deleteFileButton, "Delete a file currently open [DEL]");
-            toolTip.SetToolTip(fullscreenButton, "Fullscreen mode [F]");
-            toolTip.SetToolTip(zoomButton, "Zoom in/out image [Z]");
-            toolTip.SetToolTip(rotateImageButton, "Rotate image [D]");
-            toolTip.SetToolTip(settingsButton, "Open settings [S]");
 
             // mouse wheel event handler
             MouseWheel += PictureBox_MouseWheel;
@@ -216,6 +205,30 @@ namespace SplashImageViewer.Forms
             }
         }
 
+        private void LocalizeUIElements()
+        {
+            // set ui text
+            fileToolStripMenuItem.Text = Strings.FileToolStripMenuItem;
+            openImageMenuItem.Text = Strings.OpenImageMenuItem;
+            openFolderMenuItem.Text = Strings.OpenFolderMenuItem;
+            closeImageMenuItem.Text = Strings.CloseImageMenuItem;
+            recentItemsMenuItem.Text = Strings.RecentItemsMenuItem;
+            exitMenuItem.Text = Strings.ExitMenuItem;
+            settingsToolStripMenuItem.Text = Strings.SettingsToolStripMenuItem;
+            aboutToolStripMenuItem.Text = Strings.AboutToolStripMenuItem;
+
+            // set tooltips
+            toolTip.SetToolTip(previousButton, Strings.PreviousButtonToolTip);
+            toolTip.SetToolTip(nextButton, Strings.NextButtonToolTip);
+            toolTip.SetToolTip(slideshowButton, Strings.SlideshowButtonToolTip);
+            toolTip.SetToolTip(randomButton, Strings.RandomButtonToolTip);
+            toolTip.SetToolTip(deleteFileButton, Strings.DeleteButtonToolTip);
+            toolTip.SetToolTip(fullscreenButton, Strings.FullscreenButtonToolTip);
+            toolTip.SetToolTip(zoomButton, Strings.ZoomButtonToolTip);
+            toolTip.SetToolTip(rotateImageButton, Strings.RotateImageButtonToolTip);
+            toolTip.SetToolTip(settingsButton, Strings.OpenSettingsButtonToolTip);
+        }
+
         private void CheckScreenDimensions()
         {
             // get current screen size
@@ -225,8 +238,8 @@ namespace SplashImageViewer.Forms
             {
                 MessageBox.Show(
                     new Form { TopMost = true },
-                    "The minimum screen resolution requirements not met",
-                    "Warning",
+                    Strings.CheckScreenDimensionsWarning,
+                    Strings.GeneralWarning,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
@@ -459,7 +472,7 @@ namespace SplashImageViewer.Forms
             slideshowTimer.Tick += SlideshowHandler;
 
             allocatedMemoryTimer.Tick += CheckMemoryAllocated;
-            allocatedMemoryTimer.Interval = CheckMemoryMs;
+            allocatedMemoryTimer.Interval = AppSettings.MainFormCheckMemoryMs;
             allocatedMemoryTimer.Start();
         }
 
@@ -474,15 +487,10 @@ namespace SplashImageViewer.Forms
 
                     if (await ProgramUpdater.CheckUpdateIsAvailable())
                     {
-                        string message = $"Newer program version available.\n" +
-                            $"Current: {GitVersionInformation.SemVer}\n" +
-                            $"Available: {ProgramUpdater.ServerVersion}\n\n" +
-                            $"Update program?";
-
                         var dr = MessageBox.Show(
                             new Form { TopMost = true },
-                            message,
-                            "Program update",
+                            ProgramUpdater.UpdatePromptFormatted,
+                            Strings.ProgramUpdate,
                             MessageBoxButtons.YesNo,
                             MessageBoxIcon.Question);
 
@@ -502,7 +510,7 @@ namespace SplashImageViewer.Forms
 
         private void CheckMemoryAllocated(object? sender, EventArgs e)
         {
-            memoryAllocatedLabel.Text = $"Memory allocated: {GetTotalAllocatedMemoryInMBytes():0.00} MB";
+            memoryAllocatedLabel.Text = $"{Strings.MemoryAllocated}: {GetTotalAllocatedMemoryInBytes() / 1048576D:0.00} {Strings.MByte}";
         }
 
         private void ShowExceptionMessage(Exception ex)
@@ -553,7 +561,7 @@ namespace SplashImageViewer.Forms
             ImagesModel.Singleton.DisposeResources();
             pictureBox.Image = null;
             pictureBox.Focus();
-            Text = "Splash Image Viewer";
+            Text = ApplicationInfo.AppProduct;
             imageDimensionsLabel.Text = string.Empty;
             UpdateTotalFilesLabel();
             GC.Collect();
@@ -566,9 +574,9 @@ namespace SplashImageViewer.Forms
 
         private void UpdateImageDimensionsLabel()
         {
-            imageDimensionsLabel.Text = $"Dimensions: {ImagesModel.Singleton.Image?.Width}x{ImagesModel.Singleton.Image?.Height}  " +
-                $"File size: {GetFileSizeString(new FileInfo(ImagesModel.Singleton.CurrentFilePath).Length)}  " +
-                $"Type: {ImagesModel.Singleton.ImageFormatDescription}";
+            imageDimensionsLabel.Text = $"{Strings.Dimensions}: {ImagesModel.Singleton.Image?.Width}x{ImagesModel.Singleton.Image?.Height}  " +
+                $"{Strings.FileSize}: {GetFileSizeString(new FileInfo(ImagesModel.Singleton.CurrentFilePath).Length)}  " +
+                $"{Strings.Type}: {ImagesModel.Singleton.ImageFormatDescription}";
         }
 
         private void UpdateTotalFilesLabel()
@@ -668,8 +676,8 @@ namespace SplashImageViewer.Forms
             {
                 var dr = MessageBox.Show(
                     new Form { TopMost = true },
-                    "Image modified. Overwrite current image?",
-                    "Image modified",
+                    Strings.OverwriteImagePrompt,
+                    Strings.ImageModified,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Information);
 
@@ -746,8 +754,8 @@ namespace SplashImageViewer.Forms
             {
                 var dialogResult = MessageBox.Show(
                     new Form { TopMost = true },
-                    "Are you sure you want to delete this file?",
-                    "Delete file",
+                    Strings.FileDeletePrompt,
+                    Strings.DeleteFile,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
@@ -839,7 +847,7 @@ namespace SplashImageViewer.Forms
             }
             else
             {
-                slideshowTimer.Interval = AppSettings.SlideshowTransitionMs;
+                slideshowTimer.Interval = AppSettings.SlideshowTransitionSec * 1000;
                 slideshowButton.Image = Resources.Stop_48x48;
                 slideshowTimer.Start();
                 Screensaver.Disable();
@@ -862,8 +870,8 @@ namespace SplashImageViewer.Forms
             {
                 MessageBox.Show(
                     new Form { TopMost = true },
-                    "Slideshow mode is active. Stop slideshow first.",
-                    "Slideshow mode is active",
+                    Strings.StopSlideshowFirstPrompt,
+                    Strings.SlideshowModeIsActive,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
 
@@ -874,7 +882,7 @@ namespace SplashImageViewer.Forms
             ImagesModel.Singleton.Image?.RotateFlip(RotateFlipType.Rotate90FlipNone);
             pictureBox.Refresh();
 
-            Text = $"{ImagesModel.Singleton.CurrentFilePath} [MODIFIED]";
+            Text = $"{ImagesModel.Singleton.CurrentFilePath} [{Strings.ModifiedCaps}]";
             imageIsModified = true;
         }
 
@@ -888,15 +896,23 @@ namespace SplashImageViewer.Forms
             using var settingsForm = new SettingsForm();
             settingsForm.ShowDialog();
 
-            if (mainPanel.BackColor != AppSettings.ThemeColor)
+            var color = Color.FromArgb(AppSettings.ThemeColorArgb);
+
+            if (mainPanel.BackColor != color)
             {
-                mainPanel.BackColor = AppSettings.ThemeColor;
-                totalFilesLabel.ForeColor = AppSettings.LabelsColor;
+                mainPanel.BackColor = color;
+                totalFilesLabel.ForeColor = Color.FromArgb(AppSettings.LabelsColorArgb);
             }
 
             if (AppSettings.GetRecentItemsFromRegistry().Count == 0)
             {
                 ClearRecentItemsList();
+            }
+
+            if (System.Threading.Thread.CurrentThread.CurrentUICulture != AppSettings.CurrentUICulture)
+            {
+                System.Threading.Thread.CurrentThread.CurrentUICulture = AppSettings.CurrentUICulture;
+                LocalizeUIElements();
             }
         }
 

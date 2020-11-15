@@ -213,7 +213,7 @@ namespace SplashImageViewer.Forms
             this.memoryAllocatedLabel.Name = "memoryAllocatedLabel";
             this.memoryAllocatedLabel.Size = new System.Drawing.Size(331, 20);
             this.memoryAllocatedLabel.Spring = true;
-            this.memoryAllocatedLabel.Text = "memoryAllocatedLabel";
+            this.memoryAllocatedLabel.Text = "";
             // 
             // programInfoLabel
             // 

@@ -1,14 +1,14 @@
 namespace SplashImageViewer.Forms
 {
     using System;
+    using System.Drawing;
     using System.Windows.Forms;
     using SplashImageViewer.Helpers;
     using SplashImageViewer.Models;
+    using SplashImageViewer.Properties;
 
     public partial class FullscreenForm : Form
     {
-        private const int HideInfoTimerIntervalMs = 10000;
-
         private readonly Timer hideInfoLabelTimer = new Timer();
         private readonly Timer hideBottomLabelsTimer = new Timer();
         private readonly Screen screen;
@@ -83,15 +83,17 @@ namespace SplashImageViewer.Forms
 
         private void FullscreenForm_Load(object sender, EventArgs e)
         {
-            totalFilesLabel.ForeColor = AppSettings.LabelsColor;
-            infoLabel.ForeColor = AppSettings.LabelsColor;
-            filePathLabel.ForeColor = AppSettings.LabelsColor;
+            LocalizeUIElements();
+
+            totalFilesLabel.ForeColor = Color.FromArgb(AppSettings.LabelsColorArgb);
+            infoLabel.ForeColor = Color.FromArgb(AppSettings.LabelsColorArgb);
+            filePathLabel.ForeColor = Color.FromArgb(AppSettings.LabelsColorArgb);
 
             // Bounds = Screen.PrimaryScreen.Bounds;
             Bounds = screen.Bounds; // use passed-in screen reference bounds
 
             fullscreenPictureBox.Image = ImagesModel.Singleton.Image;
-            fullscreenPictureBox.BackColor = AppSettings.ThemeColor;
+            fullscreenPictureBox.BackColor = Color.FromArgb(AppSettings.ThemeColorArgb);
 
             CheckFormSize();
 
@@ -112,21 +114,23 @@ namespace SplashImageViewer.Forms
 
             UpdateBottomLabels();
             InitTimers();
+        }
 
-            if (slideshowIsEnabled)
-            {
-                infoLabel.Text += "\n[SLIDESHOW ENABLED]";
-            }
+        private void LocalizeUIElements()
+        {
+            infoLabel.Text = slideshowIsEnabled ?
+                $"{Strings.SlideshowInfoLabel}{Environment.NewLine}{Strings.SlideshowEnabled}" :
+                Strings.SlideshowInfoLabel;
         }
 
         private void InitTimers()
         {
             hideInfoLabelTimer.Tick += HideInfoLabel;
-            hideInfoLabelTimer.Interval = HideInfoTimerIntervalMs;
+            hideInfoLabelTimer.Interval = AppSettings.FullscreenFormHideInfoTimerIntervalMs;
             hideInfoLabelTimer.Start();
 
             hideBottomLabelsTimer.Tick += HideBottomLabels;
-            hideBottomLabelsTimer.Interval = HideInfoTimerIntervalMs;
+            hideBottomLabelsTimer.Interval = AppSettings.FullscreenFormHideInfoTimerIntervalMs;
             hideBottomLabelsTimer.Start();
         }
 

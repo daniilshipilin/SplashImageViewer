@@ -57,11 +57,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing.Common" name="System.Drawing.Common, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+  <assembly alias="System.Drawing.Common" name="System.Drawing.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
   <data name="okButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wgAADsIBFShKgAAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4yMfEgaZUAAAJuSURBVFhH7ZZL
+        vAAADrwBlbxySQAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4yMfEgaZUAAAJuSURBVFhH7ZZL
         axNRFICjrvSXZALFyGThH6grdVEoLt0Lbi3dNEkVFEFooHm4UkEDLbQLXZjHpEInGJCICVSaSdo8phMn
         bdMkbrILx3vCzGTM3AlzNXFjDny7nO98TfNyzUef5eXtK75oZZWPVRQ+Vh54NwoDLpAYCAfyoNFUB8L+
         Zyrn3Z4tuIuO6y/yaf5l/pp2ij543BergM6NUAG4QBIy30+gpvyA3USaSrv30xbcRQe6+GhZmBiBf7ld

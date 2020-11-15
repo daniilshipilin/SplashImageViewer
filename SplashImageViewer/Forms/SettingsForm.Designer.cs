@@ -45,6 +45,8 @@ namespace SplashImageViewer.Forms
             this.colorSelectLabel = new System.Windows.Forms.Label();
             this.colorLabel = new System.Windows.Forms.Label();
             this.showFileOverwritePromptCheckBox = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.uiLanguageComboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -71,9 +73,9 @@ namespace SplashImageViewer.Forms
             "300",
             "600",
             "3600"});
-            this.slideshowTransitionSecComboBox.Location = new System.Drawing.Point(163, 43);
+            this.slideshowTransitionSecComboBox.Location = new System.Drawing.Point(216, 43);
             this.slideshowTransitionSecComboBox.Name = "slideshowTransitionSecComboBox";
-            this.slideshowTransitionSecComboBox.Size = new System.Drawing.Size(75, 25);
+            this.slideshowTransitionSecComboBox.Size = new System.Drawing.Size(60, 25);
             this.slideshowTransitionSecComboBox.TabIndex = 2;
             this.slideshowTransitionSecComboBox.SelectedIndexChanged += new System.EventHandler(this.SlideshowTransitionMSComboBox_SelectedIndexChanged);
             // 
@@ -112,7 +114,7 @@ namespace SplashImageViewer.Forms
             // 
             // defaultSettingsButton
             // 
-            this.defaultSettingsButton.Location = new System.Drawing.Point(272, 209);
+            this.defaultSettingsButton.Location = new System.Drawing.Point(322, 209);
             this.defaultSettingsButton.Name = "defaultSettingsButton";
             this.defaultSettingsButton.Size = new System.Drawing.Size(100, 30);
             this.defaultSettingsButton.TabIndex = 7;
@@ -146,7 +148,7 @@ namespace SplashImageViewer.Forms
             this.okButton.FlatAppearance.BorderSize = 0;
             this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.okButton.Image = ((System.Drawing.Image)(resources.GetObject("okButton.Image")));
-            this.okButton.Location = new System.Drawing.Point(179, 207);
+            this.okButton.Location = new System.Drawing.Point(206, 207);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(32, 32);
             this.okButton.TabIndex = 0;
@@ -158,17 +160,17 @@ namespace SplashImageViewer.Forms
             // 
             this.colorSelectLabel.BackColor = System.Drawing.Color.Black;
             this.colorSelectLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.colorSelectLabel.Location = new System.Drawing.Point(188, 12);
+            this.colorSelectLabel.Location = new System.Drawing.Point(216, 12);
             this.colorSelectLabel.Margin = new System.Windows.Forms.Padding(3);
             this.colorSelectLabel.Name = "colorSelectLabel";
-            this.colorSelectLabel.Size = new System.Drawing.Size(50, 25);
+            this.colorSelectLabel.Size = new System.Drawing.Size(60, 25);
             this.colorSelectLabel.TabIndex = 0;
             this.colorSelectLabel.Click += new System.EventHandler(this.ColorLabel_Click);
             // 
             // colorLabel
             // 
             this.colorLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.colorLabel.Location = new System.Drawing.Point(102, 15);
+            this.colorLabel.Location = new System.Drawing.Point(122, 15);
             this.colorLabel.Margin = new System.Windows.Forms.Padding(3);
             this.colorLabel.Name = "colorLabel";
             this.colorLabel.Size = new System.Drawing.Size(80, 17);
@@ -187,11 +189,33 @@ namespace SplashImageViewer.Forms
             this.showFileOverwritePromptCheckBox.UseVisualStyleBackColor = true;
             this.showFileOverwritePromptCheckBox.CheckedChanged += new System.EventHandler(this.ShowFileOverwritePromptCheckBox_CheckedChanged);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(298, 15);
+            this.label3.Margin = new System.Windows.Forms.Padding(3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(81, 17);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "UI language:";
+            // 
+            // uiLanguageComboBox
+            // 
+            this.uiLanguageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uiLanguageComboBox.FormattingEnabled = true;
+            this.uiLanguageComboBox.Location = new System.Drawing.Point(322, 43);
+            this.uiLanguageComboBox.Name = "uiLanguageComboBox";
+            this.uiLanguageComboBox.Size = new System.Drawing.Size(60, 25);
+            this.uiLanguageComboBox.TabIndex = 15;
+            this.uiLanguageComboBox.SelectedIndexChanged += new System.EventHandler(this.UiLanguageComboBox_SelectedIndexChanged);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(384, 251);
+            this.ClientSize = new System.Drawing.Size(434, 251);
+            this.Controls.Add(this.uiLanguageComboBox);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.showFileOverwritePromptCheckBox);
             this.Controls.Add(this.colorLabel);
             this.Controls.Add(this.colorSelectLabel);
@@ -237,5 +261,7 @@ namespace SplashImageViewer.Forms
         private System.Windows.Forms.Label colorSelectLabel;
         private System.Windows.Forms.Label colorLabel;
         private System.Windows.Forms.CheckBox showFileOverwritePromptCheckBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox uiLanguageComboBox;
     }
 }
