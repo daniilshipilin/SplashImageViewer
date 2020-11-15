@@ -166,7 +166,7 @@ namespace SplashImageViewer.Helpers
                 WindowStyle = ProcessWindowStyle.Hidden,
                 FileName = "cmd.exe",
                 Arguments = $"/C timeout 5 &&" +
-                $"copy /Y \"{ExtractedDir}\\*\" \"{ApplicationInfo.BaseDirectory}\" &&" +
+                $"xcopy /E /Y \"{ExtractedDir}\\*\" \"{ApplicationInfo.BaseDirectory}\" &&" +
                 $"rmdir /S /Q \"{TmpDir}\" &&" +
                 $"\"{ApplicationInfo.ExePath}\"",
             };
