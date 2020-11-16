@@ -48,6 +48,8 @@ namespace SplashImageViewer.Forms
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.imageDimensionsLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.imageSizeLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.imageTypeLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.memoryAllocatedLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.programInfoLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.totalFilesLabel = new System.Windows.Forms.Label();
@@ -189,36 +191,53 @@ namespace SplashImageViewer.Forms
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.imageDimensionsLabel,
+            this.imageSizeLabel,
+            this.imageTypeLabel,
             this.memoryAllocatedLabel,
             this.programInfoLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 704);
+            this.statusStrip.Location = new System.Drawing.Point(0, 707);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1008, 25);
+            this.statusStrip.Size = new System.Drawing.Size(1008, 22);
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 4;
             this.statusStrip.Text = "statusStrip";
             // 
             // imageDimensionsLabel
             // 
-            this.imageDimensionsLabel.AutoSize = false;
             this.imageDimensionsLabel.Name = "imageDimensionsLabel";
-            this.imageDimensionsLabel.Size = new System.Drawing.Size(331, 20);
+            this.imageDimensionsLabel.Size = new System.Drawing.Size(198, 17);
             this.imageDimensionsLabel.Spring = true;
             this.imageDimensionsLabel.Text = "imageDimensionsLabel";
             this.imageDimensionsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // imageSizeLabel
+            // 
+            this.imageSizeLabel.Name = "imageSizeLabel";
+            this.imageSizeLabel.Size = new System.Drawing.Size(198, 17);
+            this.imageSizeLabel.Spring = true;
+            this.imageSizeLabel.Text = "imageSizeLabel";
+            this.imageSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // imageTypeLabel
+            // 
+            this.imageTypeLabel.Name = "imageTypeLabel";
+            this.imageTypeLabel.Size = new System.Drawing.Size(198, 17);
+            this.imageTypeLabel.Spring = true;
+            this.imageTypeLabel.Text = "imageTypeLabel";
+            this.imageTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // memoryAllocatedLabel
             // 
-            this.memoryAllocatedLabel.AutoSize = false;
             this.memoryAllocatedLabel.Name = "memoryAllocatedLabel";
-            this.memoryAllocatedLabel.Size = new System.Drawing.Size(331, 20);
+            this.memoryAllocatedLabel.Size = new System.Drawing.Size(198, 17);
             this.memoryAllocatedLabel.Spring = true;
-            this.memoryAllocatedLabel.Text = "";
+            this.memoryAllocatedLabel.Text = "memoryAllocatedLabel";
+            this.memoryAllocatedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // programInfoLabel
             // 
             this.programInfoLabel.Name = "programInfoLabel";
-            this.programInfoLabel.Size = new System.Drawing.Size(331, 20);
+            this.programInfoLabel.Size = new System.Drawing.Size(198, 17);
             this.programInfoLabel.Spring = true;
             this.programInfoLabel.Text = "programInfoLabel";
             this.programInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -309,8 +328,8 @@ namespace SplashImageViewer.Forms
             // 
             // mainPanel
             // 
-            this.mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mainPanel.AutoScroll = true;
             this.mainPanel.Controls.Add(this.totalFilesLabel);
@@ -387,38 +406,38 @@ namespace SplashImageViewer.Forms
             this.copyFileMenuItem,
             this.setDesktopBackgroundMenuItem});
             this.rightClickMenuStrip.Name = "rightClickContextMenuStrip";
-            this.rightClickMenuStrip.Size = new System.Drawing.Size(194, 76);
+            this.rightClickMenuStrip.Size = new System.Drawing.Size(220, 98);
             // 
             // fileNameMenuItem
             // 
             this.fileNameMenuItem.Enabled = false;
             this.fileNameMenuItem.Name = "fileNameMenuItem";
-            this.fileNameMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.fileNameMenuItem.Size = new System.Drawing.Size(219, 22);
             this.fileNameMenuItem.Text = "fileNameMenuItem";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(190, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(216, 6);
             // 
             // copyPathMenuItem
             // 
             this.copyPathMenuItem.Name = "copyPathMenuItem";
-            this.copyPathMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.copyPathMenuItem.Size = new System.Drawing.Size(219, 22);
             this.copyPathMenuItem.Text = "Copy File Path";
             this.copyPathMenuItem.Click += new System.EventHandler(this.CopyPathMenuItem_Click);
             // 
             // copyFileMenuItem
             // 
             this.copyFileMenuItem.Name = "copyFileMenuItem";
-            this.copyFileMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.copyFileMenuItem.Size = new System.Drawing.Size(219, 22);
             this.copyFileMenuItem.Text = "Copy File To Clipboard";
             this.copyFileMenuItem.Click += new System.EventHandler(this.CopyFileMenuItem_Click);
             // 
             // setDesktopBackgroundMenuItem
             // 
             this.setDesktopBackgroundMenuItem.Name = "setDesktopBackgroundMenuItem";
-            this.setDesktopBackgroundMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.setDesktopBackgroundMenuItem.Size = new System.Drawing.Size(219, 22);
             this.setDesktopBackgroundMenuItem.Text = "Set As Desktop Background";
             this.setDesktopBackgroundMenuItem.Click += new System.EventHandler(this.SetDesktopBackgroundMenuItem_Click);
             // 
@@ -498,5 +517,7 @@ namespace SplashImageViewer.Forms
         private ToolStripMenuItem copyFileMenuItem;
         private ToolStripMenuItem fileNameMenuItem;
         private ToolStripSeparator toolStripSeparator4;
+        private ToolStripStatusLabel imageSizeLabel;
+        private ToolStripStatusLabel imageTypeLabel;
     }
 }

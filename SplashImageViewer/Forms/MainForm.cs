@@ -172,7 +172,9 @@ namespace SplashImageViewer.Forms
             CheckScreenDimensions();
 
             programInfoLabel.Text = ApplicationInfo.AppHeader;
-            imageDimensionsLabel.Text = string.Empty;
+            memoryAllocatedLabel.Text = string.Empty;
+
+            ClearImageLabels();
 
             // check for updates in the background
             Task.Run(async () => await CheckUpdates());
@@ -388,7 +390,7 @@ namespace SplashImageViewer.Forms
                 {
                     pictureBox.Image = ImagesModel.Singleton.Image;
                     UpdateFilePathText();
-                    UpdateImageDimensionsLabel();
+                    UpdateImageLabels();
                     ZoomOut();
                     ModifyPictureBoxSizeMode();
                     UpdateTotalFilesLabel();
@@ -562,7 +564,7 @@ namespace SplashImageViewer.Forms
             pictureBox.Image = null;
             pictureBox.Focus();
             Text = ApplicationInfo.AppProduct;
-            imageDimensionsLabel.Text = string.Empty;
+            ClearImageLabels();
             UpdateTotalFilesLabel();
             GC.Collect();
         }
@@ -572,11 +574,18 @@ namespace SplashImageViewer.Forms
             Text = ImagesModel.Singleton.CurrentFilePath;
         }
 
-        private void UpdateImageDimensionsLabel()
+        private void ClearImageLabels()
         {
-            imageDimensionsLabel.Text = $"{Strings.Dimensions}: {ImagesModel.Singleton.Image?.Width}x{ImagesModel.Singleton.Image?.Height}  " +
-                $"{Strings.FileSize}: {GetFileSizeString(new FileInfo(ImagesModel.Singleton.CurrentFilePath).Length)}  " +
-                $"{Strings.Type}: {ImagesModel.Singleton.ImageFormatDescription}";
+            imageDimensionsLabel.Text = string.Empty;
+            imageSizeLabel.Text = string.Empty;
+            imageTypeLabel.Text = string.Empty;
+        }
+
+        private void UpdateImageLabels()
+        {
+            imageDimensionsLabel.Text = $"{Strings.Dimensions}: {ImagesModel.Singleton.Image?.Width}x{ImagesModel.Singleton.Image?.Height}";
+            imageSizeLabel.Text = $"{Strings.FileSize}: {GetFileSizeString(new FileInfo(ImagesModel.Singleton.CurrentFilePath).Length)}";
+            imageTypeLabel.Text = $"{Strings.Type}: {ImagesModel.Singleton.ImageFormatDescription}";
         }
 
         private void UpdateTotalFilesLabel()
