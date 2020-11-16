@@ -198,7 +198,7 @@ namespace SplashImageViewer.Forms
             PopulateRecentItemsList();
 
             // check, if args exist
-            if (ApplicationInfo.Args.Count > 0)
+            if (ApplicationInfo.Args?.Count > 0)
             {
                 // cmd provided filename/folder path
                 OpenImage(Path.GetFullPath(ApplicationInfo.Args.First()));
@@ -478,12 +478,12 @@ namespace SplashImageViewer.Forms
 
         private async Task CheckUpdates()
         {
-            if ((DateTime.UtcNow - AppSettings.UpdatesLastCheckedUtcTimestamp).Days >= 1 ||
+            if ((DateTime.UtcNow - AppSettings.UpdatesLastCheckedTimestamp).Days >= 1 ||
                 AppSettings.ForceCheckUpdates)
             {
                 try
                 {
-                    AppSettings.UpdateUpdatesLastCheckedUtcTimestamp();
+                    AppSettings.UpdateUpdatesLastCheckedTimestamp();
 
                     if (await ProgramUpdater.CheckUpdateIsAvailable())
                     {

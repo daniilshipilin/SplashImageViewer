@@ -216,6 +216,9 @@
   <data name="KByte" xml:space="preserve">
     <value>Kbyte</value>
   </data>
+  <data name="LastCheck" xml:space="preserve">
+    <value>Last check</value>
+  </data>
   <data name="MByte" xml:space="preserve">
     <value>Mbyte</value>
   </data>
@@ -253,7 +256,7 @@
     <value>Previous image [LEFT/DOWN ARROW]</value>
   </data>
   <data name="ProgramIsUpToDate" xml:space="preserve">
-    <value>Current Program version is up to date</value>
+    <value>Current program version is up to date</value>
   </data>
   <data name="ProgramUpdate" xml:space="preserve">
     <value>Program update</value>

@@ -15,7 +15,12 @@ namespace SplashImageViewer
         private static readonly AssemblyDescriptionAttribute? Description = Ass.GetCustomAttributes<AssemblyDescriptionAttribute>().FirstOrDefault();
         private static readonly AssemblyCopyrightAttribute? Copyright = Ass.GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault();
 
-        public static IList<string> Args { get; private set; } = new List<string>();
+        public static string? AppBuild { get; } =
+#if DEBUG
+            " [Debug]";
+#endif
+
+        public static IList<string>? Args { get; private set; }
 
         public static string BaseDirectory { get; } = Environment.CurrentDirectory;
 
@@ -25,7 +30,7 @@ namespace SplashImageViewer
 
         public static string AppProduct { get; } = Product?.Product ?? string.Empty;
 
-        public static string AppHeader { get; } = $"{Title?.Title} v{GitVersionInformation.SemVer}";
+        public static string AppHeader { get; } = $"{AppTitle} v{GitVersionInformation.SemVer}{AppBuild}";
 
         public static string AppAuthor { get; } = Copyright?.Copyright ?? string.Empty;
 

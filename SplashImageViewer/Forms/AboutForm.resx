@@ -57,11 +57,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing.Common" name="System.Drawing.Common, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+  <assembly alias="System.Drawing.Common" name="System.Drawing.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
   <data name="logoPictureBox.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wQAADsEBuJFr7QAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4yMfEgaZUAAHOrSURBVHheFbh1
+        vQAADr0BR/uQrQAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4yMfEgaZUAAHOrSURBVHheFbh1
         VFv5+j3MvePWaUfaaafuVKkBBUqhlFLc3d3d3d3dnaBBEgIJxN0TEuJCDPe243e+73r7O+tZZ50/z9mf
         vfez99ECLUO6BoJTCosy2xvr5ycBMEhNL7B9eCy3tbV+cHAQBGnsr3fNLovubM8ZAvTMzg3Pzs4CQ/AT
         z4ndTqvzZhRwzOAccnoZDQSNwReyUPA309NmiwuhHFiIZPz1KnaATV1m05CqCXfyYrYwKe5fbb9/tCOF
@@ -561,7 +561,7 @@
   <data name="checkUpdatesButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wQAADsEBuJFr7QAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4yMfEgaZUAAAS5SURBVFhH7Vdd
+        vQAADr0BR/uQrQAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4yMfEgaZUAAAS5SURBVFhH7Vdd
         axxVGM5G05TufGw3adJKZCVGK1sIyIoVaZnOnNl1kUJF2QtNsFjs0o2ZnXN2Fe9M70XbeueFeOd/UCRt
         UVFae6E3QqDFq9KU4Gdq0dqkzzuzZ/bMxybtfQ88zJ6P932e877na4ceFqXkgOHeV4Lq/TbLetRkfDrP
         /COa67+qu+Itgsbar1GbYXtPlsuNHdH4pD2gWYvPaFZnHL9TZbjRaDxigYS+zWZzhH5LGEzUQXZRZ+K6

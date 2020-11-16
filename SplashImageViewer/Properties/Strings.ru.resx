@@ -139,10 +139,10 @@
     <value>Для изменения языка пользовательского интерфейса требуется перезапуск приложения.</value>
   </data>
   <data name="CheckForAvailableUpdates" xml:space="preserve">
-    <value>Необходима проверка на наличие доступных обновлений</value>
+    <value>Необходима проверка на наличие обновлений</value>
   </data>
   <data name="CheckingForUpdates" xml:space="preserve">
-    <value>Производится проверка на наличие доступных обновлений</value>
+    <value>Производится проверка на наличие обновлений</value>
   </data>
   <data name="CheckScreenDimensionsWarning" xml:space="preserve">
     <value>Не соблюдены минимальные требования к разрешению экрана</value>
@@ -187,7 +187,7 @@
     <value>&amp;Файл</value>
   </data>
   <data name="ForceCheckUpdates" xml:space="preserve">
-    <value>Принудительная проверка на наличие доступных обновлений</value>
+    <value>Принудительная проверка на наличие обновлений</value>
   </data>
   <data name="ForceProgramUpdatePrompt" xml:space="preserve">
     <value>Принудительно обновить программу?</value>
@@ -215,6 +215,9 @@
   </data>
   <data name="KByte" xml:space="preserve">
     <value>Кбайт</value>
+  </data>
+  <data name="LastCheck" xml:space="preserve">
+    <value>Последняя проверка</value>
   </data>
   <data name="MByte" xml:space="preserve">
     <value>Мбайт</value>

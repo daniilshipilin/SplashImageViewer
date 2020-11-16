@@ -56,17 +56,17 @@ namespace SplashImageViewer.Forms
             this.aboutLabel.Location = new System.Drawing.Point(124, 14);
             this.aboutLabel.Margin = new System.Windows.Forms.Padding(5);
             this.aboutLabel.Name = "aboutLabel";
-            this.aboutLabel.Size = new System.Drawing.Size(396, 195);
+            this.aboutLabel.Size = new System.Drawing.Size(446, 155);
             this.aboutLabel.TabIndex = 0;
+            this.aboutLabel.Text = "aboutLabel";
             // 
             // updatesInfoLabel
             // 
-            this.updatesInfoLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.updatesInfoLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.updatesInfoLabel.Location = new System.Drawing.Point(14, 219);
+            this.updatesInfoLabel.Location = new System.Drawing.Point(14, 217);
             this.updatesInfoLabel.Margin = new System.Windows.Forms.Padding(5);
             this.updatesInfoLabel.Name = "updatesInfoLabel";
-            this.updatesInfoLabel.Size = new System.Drawing.Size(506, 30);
+            this.updatesInfoLabel.Size = new System.Drawing.Size(556, 30);
             this.updatesInfoLabel.TabIndex = 0;
             this.updatesInfoLabel.Text = "updatesInfoLabel";
             this.updatesInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -78,7 +78,7 @@ namespace SplashImageViewer.Forms
             this.checkUpdatesButton.FlatAppearance.BorderSize = 0;
             this.checkUpdatesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkUpdatesButton.Image = ((System.Drawing.Image)(resources.GetObject("checkUpdatesButton.Image")));
-            this.checkUpdatesButton.Location = new System.Drawing.Point(250, 179);
+            this.checkUpdatesButton.Location = new System.Drawing.Point(276, 177);
             this.checkUpdatesButton.Name = "checkUpdatesButton";
             this.checkUpdatesButton.Size = new System.Drawing.Size(32, 32);
             this.checkUpdatesButton.TabIndex = 2;
@@ -91,7 +91,7 @@ namespace SplashImageViewer.Forms
             this.linkLabel.AutoSize = true;
             this.linkLabel.Location = new System.Drawing.Point(12, 119);
             this.linkLabel.Name = "linkLabel";
-            this.linkLabel.Size = new System.Drawing.Size(83, 17);
+            this.linkLabel.Size = new System.Drawing.Size(48, 17);
             this.linkLabel.TabIndex = 3;
             this.linkLabel.TabStop = true;
             this.linkLabel.Text = "GitHub";
@@ -101,7 +101,7 @@ namespace SplashImageViewer.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(534, 261);
+            this.ClientSize = new System.Drawing.Size(584, 261);
             this.Controls.Add(this.linkLabel);
             this.Controls.Add(this.checkUpdatesButton);
             this.Controls.Add(this.updatesInfoLabel);

@@ -35,15 +35,15 @@ namespace SplashImageViewer.Forms
 
             if (ProgramUpdater.ServerVersion is null)
             {
-                updatesInfoLabel.Text = Strings.CheckForAvailableUpdates;
+                updatesInfoLabel.Text = $"{Strings.CheckForAvailableUpdates}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
             }
             else if (ProgramUpdater.ServerVersionIsGreater)
             {
-                updatesInfoLabel.Text = Strings.NewerProgramVersionAvailable;
+                updatesInfoLabel.Text = $"{Strings.NewerProgramVersionAvailable}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
             }
             else
             {
-                updatesInfoLabel.Text = Strings.ProgramIsUpToDate;
+                updatesInfoLabel.Text = $"{Strings.ProgramIsUpToDate}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
             }
 
             toolTip.SetToolTip(checkUpdatesButton, Strings.CheckUpdatesButtonToolTip);
@@ -91,12 +91,12 @@ namespace SplashImageViewer.Forms
         {
             try
             {
-                AppSettings.UpdateUpdatesLastCheckedUtcTimestamp();
+                AppSettings.UpdateUpdatesLastCheckedTimestamp();
                 updatesInfoLabel.Text = Strings.CheckingForUpdates;
 
                 if (await ProgramUpdater.CheckUpdateIsAvailable())
                 {
-                    updatesInfoLabel.Text = Strings.NewerProgramVersionAvailable;
+                    updatesInfoLabel.Text = $"{Strings.NewerProgramVersionAvailable}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
 
                     var dr = MessageBox.Show(
                         new Form { TopMost = true },
@@ -114,7 +114,7 @@ namespace SplashImageViewer.Forms
                 }
                 else
                 {
-                    updatesInfoLabel.Text = Strings.ProgramIsUpToDate;
+                    updatesInfoLabel.Text = $"{Strings.ProgramIsUpToDate}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
                     var dr = MessageBox.Show(
                         new Form { TopMost = true },
                         Strings.ProgramIsUpToDate,

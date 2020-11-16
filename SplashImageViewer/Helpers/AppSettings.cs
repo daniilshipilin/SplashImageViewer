@@ -16,7 +16,7 @@ namespace SplashImageViewer.Helpers
             @"SOFTWARE\Splash Image Viewer";
 #endif
 
-        public const int ConfigVersion = 13;
+        public const int ConfigVersion = 14;
         public const int RecentItemsCapacity = 10;
         public const string RegistryRecentItemsKey = RegistryBaseKey + "\\Recent Items";
         public const string RegistryProgramUpdaterKey = RegistryBaseKey + "\\Program Updater";
@@ -50,7 +50,7 @@ namespace SplashImageViewer.Helpers
             { nameof(ShowFileDeletePrompt), true },
             { nameof(ShowFileOverwritePrompt), true },
             { nameof(ForceCheckUpdates), false },
-            { nameof(UpdatesLastCheckedUtcTimestamp), default(DateTime).ToString("u", CultureInfo.InvariantCulture) }, // assign default datetime struct value
+            { nameof(UpdatesLastCheckedTimestamp), default(DateTime).ToString("s") }, // assign default datetime struct value
             { nameof(CurrentUICulture), CultureInfos[0] }, // en
         };
 
@@ -128,7 +128,7 @@ namespace SplashImageViewer.Helpers
             }
         }
 
-        public static DateTime UpdatesLastCheckedUtcTimestamp => DateTime.ParseExact((string?)RegKeyRoot.GetValue(nameof(UpdatesLastCheckedUtcTimestamp)) ?? string.Empty, "u", CultureInfo.InvariantCulture);
+        public static DateTime UpdatesLastCheckedTimestamp => DateTime.ParseExact((string?)RegKeyRoot.GetValue(nameof(UpdatesLastCheckedTimestamp)) ?? string.Empty, "s", CultureInfo.InvariantCulture);
 
         public static CultureInfo CurrentUICulture
         {
@@ -150,9 +150,9 @@ namespace SplashImageViewer.Helpers
             }
         }
 
-        public static void UpdateUpdatesLastCheckedUtcTimestamp()
+        public static void UpdateUpdatesLastCheckedTimestamp()
         {
-            RegKeyRoot.SetValue(nameof(UpdatesLastCheckedUtcTimestamp), DateTime.UtcNow.ToString("u", CultureInfo.InvariantCulture));
+            RegKeyRoot.SetValue(nameof(UpdatesLastCheckedTimestamp), DateTime.Now.ToString("s"));
         }
 
         public static void CheckSettings()

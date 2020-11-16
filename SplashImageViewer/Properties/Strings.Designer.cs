@@ -358,6 +358,15 @@ namespace SplashImageViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last check.
+        /// </summary>
+        public static string LastCheck {
+            get {
+                return ResourceManager.GetString("LastCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mbyte.
         /// </summary>
         public static string MByte {
@@ -466,7 +475,7 @@ namespace SplashImageViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current Program version is up to date.
+        ///   Looks up a localized string similar to Current program version is up to date.
         /// </summary>
         public static string ProgramIsUpToDate {
             get {
