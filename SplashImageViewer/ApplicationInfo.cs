@@ -18,6 +18,8 @@ namespace SplashImageViewer
         public static string? AppBuild { get; } =
 #if DEBUG
             " [Debug]";
+#else
+            string.Empty;
 #endif
 
         public static IList<string>? Args { get; private set; }
