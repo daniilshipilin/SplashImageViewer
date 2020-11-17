@@ -571,7 +571,9 @@ namespace SplashImageViewer.Forms
 
         private void UpdateFilePathText()
         {
-            Text = ImagesModel.Singleton.CurrentFilePath;
+            Text = slideshowTimer.Enabled ?
+                $"{ImagesModel.Singleton.CurrentFilePath} - {Strings.SlideshowEnabled}" :
+                ImagesModel.Singleton.CurrentFilePath;
         }
 
         private void ClearImageLabels()
@@ -861,6 +863,8 @@ namespace SplashImageViewer.Forms
                 slideshowTimer.Start();
                 Screensaver.Disable();
             }
+
+            UpdateFilePathText();
         }
 
         private void SettingsButton_Click(object sender, EventArgs e)
