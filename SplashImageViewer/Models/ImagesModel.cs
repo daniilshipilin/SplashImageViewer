@@ -128,13 +128,13 @@ namespace SplashImageViewer.Models
         /// </summary>
         public void DisposeResources()
         {
-            if (Image is object)
+            if (Image is not null)
             {
                 Image.Dispose();
                 Image = null;
             }
 
-            if (fileWatcher is object)
+            if (fileWatcher is not null)
             {
                 fileWatcher.EnableRaisingEvents = false;
                 fileWatcher.Created -= FileCreatedOrDeletedEvent;
@@ -149,7 +149,7 @@ namespace SplashImageViewer.Models
         {
             if (FilePaths.Count > 1)
             {
-                CurrentFilePathIndex = (CurrentFilePathIndex == FilePaths.Count - 1) ? 0 : ++CurrentFilePathIndex;
+                CurrentFilePathIndex = (CurrentFilePathIndex == FilePaths.Count - 1) ? 0 : CurrentFilePathIndex + 1;
             }
         }
 
@@ -157,7 +157,7 @@ namespace SplashImageViewer.Models
         {
             if (FilePaths.Count > 1)
             {
-                CurrentFilePathIndex = (CurrentFilePathIndex == 0) ? FilePaths.Count - 1 : --CurrentFilePathIndex;
+                CurrentFilePathIndex = (CurrentFilePathIndex == 0) ? FilePaths.Count - 1 : CurrentFilePathIndex - 1;
             }
         }
 

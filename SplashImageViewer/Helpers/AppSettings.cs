@@ -24,6 +24,7 @@ namespace SplashImageViewer.Helpers
         public const int MinScreenSizeHeight = 768;
         public const int FullscreenFormHideInfoTimerIntervalMs = 10000;
         public const int MainFormCheckMemoryMs = 1000;
+        public const int MainFormSlideshowProgressBarUpdateMs = 10;
 
         public static readonly IReadOnlyList<CultureInfo> CultureInfos = new List<CultureInfo>()
         {

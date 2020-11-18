@@ -349,6 +349,15 @@ namespace SplashImageViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IMAGE MODIFIED.
+        /// </summary>
+        public static string ImageModifiedCaps {
+            get {
+                return ResourceManager.GetString("ImageModifiedCaps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kbyte.
         /// </summary>
         public static string KByte {
@@ -390,15 +399,6 @@ namespace SplashImageViewer.Properties {
         public static string MethodNeedsToBeCalledFirst {
             get {
                 return ResourceManager.GetString("MethodNeedsToBeCalledFirst", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to MODIFIED.
-        /// </summary>
-        public static string ModifiedCaps {
-            get {
-                return ResourceManager.GetString("ModifiedCaps", resourceCulture);
             }
         }
         
@@ -552,6 +552,15 @@ namespace SplashImageViewer.Properties {
         public static string SearchImagesInSubdirectories {
             get {
                 return ResourceManager.GetString("SearchImagesInSubdirectories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to seconds remaining.
+        /// </summary>
+        public static string SecondsRemaining {
+            get {
+                return ResourceManager.GetString("SecondsRemaining", resourceCulture);
             }
         }
         

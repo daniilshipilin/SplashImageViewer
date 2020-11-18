@@ -2,6 +2,7 @@ namespace SplashImageViewer.Forms
 {
     using System;
     using System.Drawing;
+    using System.Threading.Tasks;
     using System.Windows.Forms;
     using SplashImageViewer.Helpers;
     using SplashImageViewer.Models;
@@ -177,14 +178,16 @@ namespace SplashImageViewer.Forms
             }
         }
 
-        private void UpdatePictureBox()
+        private async void UpdatePictureBox()
         {
             if (ImagesModel.Singleton.FilePaths.Count == 0)
             {
                 Close();
+                return;
             }
 
-            ImagesModel.Singleton.LoadImage();
+            // load image async in background
+            await Task.Run(() => ImagesModel.Singleton.LoadImage());
 
             if (ImagesModel.Singleton.Image is not null)
             {

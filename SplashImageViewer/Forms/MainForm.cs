@@ -16,6 +16,8 @@ namespace SplashImageViewer.Forms
     {
         private readonly Timer slideshowTimer = new Timer();
         private readonly Timer allocatedMemoryTimer = new Timer();
+        private readonly Timer slideshowProgressBarTimer = new Timer();
+        private DateTime nextSlideshowTransitionDate;
         private bool fullscreenFormIsActive;
         private bool imageIsModified;
         private bool eventsSubscribed;
@@ -104,7 +106,7 @@ namespace SplashImageViewer.Forms
                     break;
 
                 case Keys.Escape:
-                    if (pictureBox.Image is not null)
+                    if (ImagesModel.Singleton.Image is not null)
                     {
                         CloseImage();
                     }
@@ -173,6 +175,9 @@ namespace SplashImageViewer.Forms
 
             programInfoLabel.Text = ApplicationInfo.AppHeader;
             memoryAllocatedLabel.Text = string.Empty;
+
+            // hide progress bar
+            slideshowProgressBar.Visible = false;
 
             ClearImageLabels();
 
@@ -365,7 +370,7 @@ namespace SplashImageViewer.Forms
             }
         }
 
-        private void UpdatePictureBox()
+        private async void UpdatePictureBox()
         {
             // set picturebox image only, when fullscreen mode is not active
             if (!fullscreenFormIsActive)
@@ -378,7 +383,8 @@ namespace SplashImageViewer.Forms
 
                 try
                 {
-                    ImagesModel.Singleton.LoadImage();
+                    // load image async in background
+                    await Task.Run(() => ImagesModel.Singleton.LoadImage());
                 }
                 catch (Exception ex)
                 {
@@ -476,6 +482,9 @@ namespace SplashImageViewer.Forms
             allocatedMemoryTimer.Tick += CheckMemoryAllocated;
             allocatedMemoryTimer.Interval = AppSettings.MainFormCheckMemoryMs;
             allocatedMemoryTimer.Start();
+
+            slideshowProgressBarTimer.Tick += SlideshowProgressBarHandler;
+            slideshowProgressBarTimer.Interval = AppSettings.MainFormSlideshowProgressBarUpdateMs;
         }
 
         private async Task CheckUpdates()
@@ -546,9 +555,13 @@ namespace SplashImageViewer.Forms
 
         private void CloseImage()
         {
+            CheckImageModified();
+
             if (slideshowTimer.Enabled)
             {
+                slideshowProgressBar.Visible = false;
                 slideshowTimer.Stop();
+                slideshowProgressBarTimer.Stop();
                 Screensaver.Reset();
             }
 
@@ -563,7 +576,7 @@ namespace SplashImageViewer.Forms
             ImagesModel.Singleton.DisposeResources();
             pictureBox.Image = null;
             pictureBox.Focus();
-            Text = ApplicationInfo.AppProduct;
+            UpdateFilePathText();
             ClearImageLabels();
             UpdateTotalFilesLabel();
             GC.Collect();
@@ -571,9 +584,23 @@ namespace SplashImageViewer.Forms
 
         private void UpdateFilePathText()
         {
-            Text = slideshowTimer.Enabled ?
-                $"{ImagesModel.Singleton.CurrentFilePath} - {Strings.SlideshowEnabled}" :
-                ImagesModel.Singleton.CurrentFilePath;
+            if (slideshowTimer.Enabled)
+            {
+                Text = $"{ImagesModel.Singleton.CurrentFilePath} - {Strings.SlideshowEnabled}";
+            }
+            else if (imageIsModified)
+            {
+                Text = $"{ImagesModel.Singleton.CurrentFilePath} - {Strings.ImageModifiedCaps}";
+            }
+            else if (ImagesModel.Singleton.Image is not null)
+            {
+                Text = ImagesModel.Singleton.CurrentFilePath;
+            }
+            else
+            {
+                // default text
+                Text = ApplicationInfo.AppProduct;
+            }
         }
 
         private void ClearImageLabels()
@@ -585,16 +612,19 @@ namespace SplashImageViewer.Forms
 
         private void UpdateImageLabels()
         {
-            imageDimensionsLabel.Text = $"{Strings.Dimensions}: {ImagesModel.Singleton.Image?.Width}x{ImagesModel.Singleton.Image?.Height}";
-            imageSizeLabel.Text = $"{Strings.FileSize}: {GetFileSizeString(new FileInfo(ImagesModel.Singleton.CurrentFilePath).Length)}";
-            imageTypeLabel.Text = $"{Strings.Type}: {ImagesModel.Singleton.ImageFormatDescription}";
+            if (ImagesModel.Singleton.Image is not null)
+            {
+                imageDimensionsLabel.Text = $"{Strings.Dimensions}: {ImagesModel.Singleton.Image.Width}x{ImagesModel.Singleton.Image.Height}";
+                imageSizeLabel.Text = $"{Strings.FileSize}: {GetFileSizeString(new FileInfo(ImagesModel.Singleton.CurrentFilePath).Length)}";
+                imageTypeLabel.Text = $"{Strings.Type}: {ImagesModel.Singleton.ImageFormatDescription}";
+            }
         }
 
         private void UpdateTotalFilesLabel()
         {
-            totalFilesLabel.Text = pictureBox.Image is not null ?
+            totalFilesLabel.Text = ImagesModel.Singleton.Image is not null ?
                 $"{ImagesModel.Singleton.CurrentFilePathIndex + 1} / {ImagesModel.Singleton.FilePaths.Count}" :
-                "0 / 0";
+                string.Empty;
         }
 
         private void SetControls(bool state)
@@ -644,6 +674,30 @@ namespace SplashImageViewer.Forms
             {
                 ImagesModel.Singleton.SelectNextImageIndex();
             }
+
+            SetNextSlideshowTransitionDate();
+        }
+
+        private void SetNextSlideshowTransitionDate()
+        {
+            nextSlideshowTransitionDate = DateTime.Now.AddMilliseconds(slideshowTimer.Interval);
+        }
+
+        private void SlideshowProgressBarHandler(object? sender, EventArgs e)
+        {
+            int progress = (int)((slideshowTimer.Interval - (nextSlideshowTransitionDate - DateTime.Now).TotalMilliseconds) / slideshowTimer.Interval * slideshowProgressBar.Maximum);
+
+            // progress bar value synchronization hack
+            if (progress < slideshowProgressBar.Maximum - slideshowProgressBar.Step)
+            {
+                slideshowProgressBar.Value = progress + slideshowProgressBar.Step;
+                slideshowProgressBar.Value = progress;
+            }
+            else
+            {
+                slideshowProgressBar.Value = slideshowProgressBar.Maximum - slideshowProgressBar.Step;
+                slideshowProgressBar.Value = slideshowProgressBar.Maximum;
+            }
         }
 
         private void GoFullscreen()
@@ -676,8 +730,8 @@ namespace SplashImageViewer.Forms
             if (imageIsModified)
             {
                 OverwriteImage();
-                UpdateFilePathText();
                 imageIsModified = false;
+                UpdateFilePathText();
             }
         }
 
@@ -732,7 +786,6 @@ namespace SplashImageViewer.Forms
 
         private void CloseImage_Click(object sender, EventArgs e)
         {
-            CheckImageModified();
             CloseImage();
         }
 
@@ -852,7 +905,9 @@ namespace SplashImageViewer.Forms
 
             if (slideshowTimer.Enabled)
             {
+                slideshowProgressBar.Visible = false;
                 slideshowTimer.Stop();
+                slideshowProgressBarTimer.Stop();
                 slideshowButton.Image = Resources.Play_48x48;
                 Screensaver.Reset();
             }
@@ -860,7 +915,11 @@ namespace SplashImageViewer.Forms
             {
                 slideshowTimer.Interval = AppSettings.SlideshowTransitionSec * 1000;
                 slideshowButton.Image = Resources.Stop_48x48;
+                slideshowProgressBar.Value = slideshowProgressBar.Minimum;
+                slideshowProgressBar.Visible = true;
+                SetNextSlideshowTransitionDate();
                 slideshowTimer.Start();
+                slideshowProgressBarTimer.Start();
                 Screensaver.Disable();
             }
 
@@ -891,12 +950,14 @@ namespace SplashImageViewer.Forms
                 return;
             }
 
-            // pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            ImagesModel.Singleton.Image?.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            pictureBox.Refresh();
-
-            Text = $"{ImagesModel.Singleton.CurrentFilePath} [{Strings.ModifiedCaps}]";
-            imageIsModified = true;
+            if (ImagesModel.Singleton.Image is not null)
+            {
+                // pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                ImagesModel.Singleton.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                pictureBox.Refresh();
+                imageIsModified = true;
+                UpdateFilePathText();
+            }
         }
 
         private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)

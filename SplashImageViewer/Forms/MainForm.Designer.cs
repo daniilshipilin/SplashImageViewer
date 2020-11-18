@@ -70,6 +70,7 @@ namespace SplashImageViewer.Forms
             this.copyPathMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setDesktopBackgroundMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.slideshowProgressBar = new System.Windows.Forms.ProgressBar();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.statusStrip.SuspendLayout();
@@ -441,10 +442,20 @@ namespace SplashImageViewer.Forms
             this.setDesktopBackgroundMenuItem.Text = "Set As Desktop Background";
             this.setDesktopBackgroundMenuItem.Click += new System.EventHandler(this.SetDesktopBackgroundMenuItem_Click);
             // 
+            // slideshowProgressBar
+            // 
+            this.slideshowProgressBar.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.slideshowProgressBar.Location = new System.Drawing.Point(662, 663);
+            this.slideshowProgressBar.Name = "slideshowProgressBar";
+            this.slideshowProgressBar.Size = new System.Drawing.Size(200, 23);
+            this.slideshowProgressBar.Step = 1;
+            this.slideshowProgressBar.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.Controls.Add(this.slideshowProgressBar);
             this.Controls.Add(this.rotateImageButton);
             this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.randomButton);
@@ -519,5 +530,6 @@ namespace SplashImageViewer.Forms
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripStatusLabel imageSizeLabel;
         private ToolStripStatusLabel imageTypeLabel;
+        private ProgressBar slideshowProgressBar;
     }
 }

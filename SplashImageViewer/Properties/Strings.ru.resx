@@ -213,6 +213,9 @@
   <data name="ImageModified" xml:space="preserve">
     <value>Изображение изменено</value>
   </data>
+  <data name="ImageModifiedCaps" xml:space="preserve">
+    <value>ИЗОБРАЖЕНИЕ ИЗМЕНЕНО</value>
+  </data>
   <data name="KByte" xml:space="preserve">
     <value>Кбайт</value>
   </data>
@@ -227,9 +230,6 @@
   </data>
   <data name="MethodNeedsToBeCalledFirst" xml:space="preserve">
     <value>Сначала нужно вызвать этот метод</value>
-  </data>
-  <data name="ModifiedCaps" xml:space="preserve">
-    <value>ИЗМЕНЕНО</value>
   </data>
   <data name="ModifiedFileOverwriteConfirmationRequired" xml:space="preserve">
     <value>Требуется подтверждение перезаписи измененного файла</value>
@@ -281,6 +281,9 @@
   </data>
   <data name="SearchImagesInSubdirectories" xml:space="preserve">
     <value>Искать изображения в подкаталогах (рекурсивно)</value>
+  </data>
+  <data name="SecondsRemaining" xml:space="preserve">
+    <value>секунд осталось</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Настройки</value>
