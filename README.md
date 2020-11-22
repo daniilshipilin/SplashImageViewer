@@ -1,4 +1,4 @@
 ![splash.ico](./SplashImageViewer/Images/splash.ico)
 # Splash Image Viewer
-### Author: Daniil Shipilin (daniil.shipilin@gmail.com)
+### Author: Daniil Shipilin
 A simple image viewer with slideshow feature.
