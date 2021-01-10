@@ -181,7 +181,7 @@ namespace SplashImageViewer.Forms
             this.pictureBox.Location = new System.Drawing.Point(0, 0);
             this.pictureBox.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(1008, 610);
+            this.pictureBox.Size = new System.Drawing.Size(1008, 605);
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox.TabIndex = 1;
             this.pictureBox.TabStop = false;
@@ -249,7 +249,7 @@ namespace SplashImageViewer.Forms
             this.totalFilesLabel.BackColor = System.Drawing.Color.Transparent;
             this.totalFilesLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.totalFilesLabel.ForeColor = System.Drawing.Color.White;
-            this.totalFilesLabel.Location = new System.Drawing.Point(858, 560);
+            this.totalFilesLabel.Location = new System.Drawing.Point(858, 555);
             this.totalFilesLabel.Margin = new System.Windows.Forms.Padding(0);
             this.totalFilesLabel.Name = "totalFilesLabel";
             this.totalFilesLabel.Size = new System.Drawing.Size(150, 50);
@@ -338,7 +338,7 @@ namespace SplashImageViewer.Forms
             this.mainPanel.Location = new System.Drawing.Point(0, 30);
             this.mainPanel.Margin = new System.Windows.Forms.Padding(0);
             this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(1008, 610);
+            this.mainPanel.Size = new System.Drawing.Size(1008, 605);
             this.mainPanel.TabIndex = 0;
             this.mainPanel.Resize += new System.EventHandler(this.MainPanel_Resize);
             // 
@@ -444,10 +444,12 @@ namespace SplashImageViewer.Forms
             // 
             // slideshowProgressBar
             // 
-            this.slideshowProgressBar.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.slideshowProgressBar.Location = new System.Drawing.Point(662, 663);
+            this.slideshowProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.slideshowProgressBar.Location = new System.Drawing.Point(0, 635);
+            this.slideshowProgressBar.Margin = new System.Windows.Forms.Padding(0);
             this.slideshowProgressBar.Name = "slideshowProgressBar";
-            this.slideshowProgressBar.Size = new System.Drawing.Size(200, 23);
+            this.slideshowProgressBar.Size = new System.Drawing.Size(1008, 10);
             this.slideshowProgressBar.Step = 1;
             this.slideshowProgressBar.TabIndex = 0;
             // 
