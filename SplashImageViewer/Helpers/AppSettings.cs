@@ -16,7 +16,7 @@ namespace SplashImageViewer.Helpers
             @"SOFTWARE\Splash Image Viewer";
 #endif
 
-        public const int ConfigVersion = 14;
+        public const int ConfigVersion = 15;
         public const int RecentItemsCapacity = 10;
         public const string RegistryRecentItemsKey = RegistryBaseKey + "\\Recent Items";
         public const string RegistryProgramUpdaterKey = RegistryBaseKey + "\\Program Updater";
@@ -53,6 +53,8 @@ namespace SplashImageViewer.Helpers
             { nameof(ForceCheckUpdates), false },
             { nameof(UpdatesLastCheckedTimestamp), default(DateTime).ToString("s") }, // assign default datetime struct value
             { nameof(CurrentUICulture), CultureInfos[0] }, // en
+            { nameof(ScreenSizeWidth), MinScreenSizeWidth },
+            { nameof(ScreenSizeHeight), MinScreenSizeHeight },
         };
 
         public static string RegistryBaseKeyFull => RegKeyRoot.Name;
@@ -138,6 +140,26 @@ namespace SplashImageViewer.Helpers
             set
             {
                 RegKeyRoot.SetValue(nameof(CurrentUICulture), value.Name);
+            }
+        }
+
+        public static int ScreenSizeWidth
+        {
+            get => (int?)RegKeyRoot.GetValue(nameof(ScreenSizeWidth)) ?? 0;
+
+            set
+            {
+                RegKeyRoot.SetValue(nameof(ScreenSizeWidth), value);
+            }
+        }
+
+        public static int ScreenSizeHeight
+        {
+            get => (int?)RegKeyRoot.GetValue(nameof(ScreenSizeHeight)) ?? 0;
+
+            set
+            {
+                RegKeyRoot.SetValue(nameof(ScreenSizeHeight), value);
             }
         }
 

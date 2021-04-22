@@ -171,7 +171,12 @@ namespace SplashImageViewer.Forms
             // ui controls translate
             LocalizeUIElements();
 
-            CheckScreenDimensions();
+            if (!ScreenDimensionsIsValid())
+            {
+                Close();
+            }
+
+            RestoreScreenDimensions();
 
             programInfoLabel.Text = ApplicationInfo.AppHeader;
             memoryAllocatedLabel.Text = string.Empty;
@@ -236,12 +241,13 @@ namespace SplashImageViewer.Forms
             toolTip.SetToolTip(settingsButton, Strings.OpenSettingsButtonToolTip);
         }
 
-        private void CheckScreenDimensions()
+        private bool ScreenDimensionsIsValid()
         {
             // get current screen size
             var screen = Screen.FromControl(this).Bounds;
 
-            if (screen.Width < AppSettings.MinScreenSizeWidth || screen.Height < AppSettings.MinScreenSizeHeight)
+            if (screen.Width < AppSettings.MinScreenSizeWidth ||
+                screen.Height < AppSettings.MinScreenSizeHeight)
             {
                 MessageBox.Show(
                     new Form { TopMost = true },
@@ -250,8 +256,27 @@ namespace SplashImageViewer.Forms
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
-                Close();
+                return false;
             }
+
+            return true;
+        }
+
+        private void RestoreScreenDimensions()
+        {
+            Width = AppSettings.ScreenSizeWidth;
+            Height = AppSettings.ScreenSizeHeight;
+
+            // center form
+            Location = new Point(
+                (Screen.PrimaryScreen.WorkingArea.Width - Width) / 2,
+                (Screen.PrimaryScreen.WorkingArea.Height - Height) / 2);
+        }
+
+        private void SaveScreenDimensions()
+        {
+            AppSettings.ScreenSizeWidth = Width;
+            AppSettings.ScreenSizeHeight = Height;
         }
 
         private void PopulateRecentItemsList()
@@ -1050,6 +1075,7 @@ namespace SplashImageViewer.Forms
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             CheckImageModified();
+            SaveScreenDimensions();
         }
     }
 }
