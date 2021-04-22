@@ -19,7 +19,7 @@ namespace SplashImageViewer.Helpers
 
         public static T? XmlDeserializeFromString<T>(this string objectData)
         {
-            return (T)XmlDeserializeFromString(objectData, typeof(T));
+            return (T?)XmlDeserializeFromString(objectData, typeof(T));
         }
 
         public static object? XmlDeserializeFromString(this string objectData, Type type)
