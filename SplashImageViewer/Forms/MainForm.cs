@@ -938,14 +938,17 @@ namespace SplashImageViewer.Forms
             }
             else
             {
-                slideshowTimer.Interval = AppSettings.SlideshowTransitionSec * 1000;
-                slideshowButton.Image = Resources.Stop_48x48;
-                slideshowProgressBar.Value = slideshowProgressBar.Minimum;
-                slideshowProgressBar.Visible = true;
-                SetNextSlideshowTransitionDate();
-                slideshowTimer.Start();
-                slideshowProgressBarTimer.Start();
-                Screensaver.Disable();
+                if (ImagesModel.Singleton.FilePaths.Count > 1)
+                {
+                    slideshowTimer.Interval = AppSettings.SlideshowTransitionSec * 1000;
+                    slideshowButton.Image = Resources.Stop_48x48;
+                    slideshowProgressBar.Value = slideshowProgressBar.Minimum;
+                    slideshowProgressBar.Visible = true;
+                    SetNextSlideshowTransitionDate();
+                    slideshowTimer.Start();
+                    slideshowProgressBarTimer.Start();
+                    Screensaver.Disable();
+                }
             }
 
             UpdateFilePathText();
