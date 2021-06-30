@@ -16,7 +16,7 @@ namespace SplashImageViewer.Helpers
             @"SOFTWARE\Splash Image Viewer";
 #endif
 
-        public const int ConfigVersion = 15;
+        public const int ConfigVersion = 16;
         public const int RecentItemsCapacity = 10;
         public const string RegistryRecentItemsKey = RegistryBaseKey + "\\Recent Items";
         public const string RegistryProgramUpdaterKey = RegistryBaseKey + "\\Program Updater";
@@ -55,6 +55,7 @@ namespace SplashImageViewer.Helpers
             { nameof(CurrentUICulture), CultureInfos[0] }, // en
             { nameof(ScreenSizeWidth), MinScreenSizeWidth },
             { nameof(ScreenSizeHeight), MinScreenSizeHeight },
+            { nameof(ScreenIsMaximized), false },
         };
 
         public static string RegistryBaseKeyFull => RegKeyRoot.Name;
@@ -160,6 +161,16 @@ namespace SplashImageViewer.Helpers
             set
             {
                 RegKeyRoot.SetValue(nameof(ScreenSizeHeight), value);
+            }
+        }
+
+        public static bool ScreenIsMaximized
+        {
+            get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(ScreenIsMaximized)) ?? string.Empty);
+
+            set
+            {
+                RegKeyRoot.SetValue(nameof(ScreenIsMaximized), value);
             }
         }
 

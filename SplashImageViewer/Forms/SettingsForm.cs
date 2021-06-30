@@ -20,6 +20,8 @@ namespace SplashImageViewer.Forms
             InitializeComponent();
         }
 
+        public bool DefaultSettingsRestored { get; private set; }
+
         private static void ShowExceptionMessage(Exception ex)
         {
             MessageBox.Show(
@@ -173,6 +175,7 @@ namespace SplashImageViewer.Forms
                     ShowExceptionMessage(ex);
                 }
 
+                DefaultSettingsRestored = true;
                 Close();
             }
         }

@@ -264,6 +264,13 @@ namespace SplashImageViewer.Forms
 
         private void RestoreScreenDimensions()
         {
+            if (AppSettings.ScreenIsMaximized)
+            {
+                WindowState = FormWindowState.Maximized;
+                return;
+            }
+
+            WindowState = FormWindowState.Normal;
             Width = AppSettings.ScreenSizeWidth;
             Height = AppSettings.ScreenSizeHeight;
 
@@ -275,8 +282,15 @@ namespace SplashImageViewer.Forms
 
         private void SaveScreenDimensions()
         {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                AppSettings.ScreenIsMaximized = true;
+                return;
+            }
+
             AppSettings.ScreenSizeWidth = Width;
             AppSettings.ScreenSizeHeight = Height;
+            AppSettings.ScreenIsMaximized = false;
         }
 
         private void PopulateRecentItemsList()
@@ -997,6 +1011,11 @@ namespace SplashImageViewer.Forms
         {
             using var settingsForm = new SettingsForm();
             settingsForm.ShowDialog();
+
+            if (settingsForm.DefaultSettingsRestored)
+            {
+                RestoreScreenDimensions();
+            }
 
             var color = Color.FromArgb(AppSettings.ThemeColorArgb);
 
