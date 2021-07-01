@@ -11,12 +11,13 @@ namespace SplashImageViewer.Helpers
     {
         public const string RegistryBaseKey =
 #if DEBUG
-            @"SOFTWARE\Splash Image Viewer [Debug]";
+            @"SOFTWARE\Illuminati Software Inc.\Splash Image Viewer [Debug]";
+
 #else
-            @"SOFTWARE\Splash Image Viewer";
+            @"SOFTWARE\Illuminati Software Inc.\Splash Image Viewer";
 #endif
 
-        public const int ConfigVersion = 16;
+        public const int ConfigVersion = 17;
         public const int RecentItemsCapacity = 10;
         public const string RegistryRecentItemsKey = RegistryBaseKey + "\\Recent Items";
         public const string RegistryProgramUpdaterKey = RegistryBaseKey + "\\Program Updater";
@@ -26,17 +27,6 @@ namespace SplashImageViewer.Helpers
         public const int MainFormCheckMemoryMs = 1000;
         public const int MainFormSlideshowProgressBarUpdateMs = 10;
 
-        public static readonly IReadOnlyList<CultureInfo> CultureInfos = new List<CultureInfo>()
-        {
-            CultureInfo.GetCultureInfo("en"),
-            CultureInfo.GetCultureInfo("ru"),
-        };
-
-        public static readonly IReadOnlyList<int> SlideshowTransitionsSec = new List<int>()
-        {
-            1, 2, 5, 10, 30, 60, 300, 600, 3600,
-        };
-
         private static readonly RegistryKey RegKeyRoot = Registry.CurrentUser.CreateSubKey(RegistryBaseKey);
         private static readonly RegistryKey RegKeyRecentItems = Registry.CurrentUser.CreateSubKey(RegistryRecentItemsKey);
         private static readonly RegistryKey RegKeyProgramUpdater = Registry.CurrentUser.CreateSubKey(RegistryProgramUpdaterKey);
@@ -45,17 +35,28 @@ namespace SplashImageViewer.Helpers
         {
             { nameof(ConfigVersion), ConfigVersion },
             { nameof(ThemeColorArgb), unchecked((int)0xFF000000) }, // black
-            { nameof(SlideshowTransitionSec), SlideshowTransitionsSec[3] }, // 10 sec.
+            { nameof(SlideshowTransitionSec), 10 },
             { nameof(SlideshowOrderIsRandom), false },
             { nameof(SearchInSubdirs), false },
             { nameof(ShowFileDeletePrompt), true },
             { nameof(ShowFileOverwritePrompt), true },
             { nameof(ForceCheckUpdates), false },
             { nameof(UpdatesLastCheckedTimestamp), default(DateTime).ToString("s") }, // assign default datetime struct value
-            { nameof(CurrentUICulture), CultureInfos[0] }, // en
+            { nameof(CurrentUICulture), CultureInfo.GetCultureInfo("en") },
             { nameof(ScreenSizeWidth), MinScreenSizeWidth },
             { nameof(ScreenSizeHeight), MinScreenSizeHeight },
             { nameof(ScreenIsMaximized), false },
+        };
+
+        public static IReadOnlyList<CultureInfo> CultureInfos { get; } = new List<CultureInfo>()
+        {
+            CultureInfo.GetCultureInfo("en"),
+            CultureInfo.GetCultureInfo("ru"),
+        };
+
+        public static IReadOnlyList<int> SlideshowTransitionsSec { get; } = new List<int>()
+        {
+            1, 2, 5, 10, 30, 60, 300, 600, 3600,
         };
 
         public static string RegistryBaseKeyFull => RegKeyRoot.Name;
@@ -132,7 +133,15 @@ namespace SplashImageViewer.Helpers
             }
         }
 
-        public static DateTime UpdatesLastCheckedTimestamp => DateTime.ParseExact((string?)RegKeyRoot.GetValue(nameof(UpdatesLastCheckedTimestamp)) ?? string.Empty, "s", CultureInfo.InvariantCulture);
+        public static DateTime UpdatesLastCheckedTimestamp
+        {
+            get => DateTime.ParseExact((string?)RegKeyRoot.GetValue(nameof(UpdatesLastCheckedTimestamp)) ?? string.Empty, "s", CultureInfo.InvariantCulture);
+
+            private set
+            {
+                RegKeyRoot.SetValue(nameof(UpdatesLastCheckedTimestamp), value.ToString("s", CultureInfo.InvariantCulture));
+            }
+        }
 
         public static CultureInfo CurrentUICulture
         {
@@ -186,7 +195,7 @@ namespace SplashImageViewer.Helpers
 
         public static void UpdateUpdatesLastCheckedTimestamp()
         {
-            RegKeyRoot.SetValue(nameof(UpdatesLastCheckedTimestamp), DateTime.Now.ToString("s"));
+            UpdatesLastCheckedTimestamp = DateTime.Now;
         }
 
         public static void CheckSettings()

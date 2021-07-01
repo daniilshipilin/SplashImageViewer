@@ -41,8 +41,6 @@ namespace SplashImageViewer.Forms
             slideshowTransitionSecComboBox.DataSource = AppSettings.SlideshowTransitionsSec;
             slideshowTransitionSecComboBox.SelectedItem = AppSettings.SlideshowTransitionSec;
 
-            Text = AppSettings.RegistryBaseKeyFull;
-
             colorDialog.Color = Color.FromArgb(AppSettings.ThemeColorArgb);
             colorSelectLabel.BackColor = colorDialog.Color;
             colorLabel.Text = colorDialog.Color.Name.ToUpper();
