@@ -14,9 +14,9 @@ namespace SplashImageViewer.Forms
 
     public partial class MainForm : Form
     {
-        private readonly Timer slideshowTimer = new Timer();
-        private readonly Timer allocatedMemoryTimer = new Timer();
-        private readonly Timer slideshowProgressBarTimer = new Timer();
+        private readonly Timer slideshowTimer;
+        private readonly Timer allocatedMemoryTimer;
+        private readonly Timer slideshowProgressBarTimer;
         private DateTime nextSlideshowTransitionDate;
         private bool fullscreenFormIsActive;
         private bool imageIsModified;
@@ -25,6 +25,10 @@ namespace SplashImageViewer.Forms
         public MainForm()
         {
             InitializeComponent();
+
+            slideshowTimer = new Timer();
+            allocatedMemoryTimer = new Timer();
+            slideshowProgressBarTimer = new Timer();
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
