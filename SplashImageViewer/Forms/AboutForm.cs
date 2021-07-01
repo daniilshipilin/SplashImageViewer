@@ -3,14 +3,18 @@ namespace SplashImageViewer.Forms
     using System;
     using System.Diagnostics;
     using System.Windows.Forms;
+    using ProgramUpdater;
     using SplashImageViewer.Helpers;
     using SplashImageViewer.Properties;
 
     public partial class AboutForm : Form
     {
-        public AboutForm()
+        private readonly Updater updater;
+
+        public AboutForm(Updater updater)
         {
             InitializeComponent();
+            this.updater = updater;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -33,11 +37,11 @@ namespace SplashImageViewer.Forms
             Text = Strings.About;
             aboutLabel.Text = ApplicationInfo.AppInfoFormatted;
 
-            if (ProgramUpdater.ServerVersion is null)
+            if (!updater.CheckUpdateRequested)
             {
                 updatesInfoLabel.Text = $"{Strings.CheckForAvailableUpdates}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
             }
-            else if (ProgramUpdater.ServerVersionIsGreater)
+            else if (updater.ServerVersionIsGreater)
             {
                 updatesInfoLabel.Text = $"{Strings.NewerProgramVersionAvailable}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
             }
@@ -77,7 +81,7 @@ namespace SplashImageViewer.Forms
                 try
                 {
                     updatesInfoLabel.Text = Strings.UpdateInProgress;
-                    await ProgramUpdater.ForceUpdate();
+                    await updater.ForceUpdate();
                     Program.ProgramExit(ExitCode.Success);
                 }
                 catch (Exception ex)
@@ -94,13 +98,13 @@ namespace SplashImageViewer.Forms
                 AppSettings.UpdateUpdatesLastCheckedTimestamp();
                 updatesInfoLabel.Text = Strings.CheckingForUpdates;
 
-                if (await ProgramUpdater.CheckUpdateIsAvailable())
+                if (await updater.CheckUpdateIsAvailable())
                 {
                     updatesInfoLabel.Text = $"{Strings.NewerProgramVersionAvailable}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
 
                     var dr = MessageBox.Show(
                         new Form { TopMost = true },
-                        ProgramUpdater.UpdatePromptFormatted,
+                        updater.UpdatePromptFormatted,
                         Strings.ProgramUpdate,
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question);
@@ -108,7 +112,7 @@ namespace SplashImageViewer.Forms
                     if (dr == DialogResult.Yes)
                     {
                         updatesInfoLabel.Text = Strings.UpdateInProgress;
-                        await ProgramUpdater.Update();
+                        await updater.Update();
                         Program.ProgramExit(ExitCode.Success);
                     }
                 }

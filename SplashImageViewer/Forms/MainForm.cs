@@ -8,6 +8,7 @@ namespace SplashImageViewer.Forms
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Forms;
+    using ProgramUpdater;
     using SplashImageViewer.Helpers;
     using SplashImageViewer.Models;
     using SplashImageViewer.Properties;
@@ -17,6 +18,7 @@ namespace SplashImageViewer.Forms
         private readonly Timer slideshowTimer;
         private readonly Timer allocatedMemoryTimer;
         private readonly Timer slideshowProgressBarTimer;
+        private readonly Updater updater;
         private DateTime nextSlideshowTransitionDate;
         private bool fullscreenFormIsActive;
         private bool imageIsModified;
@@ -29,6 +31,14 @@ namespace SplashImageViewer.Forms
             slideshowTimer = new Timer();
             allocatedMemoryTimer = new Timer();
             slideshowProgressBarTimer = new Timer();
+
+            // init program updater
+            updater = new Updater(
+                ApplicationInfo.BaseDirectory,
+                new Version(GitVersionInformation.SemVer),
+                ApplicationInfo.AppGUID,
+                ApplicationInfo.ExePath,
+                AppSettings.AppVersionsUrl);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -539,18 +549,18 @@ namespace SplashImageViewer.Forms
                 {
                     AppSettings.UpdateUpdatesLastCheckedTimestamp();
 
-                    if (await ProgramUpdater.CheckUpdateIsAvailable())
+                    if (await updater.CheckUpdateIsAvailable())
                     {
                         var dr = MessageBox.Show(
                             new Form { TopMost = true },
-                            ProgramUpdater.UpdatePromptFormatted,
+                            updater.UpdatePromptFormatted,
                             Strings.ProgramUpdate,
                             MessageBoxButtons.YesNo,
                             MessageBoxIcon.Question);
 
                         if (dr == DialogResult.Yes)
                         {
-                            await ProgramUpdater.Update();
+                            await updater.Update();
                             Program.ProgramExit();
                         }
                     }
@@ -1043,7 +1053,7 @@ namespace SplashImageViewer.Forms
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using var aboutForm = new AboutForm();
+            using var aboutForm = new AboutForm(updater);
             aboutForm.ShowDialog();
         }
 

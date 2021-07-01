@@ -17,7 +17,7 @@ namespace SplashImageViewer.Helpers
             @"SOFTWARE\Illuminati Software Inc.\Splash Image Viewer";
 #endif
 
-        public const int ConfigVersion = 17;
+        public const int ConfigVersion = 18;
         public const int RecentItemsCapacity = 10;
         public const string RegistryRecentItemsKey = RegistryBaseKey + "\\Recent Items";
         public const string RegistryProgramUpdaterKey = RegistryBaseKey + "\\Program Updater";
@@ -183,13 +183,13 @@ namespace SplashImageViewer.Helpers
             }
         }
 
-        public static string? AppVersionsXmlUrl
+        public static string AppVersionsUrl
         {
-            get => (string?)RegKeyProgramUpdater.GetValue(nameof(AppVersionsXmlUrl));
+            get => (string?)RegKeyProgramUpdater.GetValue(nameof(AppVersionsUrl)) ?? string.Empty;
 
             private set
             {
-                RegKeyProgramUpdater.SetValue(nameof(AppVersionsXmlUrl), value ?? string.Empty);
+                RegKeyProgramUpdater.SetValue(nameof(AppVersionsUrl), value ?? string.Empty);
             }
         }
 
@@ -223,10 +223,10 @@ namespace SplashImageViewer.Helpers
             }
 
             // check, whether required key for the Program Updater exists
-            if (AppVersionsXmlUrl is null)
+            if (AppVersionsUrl is null)
             {
                 // create key with default value
-                AppVersionsXmlUrl = string.Empty;
+                AppVersionsUrl = string.Empty;
             }
         }
 
