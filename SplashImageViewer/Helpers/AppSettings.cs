@@ -17,7 +17,7 @@ namespace SplashImageViewer.Helpers
             @"SOFTWARE\Illuminati Software Inc.\Splash Image Viewer";
 #endif
 
-        public const int ConfigVersion = 18;
+        public const int CurrentConfigVersion = 19;
         public const int RecentItemsCapacity = 10;
         public const string RegistryRecentItemsKey = RegistryBaseKey + "\\Recent Items";
         public const string RegistryProgramUpdaterKey = RegistryBaseKey + "\\Program Updater";
@@ -33,7 +33,7 @@ namespace SplashImageViewer.Helpers
 
         private static readonly IReadOnlyDictionary<string, object> DefaultSettingsDict = new Dictionary<string, object>()
         {
-            { nameof(ConfigVersion), ConfigVersion },
+            { nameof(ConfigVersion), CurrentConfigVersion },
             { nameof(ThemeColorArgb), unchecked((int)0xFF000000) }, // black
             { nameof(SlideshowTransitionSec), 10 },
             { nameof(SlideshowOrderIsRandom), false },
@@ -62,6 +62,16 @@ namespace SplashImageViewer.Helpers
         public static string RegistryBaseKeyFull => RegKeyRoot.Name;
 
         public static int LabelsColorArgb => (ThemeColorArgb > unchecked((int)0xFF808080)) ? unchecked((int)0xFF000000) : unchecked((int)0xFFFFFFFF);
+
+        public static int? ConfigVersion
+        {
+            get => (int?)RegKeyRoot.GetValue(nameof(ConfigVersion));
+
+            set
+            {
+                RegKeyRoot.SetValue(nameof(ConfigVersion), value ?? 0);
+            }
+        }
 
         public static int ThemeColorArgb
         {
@@ -183,9 +193,9 @@ namespace SplashImageViewer.Helpers
             }
         }
 
-        public static string AppVersionsUrl
+        public static string? AppVersionsUrl
         {
-            get => (string?)RegKeyProgramUpdater.GetValue(nameof(AppVersionsUrl)) ?? string.Empty;
+            get => (string?)RegKeyProgramUpdater.GetValue(nameof(AppVersionsUrl));
 
             private set
             {
@@ -200,9 +210,7 @@ namespace SplashImageViewer.Helpers
 
         public static void CheckSettings()
         {
-            object? version = RegKeyRoot.GetValue(nameof(ConfigVersion));
-
-            if (version is null || (int)version != ConfigVersion)
+            if (ConfigVersion is null || ConfigVersion != CurrentConfigVersion)
             {
                 ResetSettings();
             }

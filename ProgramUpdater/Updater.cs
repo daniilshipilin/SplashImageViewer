@@ -23,11 +23,11 @@ namespace ProgramUpdater
         private readonly string archivesDir;
         private readonly string extractedDir;
         private readonly string exeLaunchPath;
-        private readonly string appVersionsUrl;
+        private readonly string appVersionsUrl = string.Empty;
 
         private AppVersionsJson.Entry? appEntry;
 
-        public Updater(string baseDir, Version clientVersion, Guid appGuid, string exeLaunchPath, string appVersionsUrl)
+        public Updater(string baseDir, Version clientVersion, Guid appGuid, string exeLaunchPath, string? appVersionsUrl)
         {
             this.baseDir = Path.GetFullPath(baseDir);
             tmpDir = Path.Combine(this.baseDir, "update");
@@ -37,7 +37,11 @@ namespace ProgramUpdater
             ServerVersion = clientVersion;
             AppGUID = appGuid;
             this.exeLaunchPath = Path.GetFullPath(exeLaunchPath);
-            this.appVersionsUrl = appVersionsUrl;
+
+            if (appVersionsUrl is not null)
+            {
+                this.appVersionsUrl = appVersionsUrl;
+            }
         }
 
         /// <summary>
