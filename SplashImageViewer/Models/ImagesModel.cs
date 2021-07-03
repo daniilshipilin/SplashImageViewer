@@ -9,9 +9,12 @@ namespace SplashImageViewer.Models
     using System.Threading;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Exif file format enum.<br/>
+    /// Link: <see href="https://www.media.mit.edu/pia/Research/deepview/exif.html"/>.
+    /// </summary>
     public enum ExifTag : int
     {
-        // Exif file format: https://www.media.mit.edu/pia/Research/deepview/exif.html
         ImageDescription = 0x010e, // ascii string - Describes image
         Orientation = 0x0112,      // unsigned short - The orientation of the camera relative to the scene, when the image was captured. The start point of stored data is, '1' means upper left, '3' lower right, '6' upper right, '8' lower left, '9' undefined.
         Software = 0x0131,         // ascii string - Shows firmware(internal software of digicam) version number.
@@ -109,6 +112,8 @@ namespace SplashImageViewer.Models
 
             // start monitoring
             fileWatcher.EnableRaisingEvents = true;
+
+            CurrentFilePathIndex = 0;
 
             if (!fa.HasFlag(FileAttributes.Directory))
             {
