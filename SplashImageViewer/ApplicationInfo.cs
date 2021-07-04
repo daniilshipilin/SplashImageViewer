@@ -55,9 +55,6 @@ namespace SplashImageViewer
         /// <summary>
         /// Sets application command line arguments.
         /// </summary>
-        public static void SetArgs(string[] args)
-        {
-            Args = args.ToList();
-        }
+        public static void SetArgs(string[] args) => Args = args.ToList();
     }
 }

@@ -17,20 +17,12 @@ namespace SplashImageViewer.Helpers
         /// <summary>
         /// Disables the screensaver.
         /// </summary>
-        public static void Disable()
-        {
-            // To disable it until we state otherwise, we use the ES_DISPLAY_REQUIRED and ES_CONTINUOUS flags.
-            SetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_CONTINUOUS);
-        }
+        public static void Disable() => SetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_CONTINUOUS); // To disable it until we state otherwise, we use the ES_DISPLAY_REQUIRED and ES_CONTINUOUS flags.
 
         /// <summary>
         /// Re-enables the screensaver.
         /// </summary>
-        public static void Reset()
-        {
-            // Re-enabling the screensaver requires that we clear the ES_DISPLAY_REQUIRED state flag. We can do this by passing the ES_CONTINUOUS flag alone
-            SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
-        }
+        public static void Reset() => SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS); // Re-enabling the screensaver requires that we clear the ES_DISPLAY_REQUIRED state flag. We can do this by passing the ES_CONTINUOUS flag alone
 
         [DllImport("kernel32.dll")]
         private static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);

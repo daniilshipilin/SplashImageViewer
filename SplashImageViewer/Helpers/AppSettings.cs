@@ -12,7 +12,6 @@ namespace SplashImageViewer.Helpers
         public const string RegistryBaseKey =
 #if DEBUG
             @"SOFTWARE\Illuminati Software Inc.\Splash Image Viewer [Debug]";
-
 #else
             @"SOFTWARE\Illuminati Software Inc.\Splash Image Viewer";
 #endif
@@ -67,150 +66,105 @@ namespace SplashImageViewer.Helpers
         {
             get => (int?)RegKeyRoot.GetValue(nameof(ConfigVersion));
 
-            set
-            {
-                RegKeyRoot.SetValue(nameof(ConfigVersion), value ?? 0);
-            }
+            set => RegKeyRoot.SetValue(nameof(ConfigVersion), value ?? 0);
         }
 
         public static int ThemeColorArgb
         {
             get => (int?)RegKeyRoot.GetValue(nameof(ThemeColorArgb)) ?? 0;
 
-            set
-            {
-                RegKeyRoot.SetValue(nameof(ThemeColorArgb), value);
-            }
+            set => RegKeyRoot.SetValue(nameof(ThemeColorArgb), value);
         }
 
         public static int SlideshowTransitionSec
         {
             get => (int?)RegKeyRoot.GetValue(nameof(SlideshowTransitionSec)) ?? 0;
 
-            set
-            {
-                RegKeyRoot.SetValue(nameof(SlideshowTransitionSec), value);
-            }
+            set => RegKeyRoot.SetValue(nameof(SlideshowTransitionSec), value);
         }
 
         public static bool SlideshowOrderIsRandom
         {
             get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(SlideshowOrderIsRandom)) ?? string.Empty);
 
-            set
-            {
-                RegKeyRoot.SetValue(nameof(SlideshowOrderIsRandom), value);
-            }
+            set => RegKeyRoot.SetValue(nameof(SlideshowOrderIsRandom), value);
         }
 
         public static SearchOption SearchInSubdirs
         {
             get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(SearchInSubdirs)) ?? string.Empty) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
-            set
-            {
-                RegKeyRoot.SetValue(nameof(SearchInSubdirs), value == SearchOption.AllDirectories);
-            }
+            set => RegKeyRoot.SetValue(nameof(SearchInSubdirs), value == SearchOption.AllDirectories);
         }
 
         public static bool ShowFileDeletePrompt
         {
             get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(ShowFileDeletePrompt)) ?? string.Empty);
 
-            set
-            {
-                RegKeyRoot.SetValue(nameof(ShowFileDeletePrompt), value);
-            }
+            set => RegKeyRoot.SetValue(nameof(ShowFileDeletePrompt), value);
         }
 
         public static bool ShowFileOverwritePrompt
         {
             get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(ShowFileOverwritePrompt)) ?? string.Empty);
 
-            set
-            {
-                RegKeyRoot.SetValue(nameof(ShowFileOverwritePrompt), value);
-            }
+            set => RegKeyRoot.SetValue(nameof(ShowFileOverwritePrompt), value);
         }
 
         public static bool ForceCheckUpdates
         {
             get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(ForceCheckUpdates)) ?? string.Empty);
 
-            set
-            {
-                RegKeyRoot.SetValue(nameof(ForceCheckUpdates), value);
-            }
+            set => RegKeyRoot.SetValue(nameof(ForceCheckUpdates), value);
         }
 
         public static DateTime UpdatesLastCheckedTimestamp
         {
             get => DateTime.ParseExact((string?)RegKeyRoot.GetValue(nameof(UpdatesLastCheckedTimestamp)) ?? string.Empty, "s", CultureInfo.InvariantCulture);
 
-            private set
-            {
-                RegKeyRoot.SetValue(nameof(UpdatesLastCheckedTimestamp), value.ToString("s", CultureInfo.InvariantCulture));
-            }
+            private set => RegKeyRoot.SetValue(nameof(UpdatesLastCheckedTimestamp), value.ToString("s", CultureInfo.InvariantCulture));
         }
 
         public static CultureInfo CurrentUICulture
         {
             get => CultureInfo.GetCultureInfo((string?)RegKeyRoot.GetValue(nameof(CurrentUICulture)) ?? string.Empty);
 
-            set
-            {
-                RegKeyRoot.SetValue(nameof(CurrentUICulture), value.Name);
-            }
+            set => RegKeyRoot.SetValue(nameof(CurrentUICulture), value.Name);
         }
 
         public static int ScreenSizeWidth
         {
             get => (int?)RegKeyRoot.GetValue(nameof(ScreenSizeWidth)) ?? 0;
 
-            set
-            {
-                RegKeyRoot.SetValue(nameof(ScreenSizeWidth), value);
-            }
+            set => RegKeyRoot.SetValue(nameof(ScreenSizeWidth), value);
         }
 
         public static int ScreenSizeHeight
         {
             get => (int?)RegKeyRoot.GetValue(nameof(ScreenSizeHeight)) ?? 0;
 
-            set
-            {
-                RegKeyRoot.SetValue(nameof(ScreenSizeHeight), value);
-            }
+            set => RegKeyRoot.SetValue(nameof(ScreenSizeHeight), value);
         }
 
         public static bool ScreenIsMaximized
         {
             get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(ScreenIsMaximized)) ?? string.Empty);
 
-            set
-            {
-                RegKeyRoot.SetValue(nameof(ScreenIsMaximized), value);
-            }
+            set => RegKeyRoot.SetValue(nameof(ScreenIsMaximized), value);
         }
 
         public static string? AppVersionsUrl
         {
             get => (string?)RegKeyProgramUpdater.GetValue(nameof(AppVersionsUrl));
 
-            private set
-            {
-                RegKeyProgramUpdater.SetValue(nameof(AppVersionsUrl), value ?? string.Empty);
-            }
+            private set => RegKeyProgramUpdater.SetValue(nameof(AppVersionsUrl), value ?? string.Empty);
         }
 
-        public static void UpdateUpdatesLastCheckedTimestamp()
-        {
-            UpdatesLastCheckedTimestamp = DateTime.Now;
-        }
+        public static void UpdateUpdatesLastCheckedTimestamp() => UpdatesLastCheckedTimestamp = DateTime.Now;
 
         public static void CheckSettings()
         {
-            if (ConfigVersion is null || ConfigVersion != CurrentConfigVersion)
+            if (ConfigVersion is null or not CurrentConfigVersion)
             {
                 ResetSettings();
             }
@@ -238,10 +192,7 @@ namespace SplashImageViewer.Helpers
             }
         }
 
-        public static IList<string> GetRecentItemsFromRegistry()
-        {
-            return RegKeyRecentItems.GetValueNames().ToList();
-        }
+        public static IList<string> GetRecentItemsFromRegistry() => RegKeyRecentItems.GetValueNames().ToList();
 
         public static void WriteRecentItemsToRegistry(IList<string> items)
         {
@@ -249,7 +200,7 @@ namespace SplashImageViewer.Helpers
             ClearRegistryKey(RegKeyRecentItems);
 
             // write a list of items to the registry
-            foreach (var item in items)
+            foreach (string? item in items)
             {
                 RegKeyRecentItems.SetValue(item, string.Empty);
             }
@@ -257,7 +208,7 @@ namespace SplashImageViewer.Helpers
 
         private static void ClearRegistryKey(RegistryKey regKey)
         {
-            foreach (var key in regKey.GetValueNames())
+            foreach (string? key in regKey.GetValueNames())
             {
                 regKey.DeleteValue(key);
             }

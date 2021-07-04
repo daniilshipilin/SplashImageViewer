@@ -26,14 +26,14 @@ namespace SplashImageViewer.Forms
 
         public MainForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
-            slideshowTimer = new Timer();
-            allocatedMemoryTimer = new Timer();
-            slideshowProgressBarTimer = new Timer();
+            this.slideshowTimer = new Timer();
+            this.allocatedMemoryTimer = new Timer();
+            this.slideshowProgressBarTimer = new Timer();
 
             // init program updater
-            updater = new Updater(
+            this.updater = new Updater(
                 ApplicationInfo.BaseDirectory,
                 new Version(GitVersionInformation.SemVer),
                 ApplicationInfo.AppGUID,
@@ -47,74 +47,74 @@ namespace SplashImageViewer.Forms
             {
                 case Keys.Left:
                 case Keys.Down:
-                    if (previousButton.Enabled)
+                    if (this.previousButton.Enabled)
                     {
-                        SelectPreviousImage();
+                        this.SelectPreviousImage();
                     }
 
                     break;
 
                 case Keys.Right:
                 case Keys.Up:
-                    if (nextButton.Enabled)
+                    if (this.nextButton.Enabled)
                     {
-                        SelectNextImage();
+                        this.SelectNextImage();
                     }
 
                     break;
 
                 case Keys.R:
-                    if (randomButton.Enabled)
+                    if (this.randomButton.Enabled)
                     {
-                        SelectRandomImage();
+                        this.SelectRandomImage();
                     }
 
                     break;
 
                 case Keys.Z:
-                    if (zoomButton.Enabled)
+                    if (this.zoomButton.Enabled)
                     {
-                        ZoomingMode();
+                        this.ZoomingMode();
                     }
 
                     break;
 
                 case Keys.S:
-                    if (settingsButton.Enabled)
+                    if (this.settingsButton.Enabled)
                     {
-                        OpenSettings();
+                        this.OpenSettings();
                     }
 
                     break;
 
                 case Keys.D:
-                    if (rotateImageButton.Enabled)
+                    if (this.rotateImageButton.Enabled)
                     {
-                        RotateImage();
+                        this.RotateImage();
                     }
 
                     break;
 
                 case Keys.Space:
-                    if (slideshowButton.Enabled)
+                    if (this.slideshowButton.Enabled)
                     {
-                        StartStopSlideshow();
+                        this.StartStopSlideshow();
                     }
 
                     break;
 
                 case Keys.F:
-                    if (fullscreenButton.Enabled)
+                    if (this.fullscreenButton.Enabled)
                     {
-                        GoFullscreen();
+                        this.GoFullscreen();
                     }
 
                     break;
 
                 case Keys.Delete:
-                    if (deleteFileButton.Enabled)
+                    if (this.deleteFileButton.Enabled)
                     {
-                        DeleteImage();
+                        this.DeleteImage();
                     }
 
                     break;
@@ -122,7 +122,7 @@ namespace SplashImageViewer.Forms
                 case Keys.Escape:
                     if (ImagesModel.Singleton.Image is not null)
                     {
-                        CloseImage();
+                        this.CloseImage();
                     }
 
                     break;
@@ -131,7 +131,7 @@ namespace SplashImageViewer.Forms
                     break;
             }
 
-            pictureBox.Focus();
+            this.pictureBox.Focus();
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -142,31 +142,24 @@ namespace SplashImageViewer.Forms
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components is not null))
+            if (disposing && (this.components is not null))
             {
-                components.Dispose();
+                this.components.Dispose();
             }
 
-            slideshowTimer.Dispose();
-            allocatedMemoryTimer.Dispose();
+            this.slideshowTimer.Dispose();
+            this.allocatedMemoryTimer.Dispose();
 
             base.Dispose(disposing);
         }
 
         private static string GetFileSizeString(long bytes)
         {
-            if (bytes < 1024)
-            {
-                return $"{bytes} {Strings.Byte}";
-            }
-            else if (bytes < 1048576)
-            {
-                return $"{bytes / 1024D:0.00} {Strings.KByte}";
-            }
-            else
-            {
-                return $"{bytes / 1048576D:0.00} {Strings.MByte}";
-            }
+            return bytes < 1024
+                ? $"{bytes} {Strings.Byte}"
+                : bytes < 1048576
+                    ? $"{bytes / 1024D:0.00} {Strings.KByte}"
+                    : $"{bytes / 1048576D:0.00} {Strings.MByte}";
         }
 
         private static long GetTotalAllocatedMemoryInBytes()
@@ -183,76 +176,76 @@ namespace SplashImageViewer.Forms
             System.Threading.Thread.CurrentThread.CurrentUICulture = AppSettings.CurrentUICulture;
 
             // ui controls translate
-            LocalizeUIElements();
+            this.LocalizeUIElements();
 
-            if (!ScreenDimensionsIsValid())
+            if (!this.ScreenDimensionsIsValid())
             {
-                Close();
+                this.Close();
             }
 
-            RestoreScreenDimensions();
+            this.RestoreScreenDimensions();
 
-            programInfoLabel.Text = ApplicationInfo.AppHeader;
-            memoryAllocatedLabel.Text = string.Empty;
+            this.programInfoLabel.Text = ApplicationInfo.AppHeader;
+            this.memoryAllocatedLabel.Text = string.Empty;
 
             // hide progress bar
-            slideshowProgressBar.Visible = false;
+            this.slideshowProgressBar.Visible = false;
 
-            ClearImageLabels();
+            this.ClearImageLabels();
 
             // check for updates in the background
-            Task.Run(async () => await CheckUpdates());
+            Task.Run(async () => await this.CheckUpdates());
 
-            mainPanel.BackColor = Color.FromArgb(AppSettings.ThemeColorArgb);
-            totalFilesLabel.ForeColor = Color.FromArgb(AppSettings.LabelsColorArgb);
+            this.mainPanel.BackColor = Color.FromArgb(AppSettings.ThemeColorArgb);
+            this.totalFilesLabel.ForeColor = Color.FromArgb(AppSettings.LabelsColorArgb);
 
-            SetControls(false);
+            this.SetControls(false);
 
             // change totalFilesLabel parent
-            totalFilesLabel.Parent = pictureBox;
-            totalFilesLabel.Location = new Point(
-                pictureBox.Size.Width - totalFilesLabel.Size.Width,
-                pictureBox.Size.Height - totalFilesLabel.Size.Height);
+            this.totalFilesLabel.Parent = this.pictureBox;
+            this.totalFilesLabel.Location = new Point(
+                this.pictureBox.Size.Width - this.totalFilesLabel.Size.Width,
+                this.pictureBox.Size.Height - this.totalFilesLabel.Size.Height);
 
-            UpdateTotalFilesLabel();
-            InitTimers();
+            this.UpdateTotalFilesLabel();
+            this.InitTimers();
 
             // mouse wheel event handler
-            MouseWheel += PictureBox_MouseWheel;
+            MouseWheel += this.PictureBox_MouseWheel;
 
             // add recent items
-            PopulateRecentItemsList();
+            this.PopulateRecentItemsList();
 
             // check, if args exist
             if (ApplicationInfo.Args?.Count > 0)
             {
                 // cmd provided filename/folder path
-                OpenImage(Path.GetFullPath(ApplicationInfo.Args.First()));
+                this.OpenImage(Path.GetFullPath(ApplicationInfo.Args.First()));
             }
         }
 
         private void LocalizeUIElements()
         {
             // set ui text
-            fileToolStripMenuItem.Text = Strings.FileToolStripMenuItem;
-            openImageMenuItem.Text = Strings.OpenImageMenuItem;
-            openFolderMenuItem.Text = Strings.OpenFolderMenuItem;
-            closeImageMenuItem.Text = Strings.CloseImageMenuItem;
-            recentItemsMenuItem.Text = Strings.RecentItemsMenuItem;
-            exitMenuItem.Text = Strings.ExitMenuItem;
-            settingsToolStripMenuItem.Text = Strings.SettingsToolStripMenuItem;
-            aboutToolStripMenuItem.Text = Strings.AboutToolStripMenuItem;
+            this.fileToolStripMenuItem.Text = Strings.FileToolStripMenuItem;
+            this.openImageMenuItem.Text = Strings.OpenImageMenuItem;
+            this.openFolderMenuItem.Text = Strings.OpenFolderMenuItem;
+            this.closeImageMenuItem.Text = Strings.CloseImageMenuItem;
+            this.recentItemsMenuItem.Text = Strings.RecentItemsMenuItem;
+            this.exitMenuItem.Text = Strings.ExitMenuItem;
+            this.settingsToolStripMenuItem.Text = Strings.SettingsToolStripMenuItem;
+            this.aboutToolStripMenuItem.Text = Strings.AboutToolStripMenuItem;
 
             // set tooltips
-            toolTip.SetToolTip(previousButton, Strings.PreviousButtonToolTip);
-            toolTip.SetToolTip(nextButton, Strings.NextButtonToolTip);
-            toolTip.SetToolTip(slideshowButton, Strings.SlideshowButtonToolTip);
-            toolTip.SetToolTip(randomButton, Strings.RandomButtonToolTip);
-            toolTip.SetToolTip(deleteFileButton, Strings.DeleteButtonToolTip);
-            toolTip.SetToolTip(fullscreenButton, Strings.FullscreenButtonToolTip);
-            toolTip.SetToolTip(zoomButton, Strings.ZoomButtonToolTip);
-            toolTip.SetToolTip(rotateImageButton, Strings.RotateImageButtonToolTip);
-            toolTip.SetToolTip(settingsButton, Strings.OpenSettingsButtonToolTip);
+            this.toolTip.SetToolTip(this.previousButton, Strings.PreviousButtonToolTip);
+            this.toolTip.SetToolTip(this.nextButton, Strings.NextButtonToolTip);
+            this.toolTip.SetToolTip(this.slideshowButton, Strings.SlideshowButtonToolTip);
+            this.toolTip.SetToolTip(this.randomButton, Strings.RandomButtonToolTip);
+            this.toolTip.SetToolTip(this.deleteFileButton, Strings.DeleteButtonToolTip);
+            this.toolTip.SetToolTip(this.fullscreenButton, Strings.FullscreenButtonToolTip);
+            this.toolTip.SetToolTip(this.zoomButton, Strings.ZoomButtonToolTip);
+            this.toolTip.SetToolTip(this.rotateImageButton, Strings.RotateImageButtonToolTip);
+            this.toolTip.SetToolTip(this.settingsButton, Strings.OpenSettingsButtonToolTip);
         }
 
         private bool ScreenDimensionsIsValid()
@@ -280,39 +273,39 @@ namespace SplashImageViewer.Forms
         {
             if (AppSettings.ScreenIsMaximized)
             {
-                WindowState = FormWindowState.Maximized;
+                this.WindowState = FormWindowState.Maximized;
                 return;
             }
 
-            WindowState = FormWindowState.Normal;
-            Width = AppSettings.ScreenSizeWidth;
-            Height = AppSettings.ScreenSizeHeight;
+            this.WindowState = FormWindowState.Normal;
+            this.Width = AppSettings.ScreenSizeWidth;
+            this.Height = AppSettings.ScreenSizeHeight;
 
             // center form
-            Location = new Point(
-                (Screen.PrimaryScreen.WorkingArea.Width - Width) / 2,
-                (Screen.PrimaryScreen.WorkingArea.Height - Height) / 2);
+            this.Location = new Point(
+                (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
+                (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2);
         }
 
         private void SaveScreenDimensions()
         {
-            if (WindowState == FormWindowState.Maximized)
+            if (this.WindowState == FormWindowState.Maximized)
             {
                 AppSettings.ScreenIsMaximized = true;
                 return;
             }
 
-            AppSettings.ScreenSizeWidth = Width;
-            AppSettings.ScreenSizeHeight = Height;
+            AppSettings.ScreenSizeWidth = this.Width;
+            AppSettings.ScreenSizeHeight = this.Height;
             AppSettings.ScreenIsMaximized = false;
         }
 
         private void PopulateRecentItemsList()
         {
             // get saved values from registry and then populate ToolStripMenuItem
-            foreach (var item in AppSettings.GetRecentItemsFromRegistry())
+            foreach (string? item in AppSettings.GetRecentItemsFromRegistry())
             {
-                if (recentItemsMenuItem.DropDownItems.Count >= AppSettings.RecentItemsCapacity)
+                if (this.recentItemsMenuItem.DropDownItems.Count >= AppSettings.RecentItemsCapacity)
                 {
                     break;
                 }
@@ -320,34 +313,34 @@ namespace SplashImageViewer.Forms
                 if (File.Exists(item))
                 {
                     var menuItem = new ToolStripMenuItem { Text = item };
-                    menuItem.Click += OpenRecentItem_Click;
-                    recentItemsMenuItem.DropDownItems.Add(menuItem);
+                    menuItem.Click += this.OpenRecentItem_Click;
+                    this.recentItemsMenuItem.DropDownItems.Add(menuItem);
                 }
             }
 
-            recentItemsMenuItem.Enabled = recentItemsMenuItem.DropDownItems.Count > 0;
-            WriteRecentItemsToRegistry();
+            this.recentItemsMenuItem.Enabled = this.recentItemsMenuItem.DropDownItems.Count > 0;
+            this.WriteRecentItemsToRegistry();
         }
 
         private void ClearRecentItemsList()
         {
-            for (int i = 0; i < recentItemsMenuItem.DropDownItems.Count; i++)
+            for (int i = 0; i < this.recentItemsMenuItem.DropDownItems.Count; i++)
             {
                 // unsubscribe event handlers first
-                recentItemsMenuItem.DropDownItems[i].Click -= OpenRecentItem_Click;
+                this.recentItemsMenuItem.DropDownItems[i].Click -= this.OpenRecentItem_Click;
             }
 
-            recentItemsMenuItem.DropDownItems.Clear();
-            recentItemsMenuItem.Enabled = false;
+            this.recentItemsMenuItem.DropDownItems.Clear();
+            this.recentItemsMenuItem.Enabled = false;
         }
 
         private void WriteRecentItemsToRegistry()
         {
             var items = new List<string>();
 
-            for (int i = 0; i < recentItemsMenuItem.DropDownItems.Count; i++)
+            for (int i = 0; i < this.recentItemsMenuItem.DropDownItems.Count; i++)
             {
-                items.Add(recentItemsMenuItem.DropDownItems[i].Text);
+                items.Add(this.recentItemsMenuItem.DropDownItems[i].Text);
             }
 
             AppSettings.WriteRecentItemsToRegistry(items);
@@ -356,26 +349,26 @@ namespace SplashImageViewer.Forms
         private void UpdateRecentItemsEvent(object sender)
         {
             // check if caller is on a different thread (invoke required)
-            if (InvokeRequired)
+            if (this.InvokeRequired)
             {
-                Invoke(new MethodInvoker(UpdateRecentItems));
+                this.Invoke(new MethodInvoker(this.UpdateRecentItems));
             }
             else
             {
-                UpdateRecentItems();
+                this.UpdateRecentItems();
             }
         }
 
         private void UpdateRecentItems()
         {
             // check if file paths exist (remove, if don't)
-            for (int i = 0; i < recentItemsMenuItem.DropDownItems.Count; i++)
+            for (int i = 0; i < this.recentItemsMenuItem.DropDownItems.Count; i++)
             {
-                if (!File.Exists(recentItemsMenuItem.DropDownItems[i].Text))
+                if (!File.Exists(this.recentItemsMenuItem.DropDownItems[i].Text))
                 {
                     // unsubscribe event handlers first
-                    recentItemsMenuItem.DropDownItems[i].Click -= OpenRecentItem_Click;
-                    recentItemsMenuItem.DropDownItems.RemoveAt(i);
+                    this.recentItemsMenuItem.DropDownItems[i].Click -= this.OpenRecentItem_Click;
+                    this.recentItemsMenuItem.DropDownItems.RemoveAt(i);
                     --i;
                 }
             }
@@ -384,9 +377,9 @@ namespace SplashImageViewer.Forms
             bool addItem = true;
 
             // add / remove items
-            for (int i = 0; i < recentItemsMenuItem.DropDownItems.Count; i++)
+            for (int i = 0; i < this.recentItemsMenuItem.DropDownItems.Count; i++)
             {
-                if (recentItemsMenuItem.DropDownItems[i].Text.Equals(path))
+                if (this.recentItemsMenuItem.DropDownItems[i].Text.Equals(path))
                 {
                     addItem = false;
                     break;
@@ -395,42 +388,42 @@ namespace SplashImageViewer.Forms
 
             if (addItem)
             {
-                if (recentItemsMenuItem.DropDownItems.Count >= AppSettings.RecentItemsCapacity)
+                if (this.recentItemsMenuItem.DropDownItems.Count >= AppSettings.RecentItemsCapacity)
                 {
-                    recentItemsMenuItem.DropDownItems[0].Click -= OpenRecentItem_Click;
-                    recentItemsMenuItem.DropDownItems.RemoveAt(0);
+                    this.recentItemsMenuItem.DropDownItems[0].Click -= this.OpenRecentItem_Click;
+                    this.recentItemsMenuItem.DropDownItems.RemoveAt(0);
                 }
 
                 var menuItem = new ToolStripMenuItem { Text = path };
-                menuItem.Click += OpenRecentItem_Click;
-                recentItemsMenuItem.DropDownItems.Add(menuItem);
+                menuItem.Click += this.OpenRecentItem_Click;
+                this.recentItemsMenuItem.DropDownItems.Add(menuItem);
             }
 
-            recentItemsMenuItem.Enabled = recentItemsMenuItem.DropDownItems.Count > 0;
-            WriteRecentItemsToRegistry();
+            this.recentItemsMenuItem.Enabled = this.recentItemsMenuItem.DropDownItems.Count > 0;
+            this.WriteRecentItemsToRegistry();
         }
 
         private void UpdatePictureBoxEvent(object sender)
         {
             // check if caller is on a different thread (invoke required)
-            if (InvokeRequired)
+            if (this.InvokeRequired)
             {
-                Invoke(new MethodInvoker(UpdatePictureBox));
+                this.Invoke(new MethodInvoker(this.UpdatePictureBox));
             }
             else
             {
-                UpdatePictureBox();
+                this.UpdatePictureBox();
             }
         }
 
         private async void UpdatePictureBox()
         {
             // set picturebox image only, when fullscreen mode is not active
-            if (!fullscreenFormIsActive)
+            if (!this.fullscreenFormIsActive)
             {
                 if (ImagesModel.Singleton.FilePaths.Count == 0)
                 {
-                    CloseImage();
+                    this.CloseImage();
                     return;
                 }
 
@@ -441,43 +434,43 @@ namespace SplashImageViewer.Forms
                 }
                 catch (Exception ex)
                 {
-                    ShowExceptionMessage(ex);
+                    this.ShowExceptionMessage(ex);
                     return;
                 }
 
                 if (ImagesModel.Singleton.Image is not null)
                 {
-                    pictureBox.Image = ImagesModel.Singleton.Image;
-                    UpdateFilePathText();
-                    UpdateImageLabels();
-                    ZoomOut();
-                    ModifyPictureBoxSizeMode();
-                    UpdateTotalFilesLabel();
-                    SetControls(true);
+                    this.pictureBox.Image = ImagesModel.Singleton.Image;
+                    this.UpdateFilePathText();
+                    this.UpdateImageLabels();
+                    this.ZoomOut();
+                    this.ModifyPictureBoxSizeMode();
+                    this.UpdateTotalFilesLabel();
+                    this.SetControls(true);
                 }
             }
         }
 
         private void SubscribeEvents()
         {
-            if (!eventsSubscribed)
+            if (!this.eventsSubscribed)
             {
-                ImagesModel.Singleton.CurrentFilePathIndexChanged += UpdateRecentItemsEvent;
-                ImagesModel.Singleton.CurrentFilePathIndexChanged += UpdatePictureBoxEvent;
-                eventsSubscribed = true;
+                ImagesModel.Singleton.CurrentFilePathIndexChanged += this.UpdateRecentItemsEvent;
+                ImagesModel.Singleton.CurrentFilePathIndexChanged += this.UpdatePictureBoxEvent;
+                this.eventsSubscribed = true;
             }
 
-            UpdateRecentItems();
-            UpdatePictureBox();
+            this.UpdateRecentItems();
+            this.UpdatePictureBox();
         }
 
         private void UnsubscribeEvents()
         {
-            if (eventsSubscribed)
+            if (this.eventsSubscribed)
             {
-                ImagesModel.Singleton.CurrentFilePathIndexChanged -= UpdateRecentItemsEvent;
-                ImagesModel.Singleton.CurrentFilePathIndexChanged -= UpdatePictureBoxEvent;
-                eventsSubscribed = false;
+                ImagesModel.Singleton.CurrentFilePathIndexChanged -= this.UpdateRecentItemsEvent;
+                ImagesModel.Singleton.CurrentFilePathIndexChanged -= this.UpdatePictureBoxEvent;
+                this.eventsSubscribed = false;
             }
         }
 
@@ -485,59 +478,59 @@ namespace SplashImageViewer.Forms
         {
             if (e.Delta > 0)
             {
-                ZoomIn();
+                this.ZoomIn();
             }
             else if (e.Delta < 0)
             {
-                ZoomOut();
+                this.ZoomOut();
             }
         }
 
         private void ZoomIn()
         {
-            if (pictureBox.Image is not null)
+            if (this.pictureBox.Image is not null)
             {
-                if (mainPanel.ClientSize.Width < pictureBox.Image.Width ||
-                    mainPanel.ClientSize.Height < pictureBox.Image.Height)
+                if (this.mainPanel.ClientSize.Width < this.pictureBox.Image.Width ||
+                    this.mainPanel.ClientSize.Height < this.pictureBox.Image.Height)
                 {
-                    pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
-                    pictureBox.Size = new Size(pictureBox.Image.Width, pictureBox.Image.Height);
-                    pictureBox.Dock = DockStyle.None;
-                    zoomButton.Image = Resources.ZoomOut_48x48;
+                    this.pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+                    this.pictureBox.Size = new Size(this.pictureBox.Image.Width, this.pictureBox.Image.Height);
+                    this.pictureBox.Dock = DockStyle.None;
+                    this.zoomButton.Image = Resources.ZoomOut_48x48;
 
                     // center panel scroll bars (centered zoom in effect)
-                    mainPanel.AutoScrollPosition = new Point(
-                        (pictureBox.Width / 2) - (mainPanel.ClientSize.Width / 2),
-                        (pictureBox.Height / 2) - (mainPanel.ClientSize.Height / 2));
+                    this.mainPanel.AutoScrollPosition = new Point(
+                        (this.pictureBox.Width / 2) - (this.mainPanel.ClientSize.Width / 2),
+                        (this.pictureBox.Height / 2) - (this.mainPanel.ClientSize.Height / 2));
                 }
             }
         }
 
         private void ZoomOut()
         {
-            if (pictureBox.Image is not null)
+            if (this.pictureBox.Image is not null)
             {
-                if (mainPanel.ClientSize.Width < pictureBox.Image.Width ||
-                mainPanel.ClientSize.Height < pictureBox.Image.Height)
+                if (this.mainPanel.ClientSize.Width < this.pictureBox.Image.Width ||
+                this.mainPanel.ClientSize.Height < this.pictureBox.Image.Height)
                 {
-                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox.Size = new Size(mainPanel.Size.Width, mainPanel.Size.Height);
-                    pictureBox.Dock = DockStyle.Fill;
-                    zoomButton.Image = Resources.ZoomIn_48x48;
+                    this.pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    this.pictureBox.Size = new Size(this.mainPanel.Size.Width, this.mainPanel.Size.Height);
+                    this.pictureBox.Dock = DockStyle.Fill;
+                    this.zoomButton.Image = Resources.ZoomIn_48x48;
                 }
             }
         }
 
         private void InitTimers()
         {
-            slideshowTimer.Tick += SlideshowHandler;
+            this.slideshowTimer.Tick += this.SlideshowHandler;
 
-            allocatedMemoryTimer.Tick += CheckMemoryAllocated;
-            allocatedMemoryTimer.Interval = AppSettings.MainFormCheckMemoryMs;
-            allocatedMemoryTimer.Start();
+            this.allocatedMemoryTimer.Tick += this.CheckMemoryAllocated;
+            this.allocatedMemoryTimer.Interval = AppSettings.MainFormCheckMemoryMs;
+            this.allocatedMemoryTimer.Start();
 
-            slideshowProgressBarTimer.Tick += SlideshowProgressBarHandler;
-            slideshowProgressBarTimer.Interval = AppSettings.MainFormSlideshowProgressBarUpdateMs;
+            this.slideshowProgressBarTimer.Tick += this.SlideshowProgressBarHandler;
+            this.slideshowProgressBarTimer.Interval = AppSettings.MainFormSlideshowProgressBarUpdateMs;
         }
 
         private async Task CheckUpdates()
@@ -549,39 +542,36 @@ namespace SplashImageViewer.Forms
                 {
                     AppSettings.UpdateUpdatesLastCheckedTimestamp();
 
-                    if (await updater.CheckUpdateIsAvailable())
+                    if (await this.updater.CheckUpdateIsAvailable())
                     {
                         var dr = MessageBox.Show(
                             new Form { TopMost = true },
-                            updater.UpdatePromptFormatted,
+                            this.updater.UpdatePromptFormatted,
                             Strings.ProgramUpdate,
                             MessageBoxButtons.YesNo,
                             MessageBoxIcon.Question);
 
                         if (dr == DialogResult.Yes)
                         {
-                            await updater.Update();
+                            await this.updater.Update();
                             Program.ProgramExit();
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    ShowExceptionMessage(ex);
+                    this.ShowExceptionMessage(ex);
                 }
             }
         }
 
-        private void CheckMemoryAllocated(object? sender, EventArgs e)
-        {
-            memoryAllocatedLabel.Text = $"{Strings.MemoryAllocated}: {GetTotalAllocatedMemoryInBytes() / 1048576D:0.00} {Strings.MByte}";
-        }
+        private void CheckMemoryAllocated(object? sender, EventArgs e) => this.memoryAllocatedLabel.Text = $"{Strings.MemoryAllocated}: {GetTotalAllocatedMemoryInBytes() / 1048576D:0.00} {Strings.MByte}";
 
         private void ShowExceptionMessage(Exception ex)
         {
-            pictureBox.Image = Resources.Error_64x64;
-            ZoomOut();
-            ModifyPictureBoxSizeMode();
+            this.pictureBox.Image = Resources.Error_64x64;
+            this.ZoomOut();
+            this.ModifyPictureBoxSizeMode();
 
             MessageBox.Show(
                 new Form { TopMost = true },
@@ -595,125 +585,117 @@ namespace SplashImageViewer.Forms
         {
             try
             {
-                UnsubscribeEvents();
+                this.UnsubscribeEvents();
                 ImagesModel.Singleton.DisposeResources();
                 ImagesModel.Singleton.Init(path, AppSettings.SearchInSubdirs);
-                SubscribeEvents();
+                this.SubscribeEvents();
             }
             catch (Exception ex)
             {
-                ShowExceptionMessage(ex);
+                this.ShowExceptionMessage(ex);
             }
         }
 
         private void CloseImage()
         {
-            CheckImageModified();
+            this.CheckImageModified();
 
-            if (slideshowTimer.Enabled)
+            if (this.slideshowTimer.Enabled)
             {
-                slideshowProgressBar.Visible = false;
-                slideshowTimer.Stop();
-                slideshowProgressBarTimer.Stop();
+                this.slideshowProgressBar.Visible = false;
+                this.slideshowTimer.Stop();
+                this.slideshowProgressBarTimer.Stop();
                 Screensaver.Reset();
             }
 
-            if (pictureBox.Dock == DockStyle.None)
+            if (this.pictureBox.Dock == DockStyle.None)
             {
-                ZoomOut();
+                this.ZoomOut();
             }
 
-            slideshowButton.Image = Resources.Play_48x48;
-            SetControls(false);
-            UnsubscribeEvents();
+            this.slideshowButton.Image = Resources.Play_48x48;
+            this.SetControls(false);
+            this.UnsubscribeEvents();
             ImagesModel.Singleton.DisposeResources();
-            pictureBox.Image = null;
-            pictureBox.Focus();
-            UpdateFilePathText();
-            ClearImageLabels();
-            UpdateTotalFilesLabel();
+            this.pictureBox.Image = null;
+            this.pictureBox.Focus();
+            this.UpdateFilePathText();
+            this.ClearImageLabels();
+            this.UpdateTotalFilesLabel();
             GC.Collect();
         }
 
         private void UpdateFilePathText()
         {
-            if (slideshowTimer.Enabled)
+            if (this.slideshowTimer.Enabled)
             {
-                Text = $"{ImagesModel.Singleton.CurrentFilePath} - {Strings.SlideshowEnabled}";
+                this.Text = $"{ImagesModel.Singleton.CurrentFilePath} - {Strings.SlideshowEnabled}";
             }
-            else if (imageIsModified)
+            else if (this.imageIsModified)
             {
-                Text = $"{ImagesModel.Singleton.CurrentFilePath} - {Strings.ImageModifiedCaps}";
+                this.Text = $"{ImagesModel.Singleton.CurrentFilePath} - {Strings.ImageModifiedCaps}";
             }
             else if (ImagesModel.Singleton.Image is not null)
             {
-                Text = ImagesModel.Singleton.CurrentFilePath;
+                this.Text = ImagesModel.Singleton.CurrentFilePath;
             }
             else
             {
                 // default text
-                Text = ApplicationInfo.AppProduct;
+                this.Text = ApplicationInfo.AppProduct;
             }
         }
 
         private void ClearImageLabels()
         {
-            imageDimensionsLabel.Text = string.Empty;
-            imageSizeLabel.Text = string.Empty;
-            imageTypeLabel.Text = string.Empty;
+            this.imageDimensionsLabel.Text = string.Empty;
+            this.imageSizeLabel.Text = string.Empty;
+            this.imageTypeLabel.Text = string.Empty;
         }
 
         private void UpdateImageLabels()
         {
             if (ImagesModel.Singleton.Image is not null)
             {
-                imageDimensionsLabel.Text = $"{Strings.Dimensions}: {ImagesModel.Singleton.Image.Width}x{ImagesModel.Singleton.Image.Height}";
-                imageSizeLabel.Text = $"{Strings.FileSize}: {GetFileSizeString(new FileInfo(ImagesModel.Singleton.CurrentFilePath).Length)}";
-                imageTypeLabel.Text = $"{Strings.Type}: {ImagesModel.Singleton.ImageFormatDescription}";
+                this.imageDimensionsLabel.Text = $"{Strings.Dimensions}: {ImagesModel.Singleton.Image.Width}x{ImagesModel.Singleton.Image.Height}";
+                this.imageSizeLabel.Text = $"{Strings.FileSize}: {GetFileSizeString(new FileInfo(ImagesModel.Singleton.CurrentFilePath).Length)}";
+                this.imageTypeLabel.Text = $"{Strings.Type}: {ImagesModel.Singleton.ImageFormatDescription}";
             }
         }
 
         private void UpdateTotalFilesLabel()
         {
-            totalFilesLabel.Text = ImagesModel.Singleton.Image is not null ?
+            this.totalFilesLabel.Text = ImagesModel.Singleton.Image is not null ?
                 $"{ImagesModel.Singleton.CurrentFilePathIndex + 1} / {ImagesModel.Singleton.FilePaths.Count}" :
                 string.Empty;
         }
 
         private void SetControls(bool state)
         {
-            slideshowButton.Enabled = state;
-            previousButton.Enabled = state;
-            nextButton.Enabled = state;
-            randomButton.Enabled = state;
-            fullscreenButton.Enabled = state;
-            rotateImageButton.Enabled = state;
-            deleteFileButton.Enabled = state;
-            zoomButton.Enabled = state;
-            closeImageMenuItem.Enabled = state;
+            this.slideshowButton.Enabled = state;
+            this.previousButton.Enabled = state;
+            this.nextButton.Enabled = state;
+            this.randomButton.Enabled = state;
+            this.fullscreenButton.Enabled = state;
+            this.rotateImageButton.Enabled = state;
+            this.deleteFileButton.Enabled = state;
+            this.zoomButton.Enabled = state;
+            this.closeImageMenuItem.Enabled = state;
 
             // enable/disable right click context menu
-            rightClickMenuStrip.Enabled = state;
+            this.rightClickMenuStrip.Enabled = state;
         }
 
-        private void MainPanel_Resize(object sender, EventArgs e)
-        {
-            ModifyPictureBoxSizeMode();
-        }
+        private void MainPanel_Resize(object sender, EventArgs e) => this.ModifyPictureBoxSizeMode();
 
         private void ModifyPictureBoxSizeMode()
         {
-            if (pictureBox.Image is not null)
+            if (this.pictureBox.Image is not null)
             {
-                if (mainPanel.ClientSize.Width < pictureBox.Image.Width ||
-                mainPanel.ClientSize.Height < pictureBox.Image.Height)
-                {
-                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                }
-                else
-                {
-                    pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
-                }
+                this.pictureBox.SizeMode = this.mainPanel.ClientSize.Width < this.pictureBox.Image.Width ||
+                this.mainPanel.ClientSize.Height < this.pictureBox.Image.Height
+                    ? PictureBoxSizeMode.Zoom
+                    : PictureBoxSizeMode.CenterImage;
             }
         }
 
@@ -728,35 +710,32 @@ namespace SplashImageViewer.Forms
                 ImagesModel.Singleton.SelectNextImageIndex();
             }
 
-            SetNextSlideshowTransitionDate();
+            this.SetNextSlideshowTransitionDate();
         }
 
-        private void SetNextSlideshowTransitionDate()
-        {
-            nextSlideshowTransitionDate = DateTime.Now.AddMilliseconds(slideshowTimer.Interval);
-        }
+        private void SetNextSlideshowTransitionDate() => this.nextSlideshowTransitionDate = DateTime.Now.AddMilliseconds(this.slideshowTimer.Interval);
 
         private void SlideshowProgressBarHandler(object? sender, EventArgs e)
         {
-            int progress = (int)((slideshowTimer.Interval - (nextSlideshowTransitionDate - DateTime.Now).TotalMilliseconds) / slideshowTimer.Interval * slideshowProgressBar.Maximum);
+            int progress = (int)((this.slideshowTimer.Interval - (this.nextSlideshowTransitionDate - DateTime.Now).TotalMilliseconds) / this.slideshowTimer.Interval * this.slideshowProgressBar.Maximum);
 
             // progress bar value synchronization hack
-            if (progress < slideshowProgressBar.Maximum - slideshowProgressBar.Step)
+            if (progress < this.slideshowProgressBar.Maximum - this.slideshowProgressBar.Step)
             {
-                slideshowProgressBar.Value = progress + slideshowProgressBar.Step;
-                slideshowProgressBar.Value = progress;
+                this.slideshowProgressBar.Value = progress + this.slideshowProgressBar.Step;
+                this.slideshowProgressBar.Value = progress;
             }
             else
             {
-                slideshowProgressBar.Value = slideshowProgressBar.Maximum - slideshowProgressBar.Step;
-                slideshowProgressBar.Value = slideshowProgressBar.Maximum;
+                this.slideshowProgressBar.Value = this.slideshowProgressBar.Maximum - this.slideshowProgressBar.Step;
+                this.slideshowProgressBar.Value = this.slideshowProgressBar.Maximum;
             }
         }
 
         private void GoFullscreen()
         {
-            CheckImageModified();
-            fullscreenFormIsActive = true;
+            this.CheckImageModified();
+            this.fullscreenFormIsActive = true;
             Cursor.Hide();
 
             // get current display location/bounds, so that fullscreen form is displayed on the same display as the main form
@@ -764,27 +743,27 @@ namespace SplashImageViewer.Forms
 
             try
             {
-                using var fullscreenForm = new FullscreenForm(screen, slideshowTimer.Enabled);
+                using var fullscreenForm = new FullscreenForm(screen, this.slideshowTimer.Enabled);
                 fullscreenForm.ShowDialog();
             }
             catch (Exception ex)
             {
                 Cursor.Show();
-                ShowExceptionMessage(ex);
+                this.ShowExceptionMessage(ex);
             }
 
-            fullscreenFormIsActive = false;
+            this.fullscreenFormIsActive = false;
             Cursor.Show();
-            UpdatePictureBox();
+            this.UpdatePictureBox();
         }
 
         private void CheckImageModified()
         {
-            if (imageIsModified)
+            if (this.imageIsModified)
             {
-                OverwriteImage();
-                imageIsModified = false;
-                UpdateFilePathText();
+                this.OverwriteImage();
+                this.imageIsModified = false;
+                this.UpdateFilePathText();
             }
         }
 
@@ -807,7 +786,7 @@ namespace SplashImageViewer.Forms
                     }
                     catch (Exception ex)
                     {
-                        ShowExceptionMessage(ex);
+                        this.ShowExceptionMessage(ex);
                     }
                 }
             }
@@ -815,57 +794,51 @@ namespace SplashImageViewer.Forms
 
         private void OpenImage_Click(object sender, EventArgs e)
         {
-            CheckImageModified();
+            this.CheckImageModified();
 
             using var ofd = new OpenFileDialog() { Filter = "Image Files|*.jpg; *.jpeg; *.jpe; *.jfif; *.bmp; *.png; *.gif; *.ico; *.tif|All Files|*.*" };
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                OpenImage(ofd.FileName);
+                this.OpenImage(ofd.FileName);
             }
         }
 
         private void OpenFolder_Click(object sender, EventArgs e)
         {
-            CheckImageModified();
+            this.CheckImageModified();
 
             using var fbd = new FolderBrowserDialog();
 
             if (fbd.ShowDialog() == DialogResult.OK)
             {
-                OpenImage(fbd.SelectedPath);
+                this.OpenImage(fbd.SelectedPath);
             }
         }
 
-        private void CloseImage_Click(object sender, EventArgs e)
-        {
-            CloseImage();
-        }
+        private void CloseImage_Click(object sender, EventArgs e) => this.CloseImage();
 
         private void OpenRecentItem_Click(object? sender, EventArgs e)
         {
-            CheckImageModified();
+            this.CheckImageModified();
 
             if (sender is ToolStripMenuItem item)
             {
-                OpenImage(item.Text);
+                this.OpenImage(item.Text);
             }
         }
 
         private void Exit_Click(object sender, EventArgs e)
         {
-            CheckImageModified();
-            Close();
+            this.CheckImageModified();
+            this.Close();
         }
 
-        private void DeleteFileButton_Click(object sender, EventArgs e)
-        {
-            DeleteImage();
-        }
+        private void DeleteFileButton_Click(object sender, EventArgs e) => this.DeleteImage();
 
         private void DeleteImage()
         {
-            CheckImageModified();
+            this.CheckImageModified();
 
             if (AppSettings.ShowFileDeletePrompt)
             {
@@ -888,113 +861,89 @@ namespace SplashImageViewer.Forms
             }
             catch (Exception ex)
             {
-                ShowExceptionMessage(ex);
+                this.ShowExceptionMessage(ex);
             }
         }
 
-        private void ZoomButton_Click(object sender, EventArgs e)
-        {
-            ZoomingMode();
-        }
+        private void ZoomButton_Click(object sender, EventArgs e) => this.ZoomingMode();
 
         private void ZoomingMode()
         {
-            if (pictureBox.Dock == DockStyle.None)
+            if (this.pictureBox.Dock == DockStyle.None)
             {
-                ZoomOut();
+                this.ZoomOut();
             }
             else
             {
-                ZoomIn();
+                this.ZoomIn();
             }
         }
 
-        private void FullscreenButton_Click(object sender, EventArgs e)
-        {
-            GoFullscreen();
-        }
+        private void FullscreenButton_Click(object sender, EventArgs e) => this.GoFullscreen();
 
-        private void PreviousButton_Click(object sender, EventArgs e)
-        {
-            SelectPreviousImage();
-        }
+        private void PreviousButton_Click(object sender, EventArgs e) => this.SelectPreviousImage();
 
         private void SelectPreviousImage()
         {
-            CheckImageModified();
+            this.CheckImageModified();
             ImagesModel.Singleton.SelectPreviousImageIndex();
         }
 
-        private void NextButton_Click(object sender, EventArgs e)
-        {
-            SelectNextImage();
-        }
+        private void NextButton_Click(object sender, EventArgs e) => this.SelectNextImage();
 
         private void SelectNextImage()
         {
-            CheckImageModified();
+            this.CheckImageModified();
             ImagesModel.Singleton.SelectNextImageIndex();
         }
 
-        private void RandomButton_Click(object sender, EventArgs e)
-        {
-            SelectRandomImage();
-        }
+        private void RandomButton_Click(object sender, EventArgs e) => this.SelectRandomImage();
 
         private void SelectRandomImage()
         {
-            CheckImageModified();
+            this.CheckImageModified();
             ImagesModel.Singleton.SelectRandomImageIndex();
         }
 
-        private void SlideshowButton_Click(object sender, EventArgs e)
-        {
-            StartStopSlideshow();
-        }
+        private void SlideshowButton_Click(object sender, EventArgs e) => this.StartStopSlideshow();
 
         private void StartStopSlideshow()
         {
-            CheckImageModified();
+            this.CheckImageModified();
 
-            if (slideshowTimer.Enabled)
+            if (this.slideshowTimer.Enabled)
             {
-                slideshowProgressBar.Visible = false;
-                slideshowTimer.Stop();
-                slideshowProgressBarTimer.Stop();
-                slideshowButton.Image = Resources.Play_48x48;
+                this.slideshowProgressBar.Visible = false;
+                this.slideshowTimer.Stop();
+                this.slideshowProgressBarTimer.Stop();
+                this.slideshowButton.Image = Resources.Play_48x48;
                 Screensaver.Reset();
             }
             else
             {
                 if (ImagesModel.Singleton.FilePaths.Count > 1)
                 {
-                    slideshowTimer.Interval = AppSettings.SlideshowTransitionSec * 1000;
-                    slideshowButton.Image = Resources.Stop_48x48;
-                    slideshowProgressBar.Value = slideshowProgressBar.Minimum;
-                    slideshowProgressBar.Visible = true;
-                    SetNextSlideshowTransitionDate();
-                    slideshowTimer.Start();
-                    slideshowProgressBarTimer.Start();
+                    this.slideshowTimer.Interval = AppSettings.SlideshowTransitionSec * 1000;
+                    this.slideshowButton.Image = Resources.Stop_48x48;
+                    this.slideshowProgressBar.Value = this.slideshowProgressBar.Minimum;
+                    this.slideshowProgressBar.Visible = true;
+                    this.SetNextSlideshowTransitionDate();
+                    this.slideshowTimer.Start();
+                    this.slideshowProgressBarTimer.Start();
                     Screensaver.Disable();
                 }
             }
 
-            UpdateFilePathText();
+            this.UpdateFilePathText();
         }
 
-        private void SettingsButton_Click(object sender, EventArgs e)
-        {
-            OpenSettings();
-        }
+        private void SettingsButton_Click(object sender, EventArgs e) => this.OpenSettings();
 
-        private void RotateImageButton_Click(object sender, EventArgs e)
-        {
-            RotateImage();
-        }
+        private void RotateImageButton_Click(object sender, EventArgs e) => this.RotateImage();
 
         private void RotateImage()
         {
-            if (slideshowTimer.Enabled)
+            if (this.slideshowTimer.Enabled)
             {
                 MessageBox.Show(
                     new Form { TopMost = true },
@@ -1010,16 +959,13 @@ namespace SplashImageViewer.Forms
             {
                 // pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
                 ImagesModel.Singleton.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                pictureBox.Refresh();
-                imageIsModified = true;
-                UpdateFilePathText();
+                this.pictureBox.Refresh();
+                this.imageIsModified = true;
+                this.UpdateFilePathText();
             }
         }
 
-        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenSettings();
-        }
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e) => this.OpenSettings();
 
         private void OpenSettings()
         {
@@ -1028,32 +974,32 @@ namespace SplashImageViewer.Forms
 
             if (settingsForm.DefaultSettingsRestored)
             {
-                RestoreScreenDimensions();
+                this.RestoreScreenDimensions();
             }
 
             var color = Color.FromArgb(AppSettings.ThemeColorArgb);
 
-            if (mainPanel.BackColor != color)
+            if (this.mainPanel.BackColor != color)
             {
-                mainPanel.BackColor = color;
-                totalFilesLabel.ForeColor = Color.FromArgb(AppSettings.LabelsColorArgb);
+                this.mainPanel.BackColor = color;
+                this.totalFilesLabel.ForeColor = Color.FromArgb(AppSettings.LabelsColorArgb);
             }
 
             if (AppSettings.GetRecentItemsFromRegistry().Count == 0)
             {
-                ClearRecentItemsList();
+                this.ClearRecentItemsList();
             }
 
             if (System.Threading.Thread.CurrentThread.CurrentUICulture != AppSettings.CurrentUICulture)
             {
                 System.Threading.Thread.CurrentThread.CurrentUICulture = AppSettings.CurrentUICulture;
-                LocalizeUIElements();
+                this.LocalizeUIElements();
             }
         }
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using var aboutForm = new AboutForm(updater);
+            using var aboutForm = new AboutForm(this.updater);
             aboutForm.ShowDialog();
         }
 
@@ -1061,10 +1007,10 @@ namespace SplashImageViewer.Forms
         {
             if (e.Button == MouseButtons.Right)
             {
-                if (rightClickMenuStrip.Enabled)
+                if (this.rightClickMenuStrip.Enabled)
                 {
-                    fileNameMenuItem.Text = $"--- {ImagesModel.Singleton.CurrentFileName} ---";
-                    rightClickMenuStrip.Show(this, new Point(e.X, e.Y)); // places the menu at the pointer position
+                    this.fileNameMenuItem.Text = $"--- {ImagesModel.Singleton.CurrentFileName} ---";
+                    this.rightClickMenuStrip.Show(this, new Point(e.X, e.Y)); // places the menu at the pointer position
                 }
             }
         }
@@ -1077,7 +1023,7 @@ namespace SplashImageViewer.Forms
             }
             catch (Exception ex)
             {
-                ShowExceptionMessage(ex);
+                this.ShowExceptionMessage(ex);
             }
         }
 
@@ -1089,7 +1035,7 @@ namespace SplashImageViewer.Forms
             }
             catch (Exception ex)
             {
-                ShowExceptionMessage(ex);
+                this.ShowExceptionMessage(ex);
             }
         }
 
@@ -1104,14 +1050,14 @@ namespace SplashImageViewer.Forms
             }
             catch (Exception ex)
             {
-                ShowExceptionMessage(ex);
+                this.ShowExceptionMessage(ex);
             }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CheckImageModified();
-            SaveScreenDimensions();
+            this.CheckImageModified();
+            this.SaveScreenDimensions();
         }
     }
 }

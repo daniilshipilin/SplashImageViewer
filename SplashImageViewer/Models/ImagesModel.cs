@@ -11,7 +11,7 @@ namespace SplashImageViewer.Models
 
     /// <summary>
     /// Exif file format enum.<br/>
-    /// Link: <see href="https://www.media.mit.edu/pia/Research/deepview/exif.html"/>.
+    /// Link: <see href="https://www.media.mit.edu/pia/Research/deepview/exif.html"/>
     /// </summary>
     public enum ExifTag : int
     {
@@ -23,7 +23,7 @@ namespace SplashImageViewer.Models
 
     public class ImagesModel
     {
-        private static readonly Random Rnd = new Random();
+        private static readonly Random Rnd = new();
 
         private readonly IReadOnlyList<string> fileExtensions = new string[] { ".jpg", ".jpe", ".jpeg", ".jfif", ".bmp", ".png", ".gif", ".ico" };
         private readonly object locker;
@@ -36,9 +36,9 @@ namespace SplashImageViewer.Models
 
         private ImagesModel()
         {
-            locker = new object();
-            locker2 = new object();
-            filePaths = new List<string>();
+            this.locker = new object();
+            this.locker2 = new object();
+            this.filePaths = new List<string>();
         }
 
         public delegate void CustomEventHandler(object sender);
@@ -50,7 +50,7 @@ namespace SplashImageViewer.Models
 
         public CustomEventHandler? CurrentFilePathIndexChanged { get; set; }
 
-        public IReadOnlyList<string> FilePaths => filePaths.AsReadOnly();
+        public IReadOnlyList<string> FilePaths => this.filePaths.AsReadOnly();
 
         public Image? Image { get; private set; }
 
@@ -58,21 +58,22 @@ namespace SplashImageViewer.Models
 
         public string ImageFormatDescription { get; private set; } = string.Empty;
 
-        public string CurrentFilePath => (index < filePaths.Count) ? filePaths[index] : string.Empty;
+        public string CurrentFilePath => (this.index < this.filePaths.Count) ? this.filePaths[this.index] : string.Empty;
 
-        public string CurrentFileName => (index < filePaths.Count) ? Path.GetFileName(filePaths[index]) : string.Empty;
+        public string CurrentFileName => (this.index < this.filePaths.Count) ? Path.GetFileName(this.filePaths[this.index]) : string.Empty;
 
         public int CurrentFilePathIndex
         {
-            get => index;
+            get => this.index;
+
             private set
             {
-                index = value;
+                this.index = value;
 
-                lock (locker)
+                lock (this.locker)
                 {
                     // notify event subscribers (if they exist), that current file index has changed
-                    CurrentFilePathIndexChanged?.Invoke(this);
+                    this.CurrentFilePathIndexChanged?.Invoke(this);
                 }
             }
         }
@@ -86,18 +87,18 @@ namespace SplashImageViewer.Models
             var fa = File.GetAttributes(path);
             string dir = fa.HasFlag(FileAttributes.Directory) ? path : Path.GetDirectoryName(path) ?? string.Empty;
 
-            filePaths = Directory.EnumerateFiles(dir, "*.*", so)
-                                 .Where(s => fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
+            this.filePaths = Directory.EnumerateFiles(dir, "*.*", so)
+                                 .Where(s => this.fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
 
-            if (filePaths.Count == 0)
+            if (this.filePaths.Count == 0)
             {
                 throw new Exception($"'{dir}' directory has no images");
             }
 
-            searchOption = so;
+            this.searchOption = so;
 
             // create a new FileSystemWatcher and set its properties
-            fileWatcher = new FileSystemWatcher
+            this.fileWatcher = new FileSystemWatcher
             {
                 Path = dir,
                 Filter = "*.*",
@@ -106,25 +107,25 @@ namespace SplashImageViewer.Models
             };
 
             // add event handlers
-            fileWatcher.Created += FileCreatedOrDeletedEvent;
-            fileWatcher.Deleted += FileCreatedOrDeletedEvent;
-            fileWatcher.Renamed += FileRenamedEvent;
+            this.fileWatcher.Created += this.FileCreatedOrDeletedEvent;
+            this.fileWatcher.Deleted += this.FileCreatedOrDeletedEvent;
+            this.fileWatcher.Renamed += this.FileRenamedEvent;
 
             // start monitoring
-            fileWatcher.EnableRaisingEvents = true;
+            this.fileWatcher.EnableRaisingEvents = true;
 
-            CurrentFilePathIndex = 0;
+            this.CurrentFilePathIndex = 0;
 
             if (!fa.HasFlag(FileAttributes.Directory))
             {
-                int index = filePaths.IndexOf(path);
+                int index = this.filePaths.IndexOf(path);
 
                 if (index == -1)
                 {
                     throw new Exception($"Unsupported file type: '{path}'");
                 }
 
-                CurrentFilePathIndex = index;
+                this.CurrentFilePathIndex = index;
             }
         }
 
@@ -133,50 +134,50 @@ namespace SplashImageViewer.Models
         /// </summary>
         public void DisposeResources()
         {
-            if (Image is not null)
+            if (this.Image is not null)
             {
-                Image.Dispose();
-                Image = null;
+                this.Image.Dispose();
+                this.Image = null;
             }
 
-            if (fileWatcher is not null)
+            if (this.fileWatcher is not null)
             {
-                fileWatcher.EnableRaisingEvents = false;
-                fileWatcher.Created -= FileCreatedOrDeletedEvent;
-                fileWatcher.Deleted -= FileCreatedOrDeletedEvent;
-                fileWatcher.Renamed -= FileRenamedEvent;
-                fileWatcher.Dispose();
-                fileWatcher = null;
+                this.fileWatcher.EnableRaisingEvents = false;
+                this.fileWatcher.Created -= this.FileCreatedOrDeletedEvent;
+                this.fileWatcher.Deleted -= this.FileCreatedOrDeletedEvent;
+                this.fileWatcher.Renamed -= this.FileRenamedEvent;
+                this.fileWatcher.Dispose();
+                this.fileWatcher = null;
             }
         }
 
         public void SelectNextImageIndex()
         {
-            if (FilePaths.Count > 1)
+            if (this.FilePaths.Count > 1)
             {
-                CurrentFilePathIndex = (CurrentFilePathIndex == FilePaths.Count - 1) ? 0 : CurrentFilePathIndex + 1;
+                this.CurrentFilePathIndex = (this.CurrentFilePathIndex == this.FilePaths.Count - 1) ? 0 : this.CurrentFilePathIndex + 1;
             }
         }
 
         public void SelectPreviousImageIndex()
         {
-            if (FilePaths.Count > 1)
+            if (this.FilePaths.Count > 1)
             {
-                CurrentFilePathIndex = (CurrentFilePathIndex == 0) ? FilePaths.Count - 1 : CurrentFilePathIndex - 1;
+                this.CurrentFilePathIndex = (this.CurrentFilePathIndex == 0) ? this.FilePaths.Count - 1 : this.CurrentFilePathIndex - 1;
             }
         }
 
         public void SelectRandomImageIndex()
         {
-            if (FilePaths.Count > 1)
+            if (this.FilePaths.Count > 1)
             {
                 while (true)
                 {
-                    int tmp = Rnd.Next(FilePaths.Count);
+                    int tmp = Rnd.Next(this.FilePaths.Count);
 
-                    if (CurrentFilePathIndex != tmp)
+                    if (this.CurrentFilePathIndex != tmp)
                     {
-                        CurrentFilePathIndex = tmp;
+                        this.CurrentFilePathIndex = tmp;
                         break;
                     }
                 }
@@ -185,25 +186,25 @@ namespace SplashImageViewer.Models
 
         public void LoadImage()
         {
-            Image?.Dispose();
+            this.Image?.Dispose();
 
-            using var fs = new FileStream(CurrentFilePath, FileMode.Open, FileAccess.Read); // open file in read only mode
+            using var fs = new FileStream(this.CurrentFilePath, FileMode.Open, FileAccess.Read); // open file in read only mode
             using var br = new BinaryReader(fs); // get a binary reader for the file stream
             var ms = new MemoryStream(br.ReadBytes((int)fs.Length)); // copy the content of the file into a memory stream
-            Image = Image.FromStream(ms);
-            ImageRawFormat = new ImageFormat(Image.RawFormat.Guid);
-            ImageFormatDescription = GetImageFormatDescription(Image.RawFormat);
-            ProcessImageMetadata(Image);
+            this.Image = Image.FromStream(ms);
+            this.ImageRawFormat = new ImageFormat(this.Image.RawFormat.Guid);
+            this.ImageFormatDescription = GetImageFormatDescription(this.Image.RawFormat);
+            ProcessImageMetadata(this.Image);
         }
 
         public void OverwriteImage()
         {
-            if (Image is null)
+            if (this.Image is null)
             {
-                throw new NullReferenceException(nameof(Image));
+                throw new NullReferenceException(nameof(this.Image));
             }
 
-            ModifyImageMetadata(Image);
+            ModifyImageMetadata(this.Image);
 
             // Create an Encoder object based on the GUID for the Quality parameter category.
             var encoder = Encoder.Quality;
@@ -212,21 +213,21 @@ namespace SplashImageViewer.Models
             using var encoderParameters = new EncoderParameters(1);
             encoderParameters.Param[0] = new EncoderParameter(encoder, 100L);
 
-            var ici = GetEncoder(ImageRawFormat);
+            var ici = GetEncoder(this.ImageRawFormat);
 
             if (ici is null)
             {
                 throw new NullReferenceException(nameof(ici));
             }
 
-            Image.Save(CurrentFilePath, ici, encoderParameters);
+            this.Image.Save(this.CurrentFilePath, ici, encoderParameters);
         }
 
         public void DeleteImage()
         {
-            lock (locker2)
+            lock (this.locker2)
             {
-                File.Delete(CurrentFilePath);
+                File.Delete(this.CurrentFilePath);
             }
         }
 
@@ -286,7 +287,7 @@ namespace SplashImageViewer.Models
                 if (item is not null)
                 {
                     // set image software version tag
-                    var bytes = System.Text.Encoding.ASCII.GetBytes(ApplicationInfo.AppHeader + '\0');
+                    byte[]? bytes = System.Text.Encoding.ASCII.GetBytes(ApplicationInfo.AppHeader + '\0');
                     item.Len = bytes.Length;
                     item.Value = bytes;
                     img.SetPropertyItem(item);
@@ -340,7 +341,7 @@ namespace SplashImageViewer.Models
 
         private void FileCreatedOrDeletedEvent(object sender, FileSystemEventArgs e)
         {
-            lock (locker2)
+            lock (this.locker2)
             {
                 if (e.ChangeType == WatcherChangeTypes.Created)
                 {
@@ -353,8 +354,8 @@ namespace SplashImageViewer.Models
                 }
 
                 // save previous file path variable before creating new _filePaths list
-                string previousFilePath = CurrentFilePath;
-                int previousIndex = CurrentFilePathIndex;
+                string previousFilePath = this.CurrentFilePath;
+                int previousIndex = this.CurrentFilePathIndex;
 
                 string? dir = Path.GetDirectoryName(e.FullPath);
 
@@ -363,36 +364,36 @@ namespace SplashImageViewer.Models
                     throw new NullReferenceException(nameof(dir));
                 }
 
-                filePaths = Directory.EnumerateFiles(dir, "*.*", searchOption)
-                                  .Where(s => fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
+                this.filePaths = Directory.EnumerateFiles(dir, "*.*", this.searchOption)
+                                  .Where(s => this.fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
 
-                if (filePaths.Count == 0)
+                if (this.filePaths.Count == 0)
                 {
                     // invoke CurrentFilePathIndexChanged event on different thread, so that this method is not blocked and (filewatcher dispose)
-                    Task.Run(() => { CurrentFilePathIndex = 0; });
+                    Task.Run(() => { this.CurrentFilePathIndex = 0; });
                     return;
                 }
 
-                int index = filePaths.IndexOf(previousFilePath);
+                int index = this.filePaths.IndexOf(previousFilePath);
 
                 if (index != -1)
                 {
-                    CurrentFilePathIndex = index;
+                    this.CurrentFilePathIndex = index;
                 }
-                else if (filePaths.Count > previousIndex)
+                else if (this.filePaths.Count > previousIndex)
                 {
-                    CurrentFilePathIndex = previousIndex;
+                    this.CurrentFilePathIndex = previousIndex;
                 }
                 else
                 {
-                    --CurrentFilePathIndex;
+                    --this.CurrentFilePathIndex;
                 }
             }
         }
 
         private void FileRenamedEvent(object sender, RenamedEventArgs e)
         {
-            lock (locker2)
+            lock (this.locker2)
             {
                 if (e.ChangeType == WatcherChangeTypes.Renamed)
                 {
@@ -405,8 +406,8 @@ namespace SplashImageViewer.Models
                 }
 
                 // save previous file path variable before creating new _filePaths
-                string previousFilePath = CurrentFilePath;
-                int previousIndex = CurrentFilePathIndex;
+                string previousFilePath = this.CurrentFilePath;
+                int previousIndex = this.CurrentFilePathIndex;
 
                 string? dir = Path.GetDirectoryName(e.FullPath);
 
@@ -415,29 +416,29 @@ namespace SplashImageViewer.Models
                     throw new NullReferenceException(nameof(dir));
                 }
 
-                filePaths = Directory.EnumerateFiles(dir, "*.*", searchOption)
-                                  .Where(s => fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
+                this.filePaths = Directory.EnumerateFiles(dir, "*.*", this.searchOption)
+                                  .Where(s => this.fileExtensions.Contains(Path.GetExtension(s).ToLower())).ToList();
 
-                if (filePaths.Count == 0)
+                if (this.filePaths.Count == 0)
                 {
                     // invoke CurrentFilePathIndexChanged event on different thread, so that this method is not blocked and (filewatcher dispose)
-                    Task.Run(() => { CurrentFilePathIndex = 0; });
+                    Task.Run(() => { this.CurrentFilePathIndex = 0; });
                     return;
                 }
 
-                int index = filePaths.IndexOf(previousFilePath);
+                int index = this.filePaths.IndexOf(previousFilePath);
 
                 if (index != -1)
                 {
-                    CurrentFilePathIndex = index;
+                    this.CurrentFilePathIndex = index;
                 }
-                else if (filePaths.Count > previousIndex)
+                else if (this.filePaths.Count > previousIndex)
                 {
-                    CurrentFilePathIndex = previousIndex;
+                    this.CurrentFilePathIndex = previousIndex;
                 }
                 else
                 {
-                    --CurrentFilePathIndex;
+                    --this.CurrentFilePathIndex;
                 }
             }
         }

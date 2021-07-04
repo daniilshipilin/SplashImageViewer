@@ -13,7 +13,7 @@ namespace ProgramUpdater
 
     public class Updater
     {
-        private static readonly HttpClient Client = new HttpClient()
+        private static readonly HttpClient Client = new()
         {
             Timeout = new TimeSpan(0, 0, 60),
         };
@@ -30,12 +30,12 @@ namespace ProgramUpdater
         public Updater(string baseDir, Version clientVersion, Guid appGuid, string exeLaunchPath, string? appVersionsUrl)
         {
             this.baseDir = Path.GetFullPath(baseDir);
-            tmpDir = Path.Combine(this.baseDir, "update");
-            archivesDir = Path.Combine(tmpDir, "Archives");
-            extractedDir = Path.Combine(tmpDir, "Extracted");
-            ClientVersion = clientVersion;
-            ServerVersion = clientVersion;
-            AppGUID = appGuid;
+            this.tmpDir = Path.Combine(this.baseDir, "update");
+            this.archivesDir = Path.Combine(this.tmpDir, "Archives");
+            this.extractedDir = Path.Combine(this.tmpDir, "Extracted");
+            this.ClientVersion = clientVersion;
+            this.ServerVersion = clientVersion;
+            this.AppGUID = appGuid;
             this.exeLaunchPath = Path.GetFullPath(exeLaunchPath);
 
             if (appVersionsUrl is not null)
@@ -62,20 +62,20 @@ namespace ProgramUpdater
         /// <summary>
         /// Gets a value indicating whether server program version is greater, than the current program version.
         /// </summary>
-        public bool ServerVersionIsGreater => ServerVersion.CompareTo(ClientVersion) > 0;
+        public bool ServerVersionIsGreater => this.ServerVersion.CompareTo(this.ClientVersion) > 0;
 
         /// <summary>
         /// Gets a value indicating whether check update was performed.
         /// </summary>
-        public bool CheckUpdateRequested => appEntry is not null;
+        public bool CheckUpdateRequested => this.appEntry is not null;
 
         /// <summary>
         /// Gets a pre-formatted update prompt string.
         /// </summary>
         public string UpdatePromptFormatted =>
             $"Newer program version available.{Environment.NewLine}" +
-            $"Current: {ClientVersion}{Environment.NewLine}" +
-            $"Available: {ServerVersion}{Environment.NewLine}{Environment.NewLine}" +
+            $"Current: {this.ClientVersion}{Environment.NewLine}" +
+            $"Available: {this.ServerVersion}{Environment.NewLine}{Environment.NewLine}" +
             "Update program?";
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace ProgramUpdater
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task<bool> CheckUpdateIsAvailable()
         {
-            using var response = await Client.GetAsync(appVersionsUrl);
+            using var response = await Client.GetAsync(this.appVersionsUrl);
 
             if (response.IsSuccessStatusCode)
             {
@@ -94,23 +94,23 @@ namespace ProgramUpdater
                 var obj = JsonConvert.DeserializeObject<AppVersionsJson>(data);
 
                 // find specific record, based on GUID
-                var entry = obj?.AppEntries?.FirstOrDefault(x => x.GUID.Equals(AppGUID));
+                var entry = obj?.AppEntries?.FirstOrDefault(x => x.GUID.Equals(this.AppGUID));
 
                 if (entry is null || entry.SemVer is null)
                 {
                     // guid was not found - throw exception
-                    throw new Exception($"'{AppGUID}' GUID was not found in resulting json");
+                    throw new Exception($"'{this.AppGUID}' GUID was not found in resulting json");
                 }
 
-                appEntry = entry;
-                ServerVersion = Version.Parse(entry.SemVer);
+                this.appEntry = entry;
+                this.ServerVersion = Version.Parse(entry.SemVer);
             }
             else
             {
                 throw new Exception(response.ReasonPhrase);
             }
 
-            return ServerVersionIsGreater;
+            return this.ServerVersionIsGreater;
         }
 
         /// <summary>
@@ -119,8 +119,8 @@ namespace ProgramUpdater
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task ForceUpdate()
         {
-            await CheckUpdateIsAvailable();
-            await Update();
+            await this.CheckUpdateIsAvailable();
+            await this.Update();
         }
 
         /// <summary>
@@ -129,13 +129,13 @@ namespace ProgramUpdater
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task Update()
         {
-            if (appEntry is not null)
+            if (this.appEntry is not null)
             {
-                CleanTmpDirectory();
-                CreateDirectoryStructure();
+                this.CleanTmpDirectory();
+                this.CreateDirectoryStructure();
                 string filePath;
 
-                using var response = await Client.GetAsync(appEntry.DownloadUrl);
+                using var response = await Client.GetAsync(this.appEntry.DownloadUrl);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -146,7 +146,7 @@ namespace ProgramUpdater
                         throw new NullReferenceException(nameof(fileName));
                     }
 
-                    filePath = Path.Combine(archivesDir, fileName);
+                    filePath = Path.Combine(this.archivesDir, fileName);
                     byte[] data = await response.Content.ReadAsByteArrayAsync();
 
                     // save received file
@@ -156,7 +156,7 @@ namespace ProgramUpdater
                     using var sha256 = SHA256.Create();
                     string hash = BitConverter.ToString(sha256.ComputeHash(data)).Replace("-", string.Empty).ToLower();
 
-                    if (!hash.Equals(appEntry.PackageSha256?.ToLower()))
+                    if (!hash.Equals(this.appEntry.PackageSha256?.ToLower()))
                     {
                         throw new Exception("Downloaded package hash sum mismatch");
                     }
@@ -167,10 +167,10 @@ namespace ProgramUpdater
                 }
 
                 // extract downloaded zip
-                ZipFile.ExtractToDirectory(filePath, extractedDir);
+                ZipFile.ExtractToDirectory(filePath, this.extractedDir);
 
                 // start file copy/replace
-                LaunchUpdateProcess();
+                this.LaunchUpdateProcess();
             }
             else
             {
@@ -189,9 +189,9 @@ namespace ProgramUpdater
                 WindowStyle = ProcessWindowStyle.Hidden,
                 FileName = "cmd.exe",
                 Arguments = $"/C timeout 5 &&" +
-                $"xcopy /E /Y \"{extractedDir}\\*\" \"{baseDir}\" &&" +
-                $"rmdir /S /Q \"{tmpDir}\" &&" +
-                $"\"{exeLaunchPath}\"",
+                $"xcopy /E /Y \"{this.extractedDir}\\*\" \"{this.baseDir}\" &&" +
+                $"rmdir /S /Q \"{this.tmpDir}\" &&" +
+                $"\"{this.exeLaunchPath}\"",
             };
 
             var p = new Process { StartInfo = psi };
@@ -203,9 +203,9 @@ namespace ProgramUpdater
         /// </summary>
         private void CleanTmpDirectory()
         {
-            if (Directory.Exists(tmpDir))
+            if (Directory.Exists(this.tmpDir))
             {
-                Directory.Delete(tmpDir, true);
+                Directory.Delete(this.tmpDir, true);
             }
         }
 
@@ -214,20 +214,20 @@ namespace ProgramUpdater
         /// </summary>
         private void CreateDirectoryStructure()
         {
-            if (!Directory.Exists(tmpDir))
+            if (!Directory.Exists(this.tmpDir))
             {
-                var di = Directory.CreateDirectory(tmpDir);
+                var di = Directory.CreateDirectory(this.tmpDir);
                 di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
             }
 
-            if (!Directory.Exists(archivesDir))
+            if (!Directory.Exists(this.archivesDir))
             {
-                Directory.CreateDirectory(archivesDir);
+                Directory.CreateDirectory(this.archivesDir);
             }
 
-            if (!Directory.Exists(extractedDir))
+            if (!Directory.Exists(this.extractedDir))
             {
-                Directory.CreateDirectory(extractedDir);
+                Directory.CreateDirectory(this.extractedDir);
             }
         }
     }

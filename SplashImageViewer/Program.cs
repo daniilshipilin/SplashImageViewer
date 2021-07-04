@@ -57,14 +57,8 @@ namespace SplashImageViewer
             ProgramExit(ExitCode.Success);
         }
 
-        public static void ProgramExit(ExitCode exitCode = ExitCode.Success)
-        {
-            Environment.Exit((int)exitCode);
-        }
+        public static void ProgramExit(ExitCode exitCode = ExitCode.Success) => Environment.Exit((int)exitCode);
 
-        private static bool CheckAnotherInstanceIsRunning(string programName)
-        {
-            return Process.GetProcessesByName(programName).Length > 1;
-        }
+        private static bool CheckAnotherInstanceIsRunning(string programName) => Process.GetProcessesByName(programName).Length > 1;
     }
 }

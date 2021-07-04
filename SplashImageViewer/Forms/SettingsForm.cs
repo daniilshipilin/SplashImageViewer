@@ -17,7 +17,7 @@ namespace SplashImageViewer.Forms
 
         public SettingsForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         public bool DefaultSettingsRestored { get; private set; }
@@ -34,56 +34,56 @@ namespace SplashImageViewer.Forms
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            LocalizeUIElements();
+            this.LocalizeUIElements();
 
-            uiLanguageComboBox.DataSource = AppSettings.CultureInfos;
-            uiLanguageComboBox.SelectedItem = AppSettings.CurrentUICulture;
-            slideshowTransitionSecComboBox.DataSource = AppSettings.SlideshowTransitionsSec;
-            slideshowTransitionSecComboBox.SelectedItem = AppSettings.SlideshowTransitionSec;
+            this.uiLanguageComboBox.DataSource = AppSettings.CultureInfos;
+            this.uiLanguageComboBox.SelectedItem = AppSettings.CurrentUICulture;
+            this.slideshowTransitionSecComboBox.DataSource = AppSettings.SlideshowTransitionsSec;
+            this.slideshowTransitionSecComboBox.SelectedItem = AppSettings.SlideshowTransitionSec;
 
-            colorDialog.Color = Color.FromArgb(AppSettings.ThemeColorArgb);
-            colorSelectLabel.BackColor = colorDialog.Color;
-            colorLabel.Text = colorDialog.Color.Name.ToUpper();
+            this.colorDialog.Color = Color.FromArgb(AppSettings.ThemeColorArgb);
+            this.colorSelectLabel.BackColor = this.colorDialog.Color;
+            this.colorLabel.Text = this.colorDialog.Color.Name.ToUpper();
 
-            randomizeCheckBox.Checked = AppSettings.SlideshowOrderIsRandom;
-            searchOptionCheckBox.Checked = AppSettings.SearchInSubdirs == SearchOption.AllDirectories;
-            showFileDeletePromptCheckBox.Checked = AppSettings.ShowFileDeletePrompt;
-            showFileOverwritePromptCheckBox.Checked = AppSettings.ShowFileOverwritePrompt;
-            forceCheckUpdatesCheckBox.Checked = AppSettings.ForceCheckUpdates;
+            this.randomizeCheckBox.Checked = AppSettings.SlideshowOrderIsRandom;
+            this.searchOptionCheckBox.Checked = AppSettings.SearchInSubdirs == SearchOption.AllDirectories;
+            this.showFileDeletePromptCheckBox.Checked = AppSettings.ShowFileDeletePrompt;
+            this.showFileOverwritePromptCheckBox.Checked = AppSettings.ShowFileOverwritePrompt;
+            this.forceCheckUpdatesCheckBox.Checked = AppSettings.ForceCheckUpdates;
 
-            SetChangesPending(false);
-            formIsLoaded = true;
+            this.SetChangesPending(false);
+            this.formIsLoaded = true;
         }
 
         private void LocalizeUIElements()
         {
-            Text = Strings.Settings;
-            label1.Text = Strings.SlideshowTransition;
-            randomizeCheckBox.Text = Strings.RandomizeSlideshowOrder;
-            searchOptionCheckBox.Text = Strings.SearchImagesInSubdirectories;
-            showFileDeletePromptCheckBox.Text = Strings.FileDeleteConfirmationRequired;
-            defaultSettingsButton.Text = Strings.Reset;
-            label2.Text = Strings.ThemeColor;
-            forceCheckUpdatesCheckBox.Text = Strings.ForceCheckUpdates;
-            showFileOverwritePromptCheckBox.Text = Strings.ModifiedFileOverwriteConfirmationRequired;
-            label3.Text = Strings.UILanguage;
+            this.Text = Strings.Settings;
+            this.label1.Text = Strings.SlideshowTransition;
+            this.randomizeCheckBox.Text = Strings.RandomizeSlideshowOrder;
+            this.searchOptionCheckBox.Text = Strings.SearchImagesInSubdirectories;
+            this.showFileDeletePromptCheckBox.Text = Strings.FileDeleteConfirmationRequired;
+            this.defaultSettingsButton.Text = Strings.Reset;
+            this.label2.Text = Strings.ThemeColor;
+            this.forceCheckUpdatesCheckBox.Text = Strings.ForceCheckUpdates;
+            this.showFileOverwritePromptCheckBox.Text = Strings.ModifiedFileOverwriteConfirmationRequired;
+            this.label3.Text = Strings.UILanguage;
 
-            toolTip.SetToolTip(okButton, Strings.SettingsCommitToolTip);
+            this.toolTip.SetToolTip(this.okButton, Strings.SettingsCommitToolTip);
         }
 
         private void SlideshowTransitionMSComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (formIsLoaded)
+            if (this.formIsLoaded)
             {
-                SetChangesPending(true);
+                this.SetChangesPending(true);
             }
         }
 
         private void UiLanguageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (formIsLoaded)
+            if (this.formIsLoaded)
             {
-                SetChangesPending(true);
+                this.SetChangesPending(true);
 
                 MessageBox.Show(
                         new Form { TopMost = true },
@@ -94,41 +94,23 @@ namespace SplashImageViewer.Forms
             }
         }
 
-        private void RandomizeCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            SetChangesPending(true);
-        }
+        private void RandomizeCheckBox_CheckedChanged(object sender, EventArgs e) => this.SetChangesPending(true);
 
-        private void SearcOptionCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            SetChangesPending(true);
-        }
+        private void SearcOptionCheckBox_CheckedChanged(object sender, EventArgs e) => this.SetChangesPending(true);
 
-        private void ShowFileDeletePromptCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            SetChangesPending(true);
-        }
+        private void ShowFileDeletePromptCheckBox_CheckedChanged(object sender, EventArgs e) => this.SetChangesPending(true);
 
-        private void ShowFileOverwritePromptCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            SetChangesPending(true);
-        }
+        private void ShowFileOverwritePromptCheckBox_CheckedChanged(object sender, EventArgs e) => this.SetChangesPending(true);
 
-        private void ForceCheckUpdatesCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            SetChangesPending(true);
-        }
+        private void ForceCheckUpdatesCheckBox_CheckedChanged(object sender, EventArgs e) => this.SetChangesPending(true);
 
-        private void SetChangesPending(bool pending)
-        {
-            okButton.Enabled = pending;
-        }
+        private void SetChangesPending(bool pending) => this.okButton.Enabled = pending;
 
         private void SettingsForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
             {
-                Close();
+                this.Close();
             }
         }
 
@@ -136,21 +118,21 @@ namespace SplashImageViewer.Forms
         {
             try
             {
-                AppSettings.ThemeColorArgb = colorDialog.Color.ToArgb();
-                AppSettings.SlideshowTransitionSec = (int)slideshowTransitionSecComboBox.SelectedItem;
-                AppSettings.CurrentUICulture = (CultureInfo)uiLanguageComboBox.SelectedItem;
-                AppSettings.SlideshowOrderIsRandom = randomizeCheckBox.Checked;
-                AppSettings.SearchInSubdirs = searchOptionCheckBox.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-                AppSettings.ShowFileDeletePrompt = showFileDeletePromptCheckBox.Checked;
-                AppSettings.ShowFileOverwritePrompt = showFileOverwritePromptCheckBox.Checked;
-                AppSettings.ForceCheckUpdates = forceCheckUpdatesCheckBox.Checked;
+                AppSettings.ThemeColorArgb = this.colorDialog.Color.ToArgb();
+                AppSettings.SlideshowTransitionSec = (int)this.slideshowTransitionSecComboBox.SelectedItem;
+                AppSettings.CurrentUICulture = (CultureInfo)this.uiLanguageComboBox.SelectedItem;
+                AppSettings.SlideshowOrderIsRandom = this.randomizeCheckBox.Checked;
+                AppSettings.SearchInSubdirs = this.searchOptionCheckBox.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+                AppSettings.ShowFileDeletePrompt = this.showFileDeletePromptCheckBox.Checked;
+                AppSettings.ShowFileOverwritePrompt = this.showFileOverwritePromptCheckBox.Checked;
+                AppSettings.ForceCheckUpdates = this.forceCheckUpdatesCheckBox.Checked;
             }
             catch (Exception ex)
             {
                 ShowExceptionMessage(ex);
             }
 
-            Close();
+            this.Close();
         }
 
         private void DefaultSettingsButton_Click(object sender, EventArgs e)
@@ -173,18 +155,18 @@ namespace SplashImageViewer.Forms
                     ShowExceptionMessage(ex);
                 }
 
-                DefaultSettingsRestored = true;
-                Close();
+                this.DefaultSettingsRestored = true;
+                this.Close();
             }
         }
 
         private void ColorLabel_Click(object sender, EventArgs e)
         {
-            if (colorDialog.ShowDialog() == DialogResult.OK)
+            if (this.colorDialog.ShowDialog() == DialogResult.OK)
             {
-                colorSelectLabel.BackColor = colorDialog.Color;
-                colorLabel.Text = colorDialog.Color.Name.ToUpper();
-                SetChangesPending(true);
+                this.colorSelectLabel.BackColor = this.colorDialog.Color;
+                this.colorLabel.Text = this.colorDialog.Color.Name.ToUpper();
+                this.SetChangesPending(true);
             }
         }
     }

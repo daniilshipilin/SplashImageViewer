@@ -27,11 +27,11 @@ namespace ProgramUpdater.Models
             public string? PackageSha256 { get; set; }
 
             public override string ToString() =>
-                $"GUID: {GUID}{Environment.NewLine}" +
-                $"Info: {AppInfo}{Environment.NewLine}" +
-                $"Version: {SemVer}{Environment.NewLine}" +
-                $"DownloadUrl: {DownloadUrl}{Environment.NewLine}" +
-                $"Sha256: {PackageSha256}{Environment.NewLine}";
+                $"GUID: {this.GUID}{Environment.NewLine}" +
+                $"Info: {this.AppInfo}{Environment.NewLine}" +
+                $"Version: {this.SemVer}{Environment.NewLine}" +
+                $"DownloadUrl: {this.DownloadUrl}{Environment.NewLine}" +
+                $"Sha256: {this.PackageSha256}{Environment.NewLine}";
         }
     }
 }

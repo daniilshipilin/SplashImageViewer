@@ -13,7 +13,7 @@ namespace SplashImageViewer.Forms
 
         public AboutForm(Updater updater)
         {
-            InitializeComponent();
+            this.InitializeComponent();
             this.updater = updater;
         }
 
@@ -21,43 +21,33 @@ namespace SplashImageViewer.Forms
         {
             if (keyData == Keys.Escape)
             {
-                Close();
+                this.Close();
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void AboutForm_Load(object sender, EventArgs e)
-        {
-            LocalizeUIElements();
-        }
+        private void AboutForm_Load(object sender, EventArgs e) => this.LocalizeUIElements();
 
         private void LocalizeUIElements()
         {
-            Text = Strings.About;
-            aboutLabel.Text = ApplicationInfo.AppInfoFormatted;
+            this.Text = Strings.About;
+            this.aboutLabel.Text = ApplicationInfo.AppInfoFormatted;
 
-            if (!updater.CheckUpdateRequested)
-            {
-                updatesInfoLabel.Text = $"{Strings.CheckForAvailableUpdates}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
-            }
-            else if (updater.ServerVersionIsGreater)
-            {
-                updatesInfoLabel.Text = $"{Strings.NewerProgramVersionAvailable}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
-            }
-            else
-            {
-                updatesInfoLabel.Text = $"{Strings.ProgramIsUpToDate}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
-            }
+            this.updatesInfoLabel.Text = !this.updater.CheckUpdateRequested
+                ? $"{Strings.CheckForAvailableUpdates}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
+                : this.updater.ServerVersionIsGreater
+                    ? $"{Strings.NewerProgramVersionAvailable}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
+                    : $"{Strings.ProgramIsUpToDate}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
 
-            toolTip.SetToolTip(checkUpdatesButton, Strings.CheckUpdatesButtonToolTip);
-            toolTip.SetToolTip(updatesInfoLabel, Strings.ForceProgramUpdateToolTip);
-            toolTip.SetToolTip(linkLabel, Strings.SourceCodeRepoToolTip);
+            this.toolTip.SetToolTip(this.checkUpdatesButton, Strings.CheckUpdatesButtonToolTip);
+            this.toolTip.SetToolTip(this.updatesInfoLabel, Strings.ForceProgramUpdateToolTip);
+            this.toolTip.SetToolTip(this.linkLabel, Strings.SourceCodeRepoToolTip);
         }
 
         private void ShowExceptionMessage(Exception ex)
         {
-            updatesInfoLabel.Text = Strings.GeneralException;
+            this.updatesInfoLabel.Text = Strings.GeneralException;
 
             MessageBox.Show(
                 new Form { TopMost = true },
@@ -80,13 +70,13 @@ namespace SplashImageViewer.Forms
             {
                 try
                 {
-                    updatesInfoLabel.Text = Strings.UpdateInProgress;
-                    await updater.ForceUpdate();
+                    this.updatesInfoLabel.Text = Strings.UpdateInProgress;
+                    await this.updater.ForceUpdate();
                     Program.ProgramExit(ExitCode.Success);
                 }
                 catch (Exception ex)
                 {
-                    ShowExceptionMessage(ex);
+                    this.ShowExceptionMessage(ex);
                 }
             }
         }
@@ -96,29 +86,29 @@ namespace SplashImageViewer.Forms
             try
             {
                 AppSettings.UpdateUpdatesLastCheckedTimestamp();
-                updatesInfoLabel.Text = Strings.CheckingForUpdates;
+                this.updatesInfoLabel.Text = Strings.CheckingForUpdates;
 
-                if (await updater.CheckUpdateIsAvailable())
+                if (await this.updater.CheckUpdateIsAvailable())
                 {
-                    updatesInfoLabel.Text = $"{Strings.NewerProgramVersionAvailable}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
+                    this.updatesInfoLabel.Text = $"{Strings.NewerProgramVersionAvailable}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
 
                     var dr = MessageBox.Show(
                         new Form { TopMost = true },
-                        updater.UpdatePromptFormatted,
+                        this.updater.UpdatePromptFormatted,
                         Strings.ProgramUpdate,
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question);
 
                     if (dr == DialogResult.Yes)
                     {
-                        updatesInfoLabel.Text = Strings.UpdateInProgress;
-                        await updater.Update();
+                        this.updatesInfoLabel.Text = Strings.UpdateInProgress;
+                        await this.updater.Update();
                         Program.ProgramExit(ExitCode.Success);
                     }
                 }
                 else
                 {
-                    updatesInfoLabel.Text = $"{Strings.ProgramIsUpToDate}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
+                    this.updatesInfoLabel.Text = $"{Strings.ProgramIsUpToDate}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
                     var dr = MessageBox.Show(
                         new Form { TopMost = true },
                         Strings.ProgramIsUpToDate,
@@ -129,14 +119,14 @@ namespace SplashImageViewer.Forms
             }
             catch (Exception ex)
             {
-                ShowExceptionMessage(ex);
+                this.ShowExceptionMessage(ex);
             }
         }
 
         private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // specify that the link was visited
-            linkLabel.LinkVisited = true;
+            this.linkLabel.LinkVisited = true;
 
             try
             {
@@ -145,7 +135,7 @@ namespace SplashImageViewer.Forms
             }
             catch (Exception ex)
             {
-                ShowExceptionMessage(ex);
+                this.ShowExceptionMessage(ex);
             }
         }
     }
