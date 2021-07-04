@@ -16,10 +16,9 @@ namespace SplashImageViewer.Helpers
             @"SOFTWARE\Illuminati Software Inc.\Splash Image Viewer";
 #endif
 
-        public const int CurrentConfigVersion = 19;
+        public const int CurrentConfigVersion = 20;
         public const int RecentItemsCapacity = 10;
         public const string RegistryRecentItemsKey = RegistryBaseKey + "\\Recent Items";
-        public const string RegistryProgramUpdaterKey = RegistryBaseKey + "\\Program Updater";
         public const int MinScreenSizeWidth = 1024;
         public const int MinScreenSizeHeight = 768;
         public const int FullscreenFormHideInfoTimerIntervalMs = 10000;
@@ -28,7 +27,6 @@ namespace SplashImageViewer.Helpers
 
         private static readonly RegistryKey RegKeyRoot = Registry.CurrentUser.CreateSubKey(RegistryBaseKey);
         private static readonly RegistryKey RegKeyRecentItems = Registry.CurrentUser.CreateSubKey(RegistryRecentItemsKey);
-        private static readonly RegistryKey RegKeyProgramUpdater = Registry.CurrentUser.CreateSubKey(RegistryProgramUpdaterKey);
 
         private static readonly IReadOnlyDictionary<string, object> DefaultSettingsDict = new Dictionary<string, object>()
         {
@@ -153,13 +151,6 @@ namespace SplashImageViewer.Helpers
             set => RegKeyRoot.SetValue(nameof(ScreenIsMaximized), value);
         }
 
-        public static string? AppVersionsUrl
-        {
-            get => (string?)RegKeyProgramUpdater.GetValue(nameof(AppVersionsUrl));
-
-            private set => RegKeyProgramUpdater.SetValue(nameof(AppVersionsUrl), value ?? string.Empty);
-        }
-
         public static void UpdateUpdatesLastCheckedTimestamp() => UpdatesLastCheckedTimestamp = DateTime.Now;
 
         public static void CheckSettings()
@@ -182,13 +173,6 @@ namespace SplashImageViewer.Helpers
             foreach (var pair in DefaultSettingsDict)
             {
                 RegKeyRoot.SetValue(pair.Key, pair.Value);
-            }
-
-            // check, whether required key for the Program Updater exists
-            if (AppVersionsUrl is null)
-            {
-                // create key with default value
-                AppVersionsUrl = string.Empty;
             }
         }
 

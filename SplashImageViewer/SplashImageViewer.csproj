@@ -26,6 +26,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="ProgramUpdater" Version="0.1.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -33,10 +34,6 @@
             <Pack>True</Pack>
             <PackagePath></PackagePath>
         </None>
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\ProgramUpdater\ProgramUpdater.csproj" />
     </ItemGroup>
 
     <ItemGroup>

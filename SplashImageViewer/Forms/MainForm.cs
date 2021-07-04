@@ -33,8 +33,7 @@ namespace SplashImageViewer.Forms
                 ApplicationInfo.BaseDirectory,
                 new Version(GitVersionInformation.SemVer),
                 ApplicationInfo.AppGUID,
-                ApplicationInfo.ExePath,
-                AppSettings.AppVersionsUrl);
+                ApplicationInfo.ExePath);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
