@@ -26,19 +26,16 @@ namespace SplashImageViewer.Models
         private static readonly Random Rnd = new();
 
         private readonly IReadOnlyList<string> fileExtensions = new string[] { ".jpg", ".jpe", ".jpeg", ".jfif", ".bmp", ".png", ".gif", ".ico" };
-        private readonly object locker;
-        private readonly object locker2;
+        private readonly object locker = new();
+        private readonly object locker2 = new();
 
         private int index;
-        private List<string> filePaths;
+        private List<string> filePaths = new();
         private FileSystemWatcher? fileWatcher;
         private SearchOption searchOption;
 
         private ImagesModel()
         {
-            this.locker = new object();
-            this.locker2 = new object();
-            this.filePaths = new List<string>();
         }
 
         public delegate void CustomEventHandler(object sender);
@@ -68,10 +65,10 @@ namespace SplashImageViewer.Models
 
             private set
             {
-                this.index = value;
-
                 lock (this.locker)
                 {
+                    this.index = value;
+
                     // notify event subscribers (if they exist), that current file index has changed
                     this.CurrentFilePathIndexChanged?.Invoke(this);
                 }
@@ -191,6 +188,7 @@ namespace SplashImageViewer.Models
             using var fs = new FileStream(this.CurrentFilePath, FileMode.Open, FileAccess.Read); // open file in read only mode
             using var br = new BinaryReader(fs); // get a binary reader for the file stream
             var ms = new MemoryStream(br.ReadBytes((int)fs.Length)); // copy the content of the file into a memory stream
+
             this.Image = Image.FromStream(ms);
             this.ImageRawFormat = new ImageFormat(this.Image.RawFormat.Guid);
             this.ImageFormatDescription = GetImageFormatDescription(this.Image.RawFormat);

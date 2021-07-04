@@ -15,9 +15,9 @@ namespace SplashImageViewer.Forms
 
     public partial class MainForm : Form
     {
-        private readonly Timer slideshowTimer;
-        private readonly Timer allocatedMemoryTimer;
-        private readonly Timer slideshowProgressBarTimer;
+        private readonly Timer slideshowTimer = new();
+        private readonly Timer allocatedMemoryTimer = new();
+        private readonly Timer slideshowProgressBarTimer = new();
         private readonly Updater updater;
         private DateTime nextSlideshowTransitionDate;
         private bool fullscreenFormIsActive;
@@ -27,10 +27,6 @@ namespace SplashImageViewer.Forms
         public MainForm()
         {
             this.InitializeComponent();
-
-            this.slideshowTimer = new Timer();
-            this.allocatedMemoryTimer = new Timer();
-            this.slideshowProgressBarTimer = new Timer();
 
             // init program updater
             this.updater = new Updater(
@@ -416,7 +412,7 @@ namespace SplashImageViewer.Forms
             }
         }
 
-        private async void UpdatePictureBox()
+        private void UpdatePictureBox()
         {
             // set picturebox image only, when fullscreen mode is not active
             if (!this.fullscreenFormIsActive)
@@ -430,7 +426,9 @@ namespace SplashImageViewer.Forms
                 try
                 {
                     // load image async in background
-                    await Task.Run(() => ImagesModel.Singleton.LoadImage());
+                    //await Task.Run(() => ImagesModel.Singleton.LoadImage());
+                    // loading image asynchronously can lead to a racing condition
+                    ImagesModel.Singleton.LoadImage();
                 }
                 catch (Exception ex)
                 {
