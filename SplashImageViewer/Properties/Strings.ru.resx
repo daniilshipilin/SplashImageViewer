@@ -336,4 +336,7 @@
   <data name="ZoomButtonToolTip" xml:space="preserve">
     <value>Приблизить/отдалить изображение [Z]</value>
   </data>
+  <data name="ApplicationUpdaterNotAvailable" xml:space="preserve">
+    <value>Обновление приложения недоступно</value>
+  </data>
 </root>

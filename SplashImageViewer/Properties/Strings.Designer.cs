@@ -88,6 +88,15 @@ namespace SplashImageViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application updater is not available.
+        /// </summary>
+        public static string ApplicationUpdaterNotAvailable {
+            get {
+                return ResourceManager.GetString("ApplicationUpdaterNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Author.
         /// </summary>
         public static string Author {
