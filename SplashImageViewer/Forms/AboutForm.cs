@@ -3,15 +3,15 @@ namespace SplashImageViewer.Forms
     using System;
     using System.Diagnostics;
     using System.Windows.Forms;
-    using ProgramUpdater;
+    using ApplicationUpdater;
     using SplashImageViewer.Helpers;
     using SplashImageViewer.Properties;
 
     public partial class AboutForm : Form
     {
-        private readonly Updater updater;
+        private readonly IUpdater? updater;
 
-        public AboutForm(Updater updater)
+        public AboutForm(IUpdater? updater)
         {
             this.InitializeComponent();
             this.updater = updater;
@@ -34,11 +34,13 @@ namespace SplashImageViewer.Forms
             this.Text = Strings.About;
             this.aboutLabel.Text = ApplicationInfo.AppInfoFormatted;
 
-            this.updatesInfoLabel.Text = !this.updater.CheckUpdateRequested
-                ? $"{Strings.CheckForAvailableUpdates}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
-                : this.updater.ServerVersionIsGreater
-                    ? $"{Strings.NewerProgramVersionAvailable}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
-                    : $"{Strings.ProgramIsUpToDate}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
+            this.updatesInfoLabel.Text = this.updater is null
+                ? Strings.ApplicationUpdaterNotAvailable
+                : !this.updater.CheckUpdateRequested
+                    ? $"{Strings.CheckForAvailableUpdates}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
+                    : this.updater.ServerVersionIsGreater
+                        ? $"{Strings.NewerProgramVersionAvailable}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
+                        : $"{Strings.ProgramIsUpToDate}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
 
             this.toolTip.SetToolTip(this.checkUpdatesButton, Strings.CheckUpdatesButtonToolTip);
             this.toolTip.SetToolTip(this.updatesInfoLabel, Strings.ForceProgramUpdateToolTip);
@@ -59,12 +61,17 @@ namespace SplashImageViewer.Forms
 
         private async void UpdatesInfoLabel_Click(object sender, EventArgs e)
         {
+            if (this.updater is null)
+            {
+                return;
+            }
+
             var dr = MessageBox.Show(
-                new Form { TopMost = true },
-                Strings.ForceProgramUpdatePrompt,
-                Strings.ProgramUpdate,
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+            new Form { TopMost = true },
+            Strings.ForceProgramUpdatePrompt,
+            Strings.ProgramUpdate,
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question);
 
             if (dr == DialogResult.Yes)
             {
@@ -83,6 +90,11 @@ namespace SplashImageViewer.Forms
 
         private async void CheckUpdatesButton_Click(object sender, EventArgs e)
         {
+            if (this.updater is null)
+            {
+                return;
+            }
+
             try
             {
                 AppSettings.UpdateUpdatesLastCheckedTimestamp();

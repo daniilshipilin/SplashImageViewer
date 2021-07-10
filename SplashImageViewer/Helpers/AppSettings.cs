@@ -9,23 +9,26 @@ namespace SplashImageViewer.Helpers
 
     public static class AppSettings
     {
-        public const string RegistryBaseKey =
+        public const string RegistryBaseKey = @"SOFTWARE\Illuminati Software Inc.";
+
+        public const string RegistrySplashImageViewerKey =
 #if DEBUG
-            @"SOFTWARE\Illuminati Software Inc.\Splash Image Viewer [Debug]";
+            RegistryBaseKey + "\\Splash Image Viewer [Debug]";
 #else
-            @"SOFTWARE\Illuminati Software Inc.\Splash Image Viewer";
+            RegistryBaseKey + "\\Splash Image Viewer";
 #endif
 
-        public const int CurrentConfigVersion = 20;
+        public const string RegistryRecentItemsKey = RegistrySplashImageViewerKey + "\\Recent Items";
+
+        public const int CurrentConfigVersion = 21;
         public const int RecentItemsCapacity = 10;
-        public const string RegistryRecentItemsKey = RegistryBaseKey + "\\Recent Items";
         public const int MinScreenSizeWidth = 1024;
         public const int MinScreenSizeHeight = 768;
         public const int FullscreenFormHideInfoTimerIntervalMs = 10000;
         public const int MainFormCheckMemoryMs = 1000;
         public const int MainFormSlideshowProgressBarUpdateMs = 10;
 
-        private static readonly RegistryKey RegKeyRoot = Registry.CurrentUser.CreateSubKey(RegistryBaseKey);
+        private static readonly RegistryKey RegKeySplashImageViewer = Registry.CurrentUser.CreateSubKey(RegistrySplashImageViewerKey);
         private static readonly RegistryKey RegKeyRecentItems = Registry.CurrentUser.CreateSubKey(RegistryRecentItemsKey);
 
         private static readonly IReadOnlyDictionary<string, object> DefaultSettingsDict = new Dictionary<string, object>()
@@ -56,99 +59,97 @@ namespace SplashImageViewer.Helpers
             1, 2, 5, 10, 30, 60, 300, 600, 3600,
         };
 
-        public static string RegistryBaseKeyFull => RegKeyRoot.Name;
-
         public static int LabelsColorArgb => (ThemeColorArgb > unchecked((int)0xFF808080)) ? unchecked((int)0xFF000000) : unchecked((int)0xFFFFFFFF);
 
         public static int? ConfigVersion
         {
-            get => (int?)RegKeyRoot.GetValue(nameof(ConfigVersion));
+            get => (int?)RegKeySplashImageViewer.GetValue(nameof(ConfigVersion));
 
-            set => RegKeyRoot.SetValue(nameof(ConfigVersion), value ?? 0);
+            set => RegKeySplashImageViewer.SetValue(nameof(ConfigVersion), value ?? 0);
         }
 
         public static int ThemeColorArgb
         {
-            get => (int?)RegKeyRoot.GetValue(nameof(ThemeColorArgb)) ?? 0;
+            get => (int?)RegKeySplashImageViewer.GetValue(nameof(ThemeColorArgb)) ?? 0;
 
-            set => RegKeyRoot.SetValue(nameof(ThemeColorArgb), value);
+            set => RegKeySplashImageViewer.SetValue(nameof(ThemeColorArgb), value);
         }
 
         public static int SlideshowTransitionSec
         {
-            get => (int?)RegKeyRoot.GetValue(nameof(SlideshowTransitionSec)) ?? 0;
+            get => (int?)RegKeySplashImageViewer.GetValue(nameof(SlideshowTransitionSec)) ?? 0;
 
-            set => RegKeyRoot.SetValue(nameof(SlideshowTransitionSec), value);
+            set => RegKeySplashImageViewer.SetValue(nameof(SlideshowTransitionSec), value);
         }
 
         public static bool SlideshowOrderIsRandom
         {
-            get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(SlideshowOrderIsRandom)) ?? string.Empty);
+            get => bool.Parse((string?)RegKeySplashImageViewer.GetValue(nameof(SlideshowOrderIsRandom)) ?? string.Empty);
 
-            set => RegKeyRoot.SetValue(nameof(SlideshowOrderIsRandom), value);
+            set => RegKeySplashImageViewer.SetValue(nameof(SlideshowOrderIsRandom), value);
         }
 
         public static SearchOption SearchInSubdirs
         {
-            get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(SearchInSubdirs)) ?? string.Empty) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            get => bool.Parse((string?)RegKeySplashImageViewer.GetValue(nameof(SearchInSubdirs)) ?? string.Empty) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
-            set => RegKeyRoot.SetValue(nameof(SearchInSubdirs), value == SearchOption.AllDirectories);
+            set => RegKeySplashImageViewer.SetValue(nameof(SearchInSubdirs), value == SearchOption.AllDirectories);
         }
 
         public static bool ShowFileDeletePrompt
         {
-            get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(ShowFileDeletePrompt)) ?? string.Empty);
+            get => bool.Parse((string?)RegKeySplashImageViewer.GetValue(nameof(ShowFileDeletePrompt)) ?? string.Empty);
 
-            set => RegKeyRoot.SetValue(nameof(ShowFileDeletePrompt), value);
+            set => RegKeySplashImageViewer.SetValue(nameof(ShowFileDeletePrompt), value);
         }
 
         public static bool ShowFileOverwritePrompt
         {
-            get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(ShowFileOverwritePrompt)) ?? string.Empty);
+            get => bool.Parse((string?)RegKeySplashImageViewer.GetValue(nameof(ShowFileOverwritePrompt)) ?? string.Empty);
 
-            set => RegKeyRoot.SetValue(nameof(ShowFileOverwritePrompt), value);
+            set => RegKeySplashImageViewer.SetValue(nameof(ShowFileOverwritePrompt), value);
         }
 
         public static bool ForceCheckUpdates
         {
-            get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(ForceCheckUpdates)) ?? string.Empty);
+            get => bool.Parse((string?)RegKeySplashImageViewer.GetValue(nameof(ForceCheckUpdates)) ?? string.Empty);
 
-            set => RegKeyRoot.SetValue(nameof(ForceCheckUpdates), value);
+            set => RegKeySplashImageViewer.SetValue(nameof(ForceCheckUpdates), value);
         }
 
         public static DateTime UpdatesLastCheckedTimestamp
         {
-            get => DateTime.ParseExact((string?)RegKeyRoot.GetValue(nameof(UpdatesLastCheckedTimestamp)) ?? string.Empty, "s", CultureInfo.InvariantCulture);
+            get => DateTime.ParseExact((string?)RegKeySplashImageViewer.GetValue(nameof(UpdatesLastCheckedTimestamp)) ?? string.Empty, "s", CultureInfo.InvariantCulture);
 
-            private set => RegKeyRoot.SetValue(nameof(UpdatesLastCheckedTimestamp), value.ToString("s", CultureInfo.InvariantCulture));
+            private set => RegKeySplashImageViewer.SetValue(nameof(UpdatesLastCheckedTimestamp), value.ToString("s", CultureInfo.InvariantCulture));
         }
 
         public static CultureInfo CurrentUICulture
         {
-            get => CultureInfo.GetCultureInfo((string?)RegKeyRoot.GetValue(nameof(CurrentUICulture)) ?? string.Empty);
+            get => CultureInfo.GetCultureInfo((string?)RegKeySplashImageViewer.GetValue(nameof(CurrentUICulture)) ?? string.Empty);
 
-            set => RegKeyRoot.SetValue(nameof(CurrentUICulture), value.Name);
+            set => RegKeySplashImageViewer.SetValue(nameof(CurrentUICulture), value.Name);
         }
 
         public static int ScreenSizeWidth
         {
-            get => (int?)RegKeyRoot.GetValue(nameof(ScreenSizeWidth)) ?? 0;
+            get => (int?)RegKeySplashImageViewer.GetValue(nameof(ScreenSizeWidth)) ?? 0;
 
-            set => RegKeyRoot.SetValue(nameof(ScreenSizeWidth), value);
+            set => RegKeySplashImageViewer.SetValue(nameof(ScreenSizeWidth), value);
         }
 
         public static int ScreenSizeHeight
         {
-            get => (int?)RegKeyRoot.GetValue(nameof(ScreenSizeHeight)) ?? 0;
+            get => (int?)RegKeySplashImageViewer.GetValue(nameof(ScreenSizeHeight)) ?? 0;
 
-            set => RegKeyRoot.SetValue(nameof(ScreenSizeHeight), value);
+            set => RegKeySplashImageViewer.SetValue(nameof(ScreenSizeHeight), value);
         }
 
         public static bool ScreenIsMaximized
         {
-            get => bool.Parse((string?)RegKeyRoot.GetValue(nameof(ScreenIsMaximized)) ?? string.Empty);
+            get => bool.Parse((string?)RegKeySplashImageViewer.GetValue(nameof(ScreenIsMaximized)) ?? string.Empty);
 
-            set => RegKeyRoot.SetValue(nameof(ScreenIsMaximized), value);
+            set => RegKeySplashImageViewer.SetValue(nameof(ScreenIsMaximized), value);
         }
 
         public static void UpdateUpdatesLastCheckedTimestamp() => UpdatesLastCheckedTimestamp = DateTime.Now;
@@ -164,7 +165,7 @@ namespace SplashImageViewer.Helpers
         public static void ResetSettings()
         {
             // clear root config reg keys
-            ClearRegistryKey(RegKeyRoot);
+            ClearRegistryKey(RegKeySplashImageViewer);
 
             // clear recent items reg keys
             ClearRegistryKey(RegKeyRecentItems);
@@ -172,7 +173,7 @@ namespace SplashImageViewer.Helpers
             // set default values
             foreach (var pair in DefaultSettingsDict)
             {
-                RegKeyRoot.SetValue(pair.Key, pair.Value);
+                RegKeySplashImageViewer.SetValue(pair.Key, pair.Value);
             }
         }
 

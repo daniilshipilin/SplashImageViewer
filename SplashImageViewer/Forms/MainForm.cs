@@ -8,7 +8,7 @@ namespace SplashImageViewer.Forms
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Forms;
-    using ProgramUpdater;
+    using ApplicationUpdater;
     using SplashImageViewer.Helpers;
     using SplashImageViewer.Models;
     using SplashImageViewer.Properties;
@@ -18,7 +18,7 @@ namespace SplashImageViewer.Forms
         private readonly Timer slideshowTimer = new();
         private readonly Timer allocatedMemoryTimer = new();
         private readonly Timer slideshowProgressBarTimer = new();
-        private readonly Updater updater;
+        private IUpdater? updater;
         private DateTime nextSlideshowTransitionDate;
         private bool fullscreenFormIsActive;
         private bool imageIsModified;
@@ -27,13 +27,6 @@ namespace SplashImageViewer.Forms
         public MainForm()
         {
             this.InitializeComponent();
-
-            // init program updater
-            this.updater = new Updater(
-                ApplicationInfo.BaseDirectory,
-                new Version(GitVersionInformation.SemVer),
-                ApplicationInfo.AppGUID,
-                ApplicationInfo.ExePath);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -188,9 +181,6 @@ namespace SplashImageViewer.Forms
 
             this.ClearImageLabels();
 
-            // check for updates in the background
-            Task.Run(async () => await this.CheckUpdates());
-
             this.mainPanel.BackColor = Color.FromArgb(AppSettings.ThemeColorArgb);
             this.totalFilesLabel.ForeColor = Color.FromArgb(AppSettings.LabelsColorArgb);
 
@@ -217,6 +207,12 @@ namespace SplashImageViewer.Forms
                 // cmd provided filename/folder path
                 this.OpenImage(Path.GetFullPath(ApplicationInfo.Args.First()));
             }
+
+            // init program updater
+            this.InitUpdater();
+
+            // check for updates in the background
+            Task.Run(async () => await this.CheckUpdates());
         }
 
         private void LocalizeUIElements()
@@ -530,8 +526,29 @@ namespace SplashImageViewer.Forms
             this.slideshowProgressBarTimer.Interval = AppSettings.MainFormSlideshowProgressBarUpdateMs;
         }
 
+        private void InitUpdater()
+        {
+            try
+            {
+                this.updater = new Updater(
+                    ApplicationInfo.BaseDirectory,
+                    Version.Parse(GitVersionInformation.SemVer),
+                    ApplicationInfo.AppGUID,
+                    ApplicationInfo.ExePath);
+            }
+            catch (Exception ex)
+            {
+                this.ShowExceptionMessage(ex);
+            }
+        }
+
         private async Task CheckUpdates()
         {
+            if (this.updater is null)
+            {
+                return;
+            }
+
             if ((DateTime.UtcNow - AppSettings.UpdatesLastCheckedTimestamp).Days >= 1 ||
                 AppSettings.ForceCheckUpdates)
             {
