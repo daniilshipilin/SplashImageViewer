@@ -560,16 +560,12 @@ namespace SplashImageViewer.Forms
                     {
                         var dr = MessageBox.Show(
                             new Form { TopMost = true },
-                            this.updater.UpdatePromptFormatted,
+                            $"{Strings.NewerProgramVersionAvailable}{Environment.NewLine}" +
+                            $"{Strings.Current}: {this.updater.ClientVersion}{Environment.NewLine}" +
+                            $"{Strings.Available}: {this.updater.ServerVersion}",
                             Strings.ProgramUpdate,
-                            MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Question);
-
-                        if (dr == DialogResult.Yes)
-                        {
-                            await this.updater.Update();
-                            Program.ProgramExit();
-                        }
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception ex)
