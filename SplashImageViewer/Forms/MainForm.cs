@@ -150,12 +150,6 @@ namespace SplashImageViewer.Forms
                     : $"{bytes / 1048576D:0.00} {Strings.MByte}";
         }
 
-        private static long GetTotalAllocatedMemoryInBytes()
-        {
-            using var p = Process.GetCurrentProcess();
-            return p.PrivateMemorySize64;
-        }
-
         private void MainForm_Load(object sender, EventArgs e)
         {
             AppSettings.CheckSettings();
@@ -575,7 +569,7 @@ namespace SplashImageViewer.Forms
             }
         }
 
-        private void CheckMemoryAllocated(object? sender, EventArgs e) => this.memoryAllocatedLabel.Text = $"{Strings.MemoryAllocated}: {GetTotalAllocatedMemoryInBytes() / 1048576D:0.00} {Strings.MByte}";
+        private void CheckMemoryAllocated(object? sender, EventArgs e) => this.memoryAllocatedLabel.Text = $"{Strings.MemoryAllocated}: {Utils.GetTotalAllocatedMemoryInBytes() / 1048576D:0.00} {Strings.MByte}";
 
         private void ShowExceptionMessage(Exception ex)
         {
