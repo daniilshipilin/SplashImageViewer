@@ -177,7 +177,7 @@ namespace SplashImageViewer.Helpers
             }
         }
 
-        public static IList<string> GetRecentItemsFromRegistry() => RegKeyRecentItems.GetValueNames().ToList();
+        public static IReadOnlyList<string> GetRecentItemsFromRegistry() => RegKeyRecentItems.GetValueNames().ToList();
 
         public static void WriteRecentItemsToRegistry(IList<string> items)
         {

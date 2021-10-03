@@ -79,7 +79,7 @@ namespace SplashImageViewer.Forms
                 {
                     this.updatesInfoLabel.Text = Strings.UpdateInProgress;
                     await this.updater.ForceUpdate();
-                    Program.ProgramExit(ExitCode.Success);
+                    Utils.ProgramExit(ExitCode.Success);
                 }
                 catch (Exception ex)
                 {
@@ -118,7 +118,7 @@ namespace SplashImageViewer.Forms
                     {
                         this.updatesInfoLabel.Text = Strings.UpdateInProgress;
                         await this.updater.Update();
-                        Program.ProgramExit(ExitCode.Success);
+                        Utils.ProgramExit(ExitCode.Success);
                     }
                 }
                 else

@@ -294,7 +294,7 @@ namespace SplashImageViewer.Forms
         private void PopulateRecentItemsList()
         {
             // get saved values from registry and then populate ToolStripMenuItem
-            foreach (string? item in AppSettings.GetRecentItemsFromRegistry())
+            foreach (string item in AppSettings.GetRecentItemsFromRegistry())
             {
                 if (this.recentItemsMenuItem.DropDownItems.Count >= AppSettings.RecentItemsCapacity)
                 {
