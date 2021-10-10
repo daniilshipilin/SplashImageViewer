@@ -144,10 +144,10 @@ namespace SplashImageViewer.Forms
         private static string GetFileSizeString(long bytes)
         {
             return bytes < 1024
-                ? $"{bytes} {Strings.Byte}"
+                ? $"{bytes} {Resources.Byte}"
                 : bytes < 1048576
-                    ? $"{bytes / 1024D:0.00} {Strings.KByte}"
-                    : $"{bytes / 1048576D:0.00} {Strings.MByte}";
+                    ? $"{bytes / 1024D:0.00} {Resources.KByte}"
+                    : $"{bytes / 1048576D:0.00} {Resources.MByte}";
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -212,25 +212,25 @@ namespace SplashImageViewer.Forms
         private void LocalizeUIElements()
         {
             // set ui text
-            this.fileToolStripMenuItem.Text = Strings.FileToolStripMenuItem;
-            this.openImageMenuItem.Text = Strings.OpenImageMenuItem;
-            this.openFolderMenuItem.Text = Strings.OpenFolderMenuItem;
-            this.closeImageMenuItem.Text = Strings.CloseImageMenuItem;
-            this.recentItemsMenuItem.Text = Strings.RecentItemsMenuItem;
-            this.exitMenuItem.Text = Strings.ExitMenuItem;
-            this.settingsToolStripMenuItem.Text = Strings.SettingsToolStripMenuItem;
-            this.aboutToolStripMenuItem.Text = Strings.AboutToolStripMenuItem;
+            this.fileToolStripMenuItem.Text = Resources.FileToolStripMenuItem;
+            this.openImageMenuItem.Text = Resources.OpenImageMenuItem;
+            this.openFolderMenuItem.Text = Resources.OpenFolderMenuItem;
+            this.closeImageMenuItem.Text = Resources.CloseImageMenuItem;
+            this.recentItemsMenuItem.Text = Resources.RecentItemsMenuItem;
+            this.exitMenuItem.Text = Resources.ExitMenuItem;
+            this.settingsToolStripMenuItem.Text = Resources.SettingsToolStripMenuItem;
+            this.aboutToolStripMenuItem.Text = Resources.AboutToolStripMenuItem;
 
             // set tooltips
-            this.toolTip.SetToolTip(this.previousButton, Strings.PreviousButtonToolTip);
-            this.toolTip.SetToolTip(this.nextButton, Strings.NextButtonToolTip);
-            this.toolTip.SetToolTip(this.slideshowButton, Strings.SlideshowButtonToolTip);
-            this.toolTip.SetToolTip(this.randomButton, Strings.RandomButtonToolTip);
-            this.toolTip.SetToolTip(this.deleteFileButton, Strings.DeleteButtonToolTip);
-            this.toolTip.SetToolTip(this.fullscreenButton, Strings.FullscreenButtonToolTip);
-            this.toolTip.SetToolTip(this.zoomButton, Strings.ZoomButtonToolTip);
-            this.toolTip.SetToolTip(this.rotateImageButton, Strings.RotateImageButtonToolTip);
-            this.toolTip.SetToolTip(this.settingsButton, Strings.OpenSettingsButtonToolTip);
+            this.toolTip.SetToolTip(this.previousButton, Resources.PreviousButtonToolTip);
+            this.toolTip.SetToolTip(this.nextButton, Resources.NextButtonToolTip);
+            this.toolTip.SetToolTip(this.slideshowButton, Resources.SlideshowButtonToolTip);
+            this.toolTip.SetToolTip(this.randomButton, Resources.RandomButtonToolTip);
+            this.toolTip.SetToolTip(this.deleteFileButton, Resources.DeleteButtonToolTip);
+            this.toolTip.SetToolTip(this.fullscreenButton, Resources.FullscreenButtonToolTip);
+            this.toolTip.SetToolTip(this.zoomButton, Resources.ZoomButtonToolTip);
+            this.toolTip.SetToolTip(this.rotateImageButton, Resources.RotateImageButtonToolTip);
+            this.toolTip.SetToolTip(this.settingsButton, Resources.OpenSettingsButtonToolTip);
         }
 
         private bool ScreenDimensionsIsValid()
@@ -243,8 +243,8 @@ namespace SplashImageViewer.Forms
             {
                 MessageBox.Show(
                     new Form { TopMost = true },
-                    Strings.CheckScreenDimensionsWarning,
-                    Strings.GeneralWarning,
+                    Resources.CheckScreenDimensionsWarning,
+                    Resources.GeneralWarning,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
@@ -554,10 +554,10 @@ namespace SplashImageViewer.Forms
                     {
                         var dr = MessageBox.Show(
                             new Form { TopMost = true },
-                            $"{Strings.NewerProgramVersionAvailable}{Environment.NewLine}" +
-                            $"{Strings.Current}: {this.updater.ClientVersion}{Environment.NewLine}" +
-                            $"{Strings.Available}: {this.updater.ServerVersion}",
-                            Strings.ProgramUpdate,
+                            $"{Resources.NewerProgramVersionAvailable}{Environment.NewLine}" +
+                            $"{Resources.Current}: {this.updater.ClientVersion}{Environment.NewLine}" +
+                            $"{Resources.Available}: {this.updater.ServerVersion}",
+                            Resources.ProgramUpdate,
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
                     }
@@ -569,7 +569,7 @@ namespace SplashImageViewer.Forms
             }
         }
 
-        private void CheckMemoryAllocated(object? sender, EventArgs e) => this.memoryAllocatedLabel.Text = $"{Strings.MemoryAllocated}: {Utils.GetTotalAllocatedMemoryInBytes() / 1048576D:0.00} {Strings.MByte}";
+        private void CheckMemoryAllocated(object? sender, EventArgs e) => this.memoryAllocatedLabel.Text = $"{Resources.MemoryAllocated}: {Utils.GetTotalAllocatedMemoryInBytes() / 1048576D:0.00} {Resources.MByte}";
 
         private void ShowExceptionMessage(Exception ex)
         {
@@ -633,11 +633,11 @@ namespace SplashImageViewer.Forms
         {
             if (this.slideshowTimer.Enabled)
             {
-                this.Text = $"{ImagesModel.Singleton.CurrentFilePath} - {Strings.SlideshowEnabled}";
+                this.Text = $"{ImagesModel.Singleton.CurrentFilePath} - {Resources.SlideshowEnabled}";
             }
             else if (this.imageIsModified)
             {
-                this.Text = $"{ImagesModel.Singleton.CurrentFilePath} - {Strings.ImageModifiedCaps}";
+                this.Text = $"{ImagesModel.Singleton.CurrentFilePath} - {Resources.ImageModifiedCaps}";
             }
             else if (ImagesModel.Singleton.Image is not null)
             {
@@ -661,9 +661,9 @@ namespace SplashImageViewer.Forms
         {
             if (ImagesModel.Singleton.Image is not null)
             {
-                this.imageDimensionsLabel.Text = $"{Strings.Dimensions}: {ImagesModel.Singleton.Image.Width}x{ImagesModel.Singleton.Image.Height}";
-                this.imageSizeLabel.Text = $"{Strings.FileSize}: {GetFileSizeString(new FileInfo(ImagesModel.Singleton.CurrentFilePath).Length)}";
-                this.imageTypeLabel.Text = $"{Strings.Type}: {ImagesModel.Singleton.ImageFormatDescription}";
+                this.imageDimensionsLabel.Text = $"{Resources.Dimensions}: {ImagesModel.Singleton.Image.Width}x{ImagesModel.Singleton.Image.Height}";
+                this.imageSizeLabel.Text = $"{Resources.FileSize}: {GetFileSizeString(new FileInfo(ImagesModel.Singleton.CurrentFilePath).Length)}";
+                this.imageTypeLabel.Text = $"{Resources.Type}: {ImagesModel.Singleton.ImageFormatDescription}";
             }
         }
 
@@ -777,8 +777,8 @@ namespace SplashImageViewer.Forms
             {
                 var dr = MessageBox.Show(
                     new Form { TopMost = true },
-                    Strings.OverwriteImagePrompt,
-                    Strings.ImageModified,
+                    Resources.OverwriteImagePrompt,
+                    Resources.ImageModified,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Information);
 
@@ -848,8 +848,8 @@ namespace SplashImageViewer.Forms
             {
                 var dialogResult = MessageBox.Show(
                     new Form { TopMost = true },
-                    Strings.FileDeletePrompt,
-                    Strings.DeleteFile,
+                    Resources.FileDeletePrompt,
+                    Resources.DeleteFile,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
@@ -951,8 +951,8 @@ namespace SplashImageViewer.Forms
             {
                 MessageBox.Show(
                     new Form { TopMost = true },
-                    Strings.StopSlideshowFirstPrompt,
-                    Strings.SlideshowModeIsActive,
+                    Resources.StopSlideshowFirstPrompt,
+                    Resources.SlideshowModeIsActive,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
 

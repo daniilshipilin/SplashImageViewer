@@ -57,18 +57,18 @@ namespace SplashImageViewer.Forms
 
         private void LocalizeUIElements()
         {
-            this.Text = Strings.Settings;
-            this.label1.Text = Strings.SlideshowTransition;
-            this.randomizeCheckBox.Text = Strings.RandomizeSlideshowOrder;
-            this.searchOptionCheckBox.Text = Strings.SearchImagesInSubdirectories;
-            this.showFileDeletePromptCheckBox.Text = Strings.FileDeleteConfirmationRequired;
-            this.defaultSettingsButton.Text = Strings.Reset;
-            this.label2.Text = Strings.ThemeColor;
-            this.forceCheckUpdatesCheckBox.Text = Strings.ForceCheckUpdates;
-            this.showFileOverwritePromptCheckBox.Text = Strings.ModifiedFileOverwriteConfirmationRequired;
-            this.label3.Text = Strings.UILanguage;
+            this.Text = Resources.Settings;
+            this.label1.Text = Resources.SlideshowTransition;
+            this.randomizeCheckBox.Text = Resources.RandomizeSlideshowOrder;
+            this.searchOptionCheckBox.Text = Resources.SearchImagesInSubdirectories;
+            this.showFileDeletePromptCheckBox.Text = Resources.FileDeleteConfirmationRequired;
+            this.defaultSettingsButton.Text = Resources.Reset;
+            this.label2.Text = Resources.ThemeColor;
+            this.forceCheckUpdatesCheckBox.Text = Resources.ForceCheckUpdates;
+            this.showFileOverwritePromptCheckBox.Text = Resources.ModifiedFileOverwriteConfirmationRequired;
+            this.label3.Text = Resources.UILanguage;
 
-            this.toolTip.SetToolTip(this.okButton, Strings.SettingsCommitToolTip);
+            this.toolTip.SetToolTip(this.okButton, Resources.SettingsCommitToolTip);
         }
 
         private void SlideshowTransitionMSComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -87,8 +87,8 @@ namespace SplashImageViewer.Forms
 
                 MessageBox.Show(
                         new Form { TopMost = true },
-                        Strings.ChangingUILanguageRequiresAppRestart,
-                        Strings.UILanguageChanged,
+                        Resources.ChangingUILanguageRequiresAppRestart,
+                        Resources.UILanguageChanged,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
             }
@@ -139,8 +139,8 @@ namespace SplashImageViewer.Forms
         {
             var dr = MessageBox.Show(
                 new Form { TopMost = true },
-                Strings.ResetSettingsPrompt,
-                Strings.DefaultSettings,
+                Resources.ResetSettingsPrompt,
+                Resources.DefaultSettings,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 

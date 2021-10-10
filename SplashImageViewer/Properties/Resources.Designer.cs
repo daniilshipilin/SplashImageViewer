@@ -259,5 +259,671 @@ namespace SplashImageViewer.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        internal static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;About.
+        /// </summary>
+        internal static string AboutToolStripMenuItem {
+            get {
+                return ResourceManager.GetString("AboutToolStripMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A simple image viewer with slideshow feature..
+        /// </summary>
+        internal static string AppDescription {
+            get {
+                return ResourceManager.GetString("AppDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application updater is not available.
+        /// </summary>
+        internal static string ApplicationUpdaterNotAvailable {
+            get {
+                return ResourceManager.GetString("ApplicationUpdaterNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        internal static string Author {
+            get {
+                return ResourceManager.GetString("Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        internal static string Available {
+            get {
+                return ResourceManager.GetString("Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to byte(s).
+        /// </summary>
+        internal static string Byte {
+            get {
+                return ResourceManager.GetString("Byte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changing UI language requires app restart..
+        /// </summary>
+        internal static string ChangingUILanguageRequiresAppRestart {
+            get {
+                return ResourceManager.GetString("ChangingUILanguageRequiresAppRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Need to check for available updates.
+        /// </summary>
+        internal static string CheckForAvailableUpdates {
+            get {
+                return ResourceManager.GetString("CheckForAvailableUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking for available updates.
+        /// </summary>
+        internal static string CheckingForUpdates {
+            get {
+                return ResourceManager.GetString("CheckingForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The minimum screen resolution requirements not met.
+        /// </summary>
+        internal static string CheckScreenDimensionsWarning {
+            get {
+                return ResourceManager.GetString("CheckScreenDimensionsWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for available updates.
+        /// </summary>
+        internal static string CheckUpdatesButtonToolTip {
+            get {
+                return ResourceManager.GetString("CheckUpdatesButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Close Image.
+        /// </summary>
+        internal static string CloseImageMenuItem {
+            get {
+                return ResourceManager.GetString("CloseImageMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current.
+        /// </summary>
+        internal static string Current {
+            get {
+                return ResourceManager.GetString("Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default settings.
+        /// </summary>
+        internal static string DefaultSettings {
+            get {
+                return ResourceManager.GetString("DefaultSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete a file currently open [DEL].
+        /// </summary>
+        internal static string DeleteButtonToolTip {
+            get {
+                return ResourceManager.GetString("DeleteButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete file.
+        /// </summary>
+        internal static string DeleteFile {
+            get {
+                return ResourceManager.GetString("DeleteFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dimensions.
+        /// </summary>
+        internal static string Dimensions {
+            get {
+                return ResourceManager.GetString("Dimensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Exit.
+        /// </summary>
+        internal static string ExitMenuItem {
+            get {
+                return ResourceManager.GetString("ExitMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File delete confirmation required.
+        /// </summary>
+        internal static string FileDeleteConfirmationRequired {
+            get {
+                return ResourceManager.GetString("FileDeleteConfirmationRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this file?.
+        /// </summary>
+        internal static string FileDeletePrompt {
+            get {
+                return ResourceManager.GetString("FileDeletePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File size.
+        /// </summary>
+        internal static string FileSize {
+            get {
+                return ResourceManager.GetString("FileSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;File.
+        /// </summary>
+        internal static string FileToolStripMenuItem {
+            get {
+                return ResourceManager.GetString("FileToolStripMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Force check updates.
+        /// </summary>
+        internal static string ForceCheckUpdates {
+            get {
+                return ResourceManager.GetString("ForceCheckUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Force program update?.
+        /// </summary>
+        internal static string ForceProgramUpdatePrompt {
+            get {
+                return ResourceManager.GetString("ForceProgramUpdatePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press, to force program update.
+        /// </summary>
+        internal static string ForceProgramUpdateToolTip {
+            get {
+                return ResourceManager.GetString("ForceProgramUpdateToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fullscreen mode [F].
+        /// </summary>
+        internal static string FullscreenButtonToolTip {
+            get {
+                return ResourceManager.GetString("FullscreenButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exception encountered.
+        /// </summary>
+        internal static string GeneralException {
+            get {
+                return ResourceManager.GetString("GeneralException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        internal static string GeneralWarning {
+            get {
+                return ResourceManager.GetString("GeneralWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GUID was not found.
+        /// </summary>
+        internal static string GuidWasNotFound {
+            get {
+                return ResourceManager.GetString("GuidWasNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloaded package hash sum mismatch.
+        /// </summary>
+        internal static string HashSumMismatch {
+            get {
+                return ResourceManager.GetString("HashSumMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image modified.
+        /// </summary>
+        internal static string ImageModified {
+            get {
+                return ResourceManager.GetString("ImageModified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IMAGE MODIFIED.
+        /// </summary>
+        internal static string ImageModifiedCaps {
+            get {
+                return ResourceManager.GetString("ImageModifiedCaps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kbyte.
+        /// </summary>
+        internal static string KByte {
+            get {
+                return ResourceManager.GetString("KByte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last check.
+        /// </summary>
+        internal static string LastCheck {
+            get {
+                return ResourceManager.GetString("LastCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mbyte.
+        /// </summary>
+        internal static string MByte {
+            get {
+                return ResourceManager.GetString("MByte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Memory allocated.
+        /// </summary>
+        internal static string MemoryAllocated {
+            get {
+                return ResourceManager.GetString("MemoryAllocated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Method needs to be called first.
+        /// </summary>
+        internal static string MethodNeedsToBeCalledFirst {
+            get {
+                return ResourceManager.GetString("MethodNeedsToBeCalledFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modified file overwrite confirmation required.
+        /// </summary>
+        internal static string ModifiedFileOverwriteConfirmationRequired {
+            get {
+                return ResourceManager.GetString("ModifiedFileOverwriteConfirmationRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Newer program version available.
+        /// </summary>
+        internal static string NewerProgramVersionAvailable {
+            get {
+                return ResourceManager.GetString("NewerProgramVersionAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next image [RIGHT/UP ARROW].
+        /// </summary>
+        internal static string NextButtonToolTip {
+            get {
+                return ResourceManager.GetString("NextButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open &amp;Folder.
+        /// </summary>
+        internal static string OpenFolderMenuItem {
+            get {
+                return ResourceManager.GetString("OpenFolderMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Open Image.
+        /// </summary>
+        internal static string OpenImageMenuItem {
+            get {
+                return ResourceManager.GetString("OpenImageMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open settings [S].
+        /// </summary>
+        internal static string OpenSettingsButtonToolTip {
+            get {
+                return ResourceManager.GetString("OpenSettingsButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overwrite current image?.
+        /// </summary>
+        internal static string OverwriteImagePrompt {
+            get {
+                return ResourceManager.GetString("OverwriteImagePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous image [LEFT/DOWN ARROW].
+        /// </summary>
+        internal static string PreviousButtonToolTip {
+            get {
+                return ResourceManager.GetString("PreviousButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current program version is up to date.
+        /// </summary>
+        internal static string ProgramIsUpToDate {
+            get {
+                return ResourceManager.GetString("ProgramIsUpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Program update.
+        /// </summary>
+        internal static string ProgramUpdate {
+            get {
+                return ResourceManager.GetString("ProgramUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select random image [R].
+        /// </summary>
+        internal static string RandomButtonToolTip {
+            get {
+                return ResourceManager.GetString("RandomButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Randomize slideshow order.
+        /// </summary>
+        internal static string RandomizeSlideshowOrder {
+            get {
+                return ResourceManager.GetString("RandomizeSlideshowOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Recent Items.
+        /// </summary>
+        internal static string RecentItemsMenuItem {
+            get {
+                return ResourceManager.GetString("RecentItemsMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        internal static string Reset {
+            get {
+                return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset settings?.
+        /// </summary>
+        internal static string ResetSettingsPrompt {
+            get {
+                return ResourceManager.GetString("ResetSettingsPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rotate image [D].
+        /// </summary>
+        internal static string RotateImageButtonToolTip {
+            get {
+                return ResourceManager.GetString("RotateImageButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search images in subdirectories.
+        /// </summary>
+        internal static string SearchImagesInSubdirectories {
+            get {
+                return ResourceManager.GetString("SearchImagesInSubdirectories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to seconds remaining.
+        /// </summary>
+        internal static string SecondsRemaining {
+            get {
+                return ResourceManager.GetString("SecondsRemaining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commit changes.
+        /// </summary>
+        internal static string SettingsCommitToolTip {
+            get {
+                return ResourceManager.GetString("SettingsCommitToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Settings.
+        /// </summary>
+        internal static string SettingsToolStripMenuItem {
+            get {
+                return ResourceManager.GetString("SettingsToolStripMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start/stop slideshow [SPACE].
+        /// </summary>
+        internal static string SlideshowButtonToolTip {
+            get {
+                return ResourceManager.GetString("SlideshowButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SLIDESHOW ENABLED.
+        /// </summary>
+        internal static string SlideshowEnabled {
+            get {
+                return ResourceManager.GetString("SlideshowEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press [F] or [ESC] to exit fullscreen mode.
+        /// </summary>
+        internal static string SlideshowInfoLabel {
+            get {
+                return ResourceManager.GetString("SlideshowInfoLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slideshow mode is active.
+        /// </summary>
+        internal static string SlideshowModeIsActive {
+            get {
+                return ResourceManager.GetString("SlideshowModeIsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slideshow transition (s):.
+        /// </summary>
+        internal static string SlideshowTransition {
+            get {
+                return ResourceManager.GetString("SlideshowTransition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visit project source code repository on github.com.
+        /// </summary>
+        internal static string SourceCodeRepoToolTip {
+            get {
+                return ResourceManager.GetString("SourceCodeRepoToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please stop slideshow first..
+        /// </summary>
+        internal static string StopSlideshowFirstPrompt {
+            get {
+                return ResourceManager.GetString("StopSlideshowFirstPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme color:.
+        /// </summary>
+        internal static string ThemeColor {
+            get {
+                return ResourceManager.GetString("ThemeColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UI language:.
+        /// </summary>
+        internal static string UILanguage {
+            get {
+                return ResourceManager.GetString("UILanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UI language changed.
+        /// </summary>
+        internal static string UILanguageChanged {
+            get {
+                return ResourceManager.GetString("UILanguageChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update in progress.
+        /// </summary>
+        internal static string UpdateInProgress {
+            get {
+                return ResourceManager.GetString("UpdateInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update program?.
+        /// </summary>
+        internal static string UpdateProgramPrompt {
+            get {
+                return ResourceManager.GetString("UpdateProgramPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom in/out image [Z].
+        /// </summary>
+        internal static string ZoomButtonToolTip {
+            get {
+                return ResourceManager.GetString("ZoomButtonToolTip", resourceCulture);
+            }
+        }
     }
 }

@@ -49,9 +49,9 @@ namespace SplashImageViewer
         public static string AppInfoFormatted =>
             $"{AppHeader}{Environment.NewLine}" +
             $"{GitVersionInformation.InformationalVersion}{Environment.NewLine}" +
-            $"{Strings.Author}: {AppAuthor}{Environment.NewLine}{Environment.NewLine}" +
-            $"{Strings.Description}:{Environment.NewLine}" +
-            $"  {Strings.AppDescription}";
+            $"{Resources.Author}: {AppAuthor}{Environment.NewLine}{Environment.NewLine}" +
+            $"{Resources.Description}:{Environment.NewLine}" +
+            $"  {Resources.AppDescription}";
 
         /// <summary>
         /// Sets application command line arguments.

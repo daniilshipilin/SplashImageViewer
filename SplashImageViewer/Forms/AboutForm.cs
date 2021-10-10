@@ -31,25 +31,25 @@ namespace SplashImageViewer.Forms
 
         private void LocalizeUIElements()
         {
-            this.Text = Strings.About;
+            this.Text = Resources.About;
             this.aboutLabel.Text = ApplicationInfo.AppInfoFormatted;
 
             this.updatesInfoLabel.Text = this.updater is null
-                ? Strings.ApplicationUpdaterNotAvailable
+                ? Resources.ApplicationUpdaterNotAvailable
                 : !this.updater.CheckUpdateRequested
-                    ? $"{Strings.CheckForAvailableUpdates}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
+                    ? $"{Resources.CheckForAvailableUpdates}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
                     : this.updater.ServerVersionIsGreater
-                        ? $"{Strings.NewerProgramVersionAvailable}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
-                        : $"{Strings.ProgramIsUpToDate}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
+                        ? $"{Resources.NewerProgramVersionAvailable}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
+                        : $"{Resources.ProgramIsUpToDate}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
 
-            this.toolTip.SetToolTip(this.checkUpdatesButton, Strings.CheckUpdatesButtonToolTip);
-            this.toolTip.SetToolTip(this.updatesInfoLabel, Strings.ForceProgramUpdateToolTip);
-            this.toolTip.SetToolTip(this.linkLabel, Strings.SourceCodeRepoToolTip);
+            this.toolTip.SetToolTip(this.checkUpdatesButton, Resources.CheckUpdatesButtonToolTip);
+            this.toolTip.SetToolTip(this.updatesInfoLabel, Resources.ForceProgramUpdateToolTip);
+            this.toolTip.SetToolTip(this.linkLabel, Resources.SourceCodeRepoToolTip);
         }
 
         private void ShowExceptionMessage(Exception ex)
         {
-            this.updatesInfoLabel.Text = Strings.GeneralException;
+            this.updatesInfoLabel.Text = Resources.GeneralException;
 
             MessageBox.Show(
                 new Form { TopMost = true },
@@ -68,8 +68,8 @@ namespace SplashImageViewer.Forms
 
             var dr = MessageBox.Show(
             new Form { TopMost = true },
-            Strings.ForceProgramUpdatePrompt,
-            Strings.ProgramUpdate,
+            Resources.ForceProgramUpdatePrompt,
+            Resources.ProgramUpdate,
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Question);
 
@@ -77,7 +77,7 @@ namespace SplashImageViewer.Forms
             {
                 try
                 {
-                    this.updatesInfoLabel.Text = Strings.UpdateInProgress;
+                    this.updatesInfoLabel.Text = Resources.UpdateInProgress;
                     await this.updater.ForceUpdate();
                     Utils.ProgramExit(ExitCode.Success);
                 }
@@ -98,36 +98,36 @@ namespace SplashImageViewer.Forms
             try
             {
                 AppSettings.UpdateUpdatesLastCheckedTimestamp();
-                this.updatesInfoLabel.Text = Strings.CheckingForUpdates;
+                this.updatesInfoLabel.Text = Resources.CheckingForUpdates;
 
                 if (await this.updater.CheckUpdateIsAvailable())
                 {
-                    this.updatesInfoLabel.Text = $"{Strings.NewerProgramVersionAvailable}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
+                    this.updatesInfoLabel.Text = $"{Resources.NewerProgramVersionAvailable}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
 
                     var dr = MessageBox.Show(
                         new Form { TopMost = true },
-                        $"{Strings.NewerProgramVersionAvailable}{Environment.NewLine}" +
-                        $"{Strings.Current}: {this.updater.ClientVersion}{Environment.NewLine}" +
-                        $"{Strings.Available}: {this.updater.ServerVersion}{Environment.NewLine}{Environment.NewLine}" +
-                        $"{Strings.UpdateProgramPrompt}",
-                        Strings.ProgramUpdate,
+                        $"{Resources.NewerProgramVersionAvailable}{Environment.NewLine}" +
+                        $"{Resources.Current}: {this.updater.ClientVersion}{Environment.NewLine}" +
+                        $"{Resources.Available}: {this.updater.ServerVersion}{Environment.NewLine}{Environment.NewLine}" +
+                        $"{Resources.UpdateProgramPrompt}",
+                        Resources.ProgramUpdate,
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question);
 
                     if (dr == DialogResult.Yes)
                     {
-                        this.updatesInfoLabel.Text = Strings.UpdateInProgress;
+                        this.updatesInfoLabel.Text = Resources.UpdateInProgress;
                         await this.updater.Update();
                         Utils.ProgramExit(ExitCode.Success);
                     }
                 }
                 else
                 {
-                    this.updatesInfoLabel.Text = $"{Strings.ProgramIsUpToDate}. {Strings.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
+                    this.updatesInfoLabel.Text = $"{Resources.ProgramIsUpToDate}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
                     var dr = MessageBox.Show(
                         new Form { TopMost = true },
-                        Strings.ProgramIsUpToDate,
-                        Strings.ProgramUpdate,
+                        Resources.ProgramIsUpToDate,
+                        Resources.ProgramUpdate,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
                 }

@@ -120,8 +120,8 @@ namespace SplashImageViewer.Forms
         private void LocalizeUIElements()
         {
             this.infoLabel.Text = this.slideshowIsEnabled ?
-                $"{Strings.SlideshowInfoLabel}{Environment.NewLine}{Strings.SlideshowEnabled}" :
-                Strings.SlideshowInfoLabel;
+                $"{Resources.SlideshowInfoLabel}{Environment.NewLine}{Resources.SlideshowEnabled}" :
+                Resources.SlideshowInfoLabel;
         }
 
         private void InitTimers()
