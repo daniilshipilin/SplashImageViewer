@@ -140,13 +140,23 @@ namespace SplashImageViewer.Forms
 
         private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            // specify that the link was visited
-            this.linkLabel.LinkVisited = true;
-
             try
             {
-                // navigate to a URL
-                Process.Start(ApplicationInfo.GitHubUrl);
+                if (string.IsNullOrEmpty(ApplicationInfo.GitHubUrl))
+                {
+                    throw new ArgumentException(nameof(ApplicationInfo.GitHubUrl));
+                }
+
+                // use cmd to launch system default browser to navigate to a URL
+                var proc = new Process
+                {
+                    StartInfo = new ProcessStartInfo("cmd", $"/c start {ApplicationInfo.GitHubUrl}") { CreateNoWindow = true }
+                };
+
+                proc.Start();
+
+                // specify that the link was visited
+                this.linkLabel.LinkVisited = true;
             }
             catch (Exception ex)
             {
