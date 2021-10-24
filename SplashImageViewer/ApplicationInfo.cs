@@ -16,11 +16,11 @@ namespace SplashImageViewer
         private static readonly AssemblyDescriptionAttribute? Description = Ass.GetCustomAttributes<AssemblyDescriptionAttribute>().FirstOrDefault();
         private static readonly AssemblyCopyrightAttribute? Copyright = Ass.GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault();
 
-        public static string AppBuild { get; } =
+        public const string AppBuild =
 #if DEBUG
             " [Debug]";
 #else
-            string.Empty;
+            "";
 #endif
 
         public static IReadOnlyList<string> Args { get; private set; } = new List<string>();
