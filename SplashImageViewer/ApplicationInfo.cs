@@ -16,14 +16,14 @@ namespace SplashImageViewer
         private static readonly AssemblyDescriptionAttribute? Description = Ass.GetCustomAttributes<AssemblyDescriptionAttribute>().FirstOrDefault();
         private static readonly AssemblyCopyrightAttribute? Copyright = Ass.GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault();
 
-        public static string? AppBuild { get; } =
+        public static string AppBuild { get; } =
 #if DEBUG
             " [Debug]";
 #else
             string.Empty;
 #endif
 
-        public static IList<string>? Args { get; private set; }
+        public static IReadOnlyList<string> Args { get; private set; } = new List<string>();
 
         public static string BaseDirectory => Path.GetDirectoryName(ExePath) ?? string.Empty;
 
@@ -41,7 +41,7 @@ namespace SplashImageViewer
 
         public static Guid AppGUID { get; } = new Guid("8e3acb01-f0a7-4434-946f-de5e21f4c247");
 
-        public static string GitHubUrl { get; } = "https://github.com/daniilshipilin/SplashImageViewer";
+        public const string GitHubUrl = "https://github.com/daniilshipilin/SplashImageViewer";
 
         /// <summary>
         /// Gets application info formatted string.

@@ -196,10 +196,10 @@ namespace SplashImageViewer.Forms
             this.PopulateRecentItemsList();
 
             // check, if args exist
-            if (ApplicationInfo.Args?.Count > 0)
+            if (ApplicationInfo.Args.Count > 0)
             {
                 // cmd provided filename/folder path
-                this.OpenImage(Path.GetFullPath(ApplicationInfo.Args.First()));
+                this.OpenImage(Path.GetFullPath(ApplicationInfo.Args[0]));
             }
 
             // init program updater
