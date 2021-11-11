@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics;
+using System.IO;
 
     public static class Utils
     {
@@ -14,6 +15,30 @@
             using var p = Process.GetCurrentProcess();
 
             return p.PrivateMemorySize64;
+        }
+
+        public static void OpenLinkInBrowser(string link)
+        {
+            LaunchCmdProcess(link);
+        }
+
+        public static void OpenExplorer(string path)
+        {
+            LaunchCmdProcess($"explorer.exe /select,{path}");
+        }
+
+        private static void LaunchCmdProcess(string args)
+        {
+            using var proc = new Process
+            {
+                StartInfo = new ProcessStartInfo("cmd.exe")
+{
+                    Arguments = $"/c start {args}",
+                    CreateNoWindow = true,
+                }
+            };
+
+            proc.Start();
         }
     }
 }

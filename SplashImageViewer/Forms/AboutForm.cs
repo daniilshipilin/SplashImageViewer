@@ -1,7 +1,6 @@
 namespace SplashImageViewer.Forms
 {
     using System;
-    using System.Diagnostics;
     using System.Windows.Forms;
     using ApplicationUpdater;
     using SplashImageViewer.Helpers;
@@ -148,12 +147,7 @@ namespace SplashImageViewer.Forms
                 }
 
                 // use cmd to launch system default browser to navigate to a URL
-                var proc = new Process
-                {
-                    StartInfo = new ProcessStartInfo("cmd", $"/c start {ApplicationInfo.GitHubUrl}") { CreateNoWindow = true }
-                };
-
-                proc.Start();
+                Utils.OpenLinkInBrowser(ApplicationInfo.GitHubUrl);
 
                 // specify that the link was visited
                 this.linkLabel.LinkVisited = true;
