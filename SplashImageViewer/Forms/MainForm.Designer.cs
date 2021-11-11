@@ -67,6 +67,7 @@ namespace SplashImageViewer.Forms
             this.rightClickMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.fileNameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.showFileInFileExplorerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyPathMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setDesktopBackgroundMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -403,6 +404,7 @@ namespace SplashImageViewer.Forms
             this.rightClickMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileNameMenuItem,
             this.toolStripSeparator4,
+            this.showFileInFileExplorerMenuItem,
             this.copyPathMenuItem,
             this.copyFileMenuItem,
             this.setDesktopBackgroundMenuItem});
@@ -421,25 +423,32 @@ namespace SplashImageViewer.Forms
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(216, 6);
             // 
+            // showFileInFileExplorerMenuItem
+            // 
+            this.showFileInFileExplorerMenuItem.Name = "showFileInFileExplorerMenuItem";
+            this.showFileInFileExplorerMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.showFileInFileExplorerMenuItem.Text = "showFileInFileExplorerMenuItem";
+            this.showFileInFileExplorerMenuItem.Click += new System.EventHandler(this.ShowFileInFileExplorerMenuItem_Click);
+            // 
             // copyPathMenuItem
             // 
             this.copyPathMenuItem.Name = "copyPathMenuItem";
             this.copyPathMenuItem.Size = new System.Drawing.Size(219, 22);
-            this.copyPathMenuItem.Text = "Copy File Path";
+            this.copyPathMenuItem.Text = "copyPathMenuItem";
             this.copyPathMenuItem.Click += new System.EventHandler(this.CopyPathMenuItem_Click);
             // 
             // copyFileMenuItem
             // 
             this.copyFileMenuItem.Name = "copyFileMenuItem";
             this.copyFileMenuItem.Size = new System.Drawing.Size(219, 22);
-            this.copyFileMenuItem.Text = "Copy File To Clipboard";
+            this.copyFileMenuItem.Text = "copyFileMenuItem";
             this.copyFileMenuItem.Click += new System.EventHandler(this.CopyFileMenuItem_Click);
             // 
             // setDesktopBackgroundMenuItem
             // 
             this.setDesktopBackgroundMenuItem.Name = "setDesktopBackgroundMenuItem";
             this.setDesktopBackgroundMenuItem.Size = new System.Drawing.Size(219, 22);
-            this.setDesktopBackgroundMenuItem.Text = "Set As Desktop Background";
+            this.setDesktopBackgroundMenuItem.Text = "setDesktopBackgroundMenuItem";
             this.setDesktopBackgroundMenuItem.Click += new System.EventHandler(this.SetDesktopBackgroundMenuItem_Click);
             // 
             // slideshowProgressBar
@@ -525,6 +534,7 @@ namespace SplashImageViewer.Forms
         private ToolStripMenuItem recentItemsMenuItem;
         private ToolStripSeparator toolStripSeparator3;
         private ContextMenuStrip rightClickMenuStrip;
+        private ToolStripMenuItem showFileInFileExplorerMenuItem;
         private ToolStripMenuItem copyPathMenuItem;
         private ToolStripMenuItem setDesktopBackgroundMenuItem;
         private ToolStripMenuItem copyFileMenuItem;

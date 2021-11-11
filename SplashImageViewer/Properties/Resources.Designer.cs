@@ -19,7 +19,7 @@ namespace SplashImageViewer.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,206 +57,6 @@ namespace SplashImageViewer.Properties {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Commit_32x32 {
-            get {
-                object obj = ResourceManager.GetObject("Commit_32x32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Cross_32x32 {
-            get {
-                object obj = ResourceManager.GetObject("Cross_32x32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Delete_48x48 {
-            get {
-                object obj = ResourceManager.GetObject("Delete_48x48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Dice_48x48 {
-            get {
-                object obj = ResourceManager.GetObject("Dice_48x48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Error_64x64 {
-            get {
-                object obj = ResourceManager.GetObject("Error_64x64", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Exit_32x32 {
-            get {
-                object obj = ResourceManager.GetObject("Exit_32x32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap File_32x32 {
-            get {
-                object obj = ResourceManager.GetObject("File_32x32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Flip_48x48 {
-            get {
-                object obj = ResourceManager.GetObject("Flip_48x48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Folder_32x32 {
-            get {
-                object obj = ResourceManager.GetObject("Folder_32x32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Fullscreen_48x48 {
-            get {
-                object obj = ResourceManager.GetObject("Fullscreen_48x48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Next_48x48 {
-            get {
-                object obj = ResourceManager.GetObject("Next_48x48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Play_48x48 {
-            get {
-                object obj = ResourceManager.GetObject("Play_48x48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Previous_48x48 {
-            get {
-                object obj = ResourceManager.GetObject("Previous_48x48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Recent_32x32 {
-            get {
-                object obj = ResourceManager.GetObject("Recent_32x32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Refresh_32x32 {
-            get {
-                object obj = ResourceManager.GetObject("Refresh_32x32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Settings_48x48 {
-            get {
-                object obj = ResourceManager.GetObject("Settings_48x48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Splash_100x100 {
-            get {
-                object obj = ResourceManager.GetObject("Splash_100x100", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Stop_48x48 {
-            get {
-                object obj = ResourceManager.GetObject("Stop_48x48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ZoomIn_48x48 {
-            get {
-                object obj = ResourceManager.GetObject("ZoomIn_48x48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ZoomOut_48x48 {
-            get {
-                object obj = ResourceManager.GetObject("ZoomOut_48x48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -378,6 +178,44 @@ namespace SplashImageViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Commit_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Commit_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy file path.
+        /// </summary>
+        internal static string CopyFilePath {
+            get {
+                return ResourceManager.GetString("CopyFilePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy file to clipboard.
+        /// </summary>
+        internal static string CopyFileToClipboard {
+            get {
+                return ResourceManager.GetString("CopyFileToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Cross_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Cross_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current.
         /// </summary>
         internal static string Current {
@@ -392,6 +230,16 @@ namespace SplashImageViewer.Properties {
         internal static string DefaultSettings {
             get {
                 return ResourceManager.GetString("DefaultSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Delete_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Delete_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -423,6 +271,16 @@ namespace SplashImageViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Dice_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Dice_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dimensions.
         /// </summary>
         internal static string Dimensions {
@@ -432,11 +290,41 @@ namespace SplashImageViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Error_64x64 {
+            get {
+                object obj = ResourceManager.GetObject("Error_64x64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Exit_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Exit_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &amp;Exit.
         /// </summary>
         internal static string ExitMenuItem {
             get {
                 return ResourceManager.GetString("ExitMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap File_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("File_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -477,6 +365,26 @@ namespace SplashImageViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Flip_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Flip_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Folder_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Folder_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Force check updates.
         /// </summary>
         internal static string ForceCheckUpdates {
@@ -500,6 +408,16 @@ namespace SplashImageViewer.Properties {
         internal static string ForceProgramUpdateToolTip {
             get {
                 return ResourceManager.GetString("ForceProgramUpdateToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Fullscreen_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Fullscreen_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -630,6 +548,16 @@ namespace SplashImageViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Next_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Next_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next image [RIGHT/UP ARROW].
         /// </summary>
         internal static string NextButtonToolTip {
@@ -671,6 +599,26 @@ namespace SplashImageViewer.Properties {
         internal static string OverwriteImagePrompt {
             get {
                 return ResourceManager.GetString("OverwriteImagePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Play_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Play_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Previous_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Previous_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -720,11 +668,31 @@ namespace SplashImageViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Recent_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Recent_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &amp;Recent Items.
         /// </summary>
         internal static string RecentItemsMenuItem {
             get {
                 return ResourceManager.GetString("RecentItemsMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Refresh_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Refresh_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -774,11 +742,30 @@ namespace SplashImageViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set as desktop background.
+        /// </summary>
+        internal static string SetAsDesktopBackground {
+            get {
+                return ResourceManager.GetString("SetAsDesktopBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         internal static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Settings_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Settings_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -797,6 +784,15 @@ namespace SplashImageViewer.Properties {
         internal static string SettingsToolStripMenuItem {
             get {
                 return ResourceManager.GetString("SettingsToolStripMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show file in file explorer.
+        /// </summary>
+        internal static string ShowFileInFileExplorer {
+            get {
+                return ResourceManager.GetString("ShowFileInFileExplorer", resourceCulture);
             }
         }
         
@@ -851,6 +847,26 @@ namespace SplashImageViewer.Properties {
         internal static string SourceCodeRepoToolTip {
             get {
                 return ResourceManager.GetString("SourceCodeRepoToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Splash_100x100 {
+            get {
+                object obj = ResourceManager.GetObject("Splash_100x100", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stop_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("Stop_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -923,6 +939,26 @@ namespace SplashImageViewer.Properties {
         internal static string ZoomButtonToolTip {
             get {
                 return ResourceManager.GetString("ZoomButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ZoomIn_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("ZoomIn_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ZoomOut_48x48 {
+            get {
+                object obj = ResourceManager.GetObject("ZoomOut_48x48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

@@ -339,4 +339,16 @@
   <data name="ApplicationUpdaterNotAvailable" xml:space="preserve">
     <value>Обновление приложения недоступно</value>
   </data>
+  <data name="CopyFilePath" xml:space="preserve">
+    <value>Скопировать путь к файлу</value>
+  </data>
+  <data name="CopyFileToClipboard" xml:space="preserve">
+    <value>Скопировать файл в буфер обмена</value>
+  </data>
+  <data name="SetAsDesktopBackground" xml:space="preserve">
+    <value>Установить в качестве фона рабочего стола</value>
+  </data>
+  <data name="ShowFileInFileExplorer" xml:space="preserve">
+    <value>Показать файл в проводнике</value>
+  </data>
 </root>

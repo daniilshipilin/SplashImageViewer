@@ -339,4 +339,16 @@
   <data name="ZoomButtonToolTip" xml:space="preserve">
     <value>Zoom in/out image [Z]</value>
   </data>
+  <data name="CopyFilePath" xml:space="preserve">
+    <value>Copy file path</value>
+  </data>
+  <data name="CopyFileToClipboard" xml:space="preserve">
+    <value>Copy file to clipboard</value>
+  </data>
+  <data name="SetAsDesktopBackground" xml:space="preserve">
+    <value>Set as desktop background</value>
+  </data>
+  <data name="ShowFileInFileExplorer" xml:space="preserve">
+    <value>Show file in file explorer</value>
+  </data>
 </root>
