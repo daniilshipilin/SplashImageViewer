@@ -170,7 +170,7 @@ public partial class MainForm : Form
         // hide progress bar
         this.slideshowProgressBar.Visible = false;
 
-        this.ClearImageLabels();
+        this.ClearImageValueLabels();
 
         this.mainPanel.BackColor = Color.FromArgb(AppSettings.ThemeColorArgb);
         this.totalFilesLabel.ForeColor = Color.FromArgb(AppSettings.LabelsColorArgb);
@@ -576,7 +576,7 @@ public partial class MainForm : Form
         }
     }
 
-    private void CheckMemoryAllocated(object? sender, EventArgs e) => this.memoryAllocatedLabel.Text = $"{Resources.MemoryAllocated}: {Utils.GetTotalAllocatedMemoryInBytes() / 1048576D:0.00} {Resources.MByte}";
+    private void CheckMemoryAllocated(object? sender, EventArgs e) => this.memoryAllocatedValueLabel.Text = $"{Utils.GetTotalAllocatedMemoryInBytes() / 1048576D:0.00} {Resources.MByte}";
 
     private void ShowExceptionMessage(Exception ex)
     {
@@ -631,7 +631,7 @@ public partial class MainForm : Form
         this.pictureBox.Image = null;
         this.pictureBox.Focus();
         this.UpdateFilePathText();
-        this.ClearImageLabels();
+        this.ClearImageValueLabels();
         this.UpdateTotalFilesLabel();
         GC.Collect();
     }
@@ -657,20 +657,20 @@ public partial class MainForm : Form
         }
     }
 
-    private void ClearImageLabels()
+    private void ClearImageValueLabels()
     {
-        this.imageDimensionsLabel.Text = string.Empty;
-        this.imageSizeLabel.Text = string.Empty;
-        this.imageTypeLabel.Text = string.Empty;
+        this.imageDimensionsValueLabel.Text = string.Empty;
+        this.imageSizeValueLabel.Text = string.Empty;
+        this.imageTypeValueLabel.Text = string.Empty;
     }
 
     private void UpdateImageLabels()
     {
         if (ImagesModel.Singleton.Image is not null)
         {
-            this.imageDimensionsLabel.Text = $"{Resources.Dimensions}: {ImagesModel.Singleton.Image.Width}x{ImagesModel.Singleton.Image.Height}";
-            this.imageSizeLabel.Text = $"{Resources.FileSize}: {GetFileSizeString(new FileInfo(ImagesModel.Singleton.CurrentFilePath).Length)}";
-            this.imageTypeLabel.Text = $"{Resources.Type}: {ImagesModel.Singleton.ImageFormatDescription}";
+            this.imageDimensionsValueLabel.Text = $"{ImagesModel.Singleton.Image.Width}x{ImagesModel.Singleton.Image.Height}";
+            this.imageSizeValueLabel.Text = $"{GetFileSizeString(new FileInfo(ImagesModel.Singleton.CurrentFilePath).Length)}";
+            this.imageTypeValueLabel.Text = $"{ImagesModel.Singleton.ImageFormatDescription}";
         }
     }
 

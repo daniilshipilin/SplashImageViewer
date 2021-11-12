@@ -51,6 +51,10 @@ namespace SplashImageViewer.Forms
             this.imageSizeLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.imageTypeLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.memoryAllocatedLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.imageDimensionsValueLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.imageSizeValueLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.imageTypeValueLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.memoryAllocatedValueLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.programInfoLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.totalFilesLabel = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -193,9 +197,13 @@ namespace SplashImageViewer.Forms
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.imageDimensionsLabel,
+            this.imageDimensionsValueLabel,
             this.imageSizeLabel,
+            this.imageSizeValueLabel,
             this.imageTypeLabel,
+            this.imageTypeValueLabel,
             this.memoryAllocatedLabel,
+            this.memoryAllocatedValueLabel,
             this.programInfoLabel});
             this.statusStrip.Location = new System.Drawing.Point(0, 707);
             this.statusStrip.Name = "statusStrip";
@@ -212,13 +220,29 @@ namespace SplashImageViewer.Forms
             this.imageDimensionsLabel.Text = "imageDimensionsLabel";
             this.imageDimensionsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // imageDimensionsValueLabel
+            // 
+            this.imageDimensionsValueLabel.Name = "imageDimensionsValueLabel";
+            this.imageDimensionsValueLabel.Size = new System.Drawing.Size(198, 17);
+            this.imageDimensionsLabel.Spring = true;
+            this.imageDimensionsValueLabel.Text = "imageDimensionsValueLabel";
+            this.imageDimensionsValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // imageSizeLabel
             // 
             this.imageSizeLabel.Name = "imageSizeLabel";
             this.imageSizeLabel.Size = new System.Drawing.Size(198, 17);
             this.imageSizeLabel.Spring = true;
             this.imageSizeLabel.Text = "imageSizeLabel";
-            this.imageSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.imageSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // imageSizeValueLabel
+            // 
+            this.imageSizeValueLabel.Name = "imageSizeValueLabel";
+            this.imageSizeValueLabel.Size = new System.Drawing.Size(198, 17);
+            this.imageDimensionsLabel.Spring = true;
+            this.imageSizeValueLabel.Text = "imageSizeValueLabel";
+            this.imageSizeValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // imageTypeLabel
             // 
@@ -226,7 +250,15 @@ namespace SplashImageViewer.Forms
             this.imageTypeLabel.Size = new System.Drawing.Size(198, 17);
             this.imageTypeLabel.Spring = true;
             this.imageTypeLabel.Text = "imageTypeLabel";
-            this.imageTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.imageTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // imageTypeValueLabel
+            // 
+            this.imageTypeValueLabel.Name = "imageTypeValueLabel";
+            this.imageTypeValueLabel.Size = new System.Drawing.Size(198, 17);
+            this.imageDimensionsLabel.Spring = true;
+            this.imageTypeValueLabel.Text = "imageTypeValueLabel";
+            this.imageTypeValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // memoryAllocatedLabel
             // 
@@ -234,7 +266,15 @@ namespace SplashImageViewer.Forms
             this.memoryAllocatedLabel.Size = new System.Drawing.Size(198, 17);
             this.memoryAllocatedLabel.Spring = true;
             this.memoryAllocatedLabel.Text = "memoryAllocatedLabel";
-            this.memoryAllocatedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.memoryAllocatedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // memoryAllocatedValueLabel
+            // 
+            this.memoryAllocatedValueLabel.Name = "memoryAllocatedValueLabel";
+            this.memoryAllocatedValueLabel.Size = new System.Drawing.Size(198, 17);
+            this.imageDimensionsLabel.Spring = true;
+            this.memoryAllocatedValueLabel.Text = "memoryAllocatedValueLabel";
+            this.memoryAllocatedValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // programInfoLabel
             // 
@@ -504,12 +544,14 @@ namespace SplashImageViewer.Forms
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip;
-        private System.Windows.Forms.PictureBox pictureBox;
-        private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.ToolStripStatusLabel imageDimensionsLabel;
+        private MenuStrip menuStrip;
+        private PictureBox pictureBox;
+        private StatusStrip statusStrip;
+        private ToolStripStatusLabel imageDimensionsLabel;
+        private ToolStripStatusLabel imageDimensionsValueLabel;
         private ToolStripStatusLabel programInfoLabel;
         private ToolStripStatusLabel memoryAllocatedLabel;
+        private ToolStripStatusLabel memoryAllocatedValueLabel;
         private ToolStripMenuItem settingsToolStripMenuItem;
         private Label totalFilesLabel;
         private ToolTip toolTip;
@@ -541,7 +583,9 @@ namespace SplashImageViewer.Forms
         private ToolStripMenuItem fileNameMenuItem;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripStatusLabel imageSizeLabel;
+        private ToolStripStatusLabel imageSizeValueLabel;
         private ToolStripStatusLabel imageTypeLabel;
+        private ToolStripStatusLabel imageTypeValueLabel;
         private ProgressBar slideshowProgressBar;
     }
 }
