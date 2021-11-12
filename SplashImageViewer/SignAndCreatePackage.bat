@@ -4,7 +4,7 @@ set "cert=C:\GitSources\CodeSign\Certificates\Illuminati_Software_Inc_Code_Sign.
 set "timestamp=http://timestamp.digicert.com"
 
 set "bin=.\bin"
-set "src=%bin%\Release\net5.0-windows"
+set "src=%bin%\Release\publish"
 
 signtool.exe sign /fd sha256 /a /f "%cert%" "%src%\Splash.exe"
 signtool.exe timestamp /tr "%timestamp%" /td sha256 "%src%\Splash.exe"
@@ -14,9 +14,6 @@ signtool.exe timestamp /tr "%timestamp%" /td sha256 "%src%\Splash.dll"
 
 signtool.exe sign /fd sha256 /a /f "%cert%" "%src%\ApplicationUpdater.dll"
 signtool.exe timestamp /tr "%timestamp%" /td sha256 "%src%\ApplicationUpdater.dll"
-
-signtool.exe sign /fd sha256 /a /f "%cert%" "%src%\ref\Splash.dll"
-signtool.exe timestamp /tr "%timestamp%" /td sha256 "%src%\ref\Splash.dll"
 
 signtool.exe sign /fd sha256 /a /f "%cert%" "%src%\en\Splash.resources.dll"
 signtool.exe timestamp /tr "%timestamp%" /td sha256 "%src%\en\Splash.resources.dll"
