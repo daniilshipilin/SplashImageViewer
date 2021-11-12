@@ -1,44 +1,39 @@
-﻿namespace SplashImageViewer.Helpers
-{
-    using System;
-    using System.Diagnostics;
-using System.IO;
+﻿namespace SplashImageViewer.Helpers;
 
-    public static class Utils
+public static class Utils
+{
+    public static bool CheckAnotherInstanceIsRunning(string programName) => Process.GetProcessesByName(programName).Length > 1;
+
+    public static void ProgramExit(ExitCode exitCode = ExitCode.Success) => Environment.Exit((int)exitCode);
+
+    public static long GetTotalAllocatedMemoryInBytes()
     {
-        public static bool CheckAnotherInstanceIsRunning(string programName) => Process.GetProcessesByName(programName).Length > 1;
+        using var p = Process.GetCurrentProcess();
 
-        public static void ProgramExit(ExitCode exitCode = ExitCode.Success) => Environment.Exit((int)exitCode);
+        return p.PrivateMemorySize64;
+    }
 
-        public static long GetTotalAllocatedMemoryInBytes()
+    public static void OpenLinkInBrowser(string link)
+    {
+        LaunchCmdProcess(link);
+    }
+
+    public static void OpenExplorer(string path)
+    {
+        LaunchCmdProcess($"explorer.exe /select,{path}");
+    }
+
+    private static void LaunchCmdProcess(string args)
+    {
+        using var proc = new Process
         {
-            using var p = Process.GetCurrentProcess();
-
-            return p.PrivateMemorySize64;
-        }
-
-        public static void OpenLinkInBrowser(string link)
-        {
-            LaunchCmdProcess(link);
-        }
-
-        public static void OpenExplorer(string path)
-        {
-            LaunchCmdProcess($"explorer.exe /select,{path}");
-        }
-
-        private static void LaunchCmdProcess(string args)
-        {
-            using var proc = new Process
+            StartInfo = new ProcessStartInfo("cmd.exe")
             {
-                StartInfo = new ProcessStartInfo("cmd.exe")
-{
-                    Arguments = $"/c start {args}",
-                    CreateNoWindow = true,
-                }
-            };
+                Arguments = $"/c start {args}",
+                CreateNoWindow = true,
+            }
+        };
 
-            proc.Start();
-        }
+        proc.Start();
     }
 }

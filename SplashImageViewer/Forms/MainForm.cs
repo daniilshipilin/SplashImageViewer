@@ -1,21 +1,10 @@
 namespace SplashImageViewer.Forms;
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ApplicationUpdater;
-using SplashImageViewer.Helpers;
-using SplashImageViewer.Models;
-using SplashImageViewer.Properties;
-
 public partial class MainForm : Form
 {
-    private readonly Timer slideshowTimer = new();
-    private readonly Timer allocatedMemoryTimer = new();
-    private readonly Timer slideshowProgressBarTimer = new();
+    private readonly System.Windows.Forms.Timer slideshowTimer = new();
+    private readonly System.Windows.Forms.Timer allocatedMemoryTimer = new();
+    private readonly System.Windows.Forms.Timer slideshowProgressBarTimer = new();
     private IUpdater? updater;
     private DateTime nextSlideshowTransitionDate;
     private bool fullscreenFormIsActive;

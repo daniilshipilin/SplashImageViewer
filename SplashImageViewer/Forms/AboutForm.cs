@@ -1,161 +1,154 @@
-namespace SplashImageViewer.Forms
+namespace SplashImageViewer.Forms;
+
+public partial class AboutForm : Form
 {
-    using System;
-    using System.Windows.Forms;
-    using ApplicationUpdater;
-    using SplashImageViewer.Helpers;
-    using SplashImageViewer.Properties;
+    private readonly IUpdater? updater;
 
-    public partial class AboutForm : Form
+    public AboutForm(IUpdater? updater)
     {
-        private readonly IUpdater? updater;
+        this.InitializeComponent();
+        this.updater = updater;
+    }
 
-        public AboutForm(IUpdater? updater)
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+    {
+        if (keyData == Keys.Escape)
         {
-            this.InitializeComponent();
-            this.updater = updater;
+            this.Close();
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            if (keyData == Keys.Escape)
-            {
-                this.Close();
-            }
+        return base.ProcessCmdKey(ref msg, keyData);
+    }
 
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
+    private void AboutForm_Load(object sender, EventArgs e) => this.LocalizeUIElements();
 
-        private void AboutForm_Load(object sender, EventArgs e) => this.LocalizeUIElements();
+    private void LocalizeUIElements()
+    {
+        this.Text = Resources.About;
+        this.aboutLabel.Text = ApplicationInfo.AppInfoFormatted;
 
-        private void LocalizeUIElements()
-        {
-            this.Text = Resources.About;
-            this.aboutLabel.Text = ApplicationInfo.AppInfoFormatted;
+        this.updatesInfoLabel.Text = this.updater is null
+            ? Resources.ApplicationUpdaterNotAvailable
+            : !this.updater.CheckUpdateRequested
+                ? $"{Resources.CheckForAvailableUpdates}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
+                : this.updater.ServerVersionIsGreater
+                    ? $"{Resources.NewerProgramVersionAvailable}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
+                    : $"{Resources.ProgramIsUpToDate}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
 
-            this.updatesInfoLabel.Text = this.updater is null
-                ? Resources.ApplicationUpdaterNotAvailable
-                : !this.updater.CheckUpdateRequested
-                    ? $"{Resources.CheckForAvailableUpdates}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
-                    : this.updater.ServerVersionIsGreater
-                        ? $"{Resources.NewerProgramVersionAvailable}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}"
-                        : $"{Resources.ProgramIsUpToDate}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
+        this.toolTip.SetToolTip(this.checkUpdatesButton, Resources.CheckUpdatesButtonToolTip);
+        this.toolTip.SetToolTip(this.updatesInfoLabel, Resources.ForceProgramUpdateToolTip);
+        this.toolTip.SetToolTip(this.linkLabel, Resources.SourceCodeRepoToolTip);
+    }
 
-            this.toolTip.SetToolTip(this.checkUpdatesButton, Resources.CheckUpdatesButtonToolTip);
-            this.toolTip.SetToolTip(this.updatesInfoLabel, Resources.ForceProgramUpdateToolTip);
-            this.toolTip.SetToolTip(this.linkLabel, Resources.SourceCodeRepoToolTip);
-        }
+    private void ShowExceptionMessage(Exception ex)
+    {
+        this.updatesInfoLabel.Text = Resources.GeneralException;
 
-        private void ShowExceptionMessage(Exception ex)
-        {
-            this.updatesInfoLabel.Text = Resources.GeneralException;
-
-            MessageBox.Show(
-                new Form { TopMost = true },
-                ex.Message,
-                ex.GetType().ToString(),
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
-        }
-
-        private async void UpdatesInfoLabel_Click(object sender, EventArgs e)
-        {
-            if (this.updater is null)
-            {
-                return;
-            }
-
-            var dr = MessageBox.Show(
+        MessageBox.Show(
             new Form { TopMost = true },
-            Resources.ForceProgramUpdatePrompt,
-            Resources.ProgramUpdate,
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Question);
+            ex.Message,
+            ex.GetType().ToString(),
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error);
+    }
 
-            if (dr == DialogResult.Yes)
+    private async void UpdatesInfoLabel_Click(object sender, EventArgs e)
+    {
+        if (this.updater is null)
+        {
+            return;
+        }
+
+        var dr = MessageBox.Show(
+        new Form { TopMost = true },
+        Resources.ForceProgramUpdatePrompt,
+        Resources.ProgramUpdate,
+        MessageBoxButtons.YesNo,
+        MessageBoxIcon.Question);
+
+        if (dr == DialogResult.Yes)
+        {
+            try
             {
-                try
+                this.updatesInfoLabel.Text = Resources.UpdateInProgress;
+                await this.updater.ForceUpdate();
+                Utils.ProgramExit(ExitCode.Success);
+            }
+            catch (Exception ex)
+            {
+                this.ShowExceptionMessage(ex);
+            }
+        }
+    }
+
+    private async void CheckUpdatesButton_Click(object sender, EventArgs e)
+    {
+        if (this.updater is null)
+        {
+            return;
+        }
+
+        try
+        {
+            AppSettings.UpdateUpdatesLastCheckedTimestamp();
+            this.updatesInfoLabel.Text = Resources.CheckingForUpdates;
+
+            if (await this.updater.CheckUpdateIsAvailable())
+            {
+                this.updatesInfoLabel.Text = $"{Resources.NewerProgramVersionAvailable}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
+
+                var dr = MessageBox.Show(
+                    new Form { TopMost = true },
+                    $"{Resources.NewerProgramVersionAvailable}{Environment.NewLine}" +
+                    $"{Resources.Current}: {this.updater.ClientVersion}{Environment.NewLine}" +
+                    $"{Resources.Available}: {this.updater.ServerVersion}{Environment.NewLine}{Environment.NewLine}" +
+                    $"{Resources.UpdateProgramPrompt}",
+                    Resources.ProgramUpdate,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (dr == DialogResult.Yes)
                 {
                     this.updatesInfoLabel.Text = Resources.UpdateInProgress;
-                    await this.updater.ForceUpdate();
+                    await this.updater.Update();
                     Utils.ProgramExit(ExitCode.Success);
                 }
-                catch (Exception ex)
-                {
-                    this.ShowExceptionMessage(ex);
-                }
+            }
+            else
+            {
+                this.updatesInfoLabel.Text = $"{Resources.ProgramIsUpToDate}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
+                var dr = MessageBox.Show(
+                    new Form { TopMost = true },
+                    Resources.ProgramIsUpToDate,
+                    Resources.ProgramUpdate,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
         }
-
-        private async void CheckUpdatesButton_Click(object sender, EventArgs e)
+        catch (Exception ex)
         {
-            if (this.updater is null)
-            {
-                return;
-            }
-
-            try
-            {
-                AppSettings.UpdateUpdatesLastCheckedTimestamp();
-                this.updatesInfoLabel.Text = Resources.CheckingForUpdates;
-
-                if (await this.updater.CheckUpdateIsAvailable())
-                {
-                    this.updatesInfoLabel.Text = $"{Resources.NewerProgramVersionAvailable}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
-
-                    var dr = MessageBox.Show(
-                        new Form { TopMost = true },
-                        $"{Resources.NewerProgramVersionAvailable}{Environment.NewLine}" +
-                        $"{Resources.Current}: {this.updater.ClientVersion}{Environment.NewLine}" +
-                        $"{Resources.Available}: {this.updater.ServerVersion}{Environment.NewLine}{Environment.NewLine}" +
-                        $"{Resources.UpdateProgramPrompt}",
-                        Resources.ProgramUpdate,
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-
-                    if (dr == DialogResult.Yes)
-                    {
-                        this.updatesInfoLabel.Text = Resources.UpdateInProgress;
-                        await this.updater.Update();
-                        Utils.ProgramExit(ExitCode.Success);
-                    }
-                }
-                else
-                {
-                    this.updatesInfoLabel.Text = $"{Resources.ProgramIsUpToDate}. {Resources.LastCheck}: {AppSettings.UpdatesLastCheckedTimestamp}";
-                    var dr = MessageBox.Show(
-                        new Form { TopMost = true },
-                        Resources.ProgramIsUpToDate,
-                        Resources.ProgramUpdate,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowExceptionMessage(ex);
-            }
+            this.ShowExceptionMessage(ex);
         }
+    }
 
-        private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        try
         {
-            try
+            if (string.IsNullOrEmpty(ApplicationInfo.GitHubUrl))
             {
-                if (string.IsNullOrEmpty(ApplicationInfo.GitHubUrl))
-                {
-                    throw new ArgumentException(nameof(ApplicationInfo.GitHubUrl));
-                }
-
-                // use cmd to launch system default browser to navigate to a URL
-                Utils.OpenLinkInBrowser(ApplicationInfo.GitHubUrl);
-
-                // specify that the link was visited
-                this.linkLabel.LinkVisited = true;
+                throw new ArgumentException(nameof(ApplicationInfo.GitHubUrl));
             }
-            catch (Exception ex)
-            {
-                this.ShowExceptionMessage(ex);
-            }
+
+            // use cmd to launch system default browser to navigate to a URL
+            Utils.OpenLinkInBrowser(ApplicationInfo.GitHubUrl);
+
+            // specify that the link was visited
+            this.linkLabel.LinkVisited = true;
+        }
+        catch (Exception ex)
+        {
+            this.ShowExceptionMessage(ex);
         }
     }
 }

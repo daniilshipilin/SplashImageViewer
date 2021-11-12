@@ -19,6 +19,7 @@
         <PackageProjectUrl>https://github.com/daniilshipilin/SplashImageViewer</PackageProjectUrl>
         <PackageIcon>splash.png</PackageIcon>
 		<NeutralLanguage>en</NeutralLanguage>
+		<ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
     <ItemGroup>
