@@ -22,8 +22,10 @@ public static class Program
             Utils.ProgramExit(ExitCode.Success);
         }
 
-        // check, if there is another instance running
-        if (Utils.CheckAnotherInstanceIsRunning(ApplicationInfo.AppTitle))
+        // use mutex to check, if there is another instance running
+        using var mutex = new Mutex(false, ApplicationInfo.GlobalMutexName, out bool createdNew);
+
+        if (!createdNew)
         {
             MessageBox.Show(
                 new Form { TopMost = true },

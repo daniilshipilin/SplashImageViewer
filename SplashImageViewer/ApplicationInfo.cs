@@ -33,6 +33,8 @@ public static class ApplicationInfo
 
     public static Guid AppGUID { get; } = new Guid("8e3acb01-f0a7-4434-946f-de5e21f4c247");
 
+    public const string GlobalMutexName = "Global\\Splash_6EC07BB4D546FF848DAE296A150DFCB0F968EAE2";
+
     public const string GitHubUrl = "https://github.com/daniilshipilin/SplashImageViewer";
 
     /// <summary>
