@@ -192,7 +192,7 @@ public partial class MainForm : Form
         this.InitUpdater();
 
         // check for updates in the background
-        Task.Run(async () => await this.CheckUpdates());
+        Task.Run(async() => await this.CheckUpdates().ConfigureAwait(false));
     }
 
     private void LocalizeUIElements()
