@@ -70,6 +70,7 @@ public partial class AboutForm : Form
         {
             try
             {
+                this.ShowUpdateForm();
                 this.updatesInfoLabel.Text = Resources.UpdateInProgress;
                 await this.updater.ForceUpdate();
                 Utils.ProgramExit(ExitCode.Success);
@@ -109,6 +110,7 @@ public partial class AboutForm : Form
 
                 if (dr == DialogResult.Yes)
                 {
+                    this.ShowUpdateForm();
                     this.updatesInfoLabel.Text = Resources.UpdateInProgress;
                     await this.updater.Update();
                     Utils.ProgramExit(ExitCode.Success);
@@ -129,6 +131,33 @@ public partial class AboutForm : Form
         {
             this.ShowExceptionMessage(ex);
         }
+    }
+
+    private void ShowUpdateForm()
+    {
+        var updateForm = new Form
+        {
+            Text = Resources.ProgramUpdate,
+            Width = 300,
+            Height = 150,
+            FormBorderStyle = FormBorderStyle.FixedSingle,
+            StartPosition = FormStartPosition.CenterScreen,
+            ShowInTaskbar = false,
+            ShowIcon = false,
+            MinimizeBox = false,
+            MaximizeBox = false,
+            TopMost = true,
+        };
+
+        var label = new Label
+        {
+            Size = new Size(300, 100),
+            TextAlign = ContentAlignment.MiddleCenter,
+            Text = $"{Resources.UpdateInProgress}. {ApplicationInfo.AppTitle} v{GitVersionInformation.SemVer} => v{this.updater?.ServerVersion}"
+        };
+
+        updateForm.Controls.Add(label);
+        updateForm.Show();
     }
 
     private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

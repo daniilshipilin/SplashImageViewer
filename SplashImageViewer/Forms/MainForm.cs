@@ -137,7 +137,7 @@ public partial class MainForm : Form
                 : $"{bytes / 1048576D:0.00} {Resources.MByte}";
     }
 
-    private void MainForm_Load(object sender, EventArgs e)
+    private async void MainForm_Load(object sender, EventArgs e)
     {
         AppSettings.CheckSettings();
 
@@ -191,8 +191,8 @@ public partial class MainForm : Form
         // init program updater
         this.InitUpdater();
 
-        // check for updates in the background
-        Task.Run(async() => await this.CheckUpdates().ConfigureAwait(false));
+        // check for updates
+        await this.CheckUpdates();
     }
 
     private void LocalizeUIElements()
@@ -539,10 +539,12 @@ public partial class MainForm : Form
             return;
         }
 
-        if ((DateTime.Now - AppSettings.UpdatesLastCheckedTimestamp).Days >= 1 ||
-            AppSettings.ForceCheckUpdates)
+        try
         {
-            try
+            this.aboutToolStripMenuItem.Enabled = false;
+
+            if ((DateTime.Now - AppSettings.UpdatesLastCheckedTimestamp).Days >= 1 ||
+                AppSettings.ForceCheckUpdates)
             {
                 AppSettings.UpdateUpdatesLastCheckedTimestamp();
 
@@ -558,10 +560,14 @@ public partial class MainForm : Form
                         MessageBoxIcon.Information);
                 }
             }
-            catch (Exception ex)
-            {
-                this.ShowExceptionMessage(ex);
-            }
+        }
+        catch (Exception ex)
+        {
+            this.ShowExceptionMessage(ex);
+        }
+        finally
+        {
+            this.aboutToolStripMenuItem.Enabled = true;
         }
     }
 
