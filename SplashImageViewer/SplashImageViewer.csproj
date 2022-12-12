@@ -9,7 +9,6 @@
         <AssemblyName>Splash</AssemblyName>
         <RootNamespace>SplashImageViewer</RootNamespace>
         <ApplicationIcon>Images\splash.ico</ApplicationIcon>
-        <Authors>Daniil Shipilin</Authors>
         <Description>A simple image viewer with slideshow feature.</Description>
         <Copyright>Daniil Shipilin</Copyright>
         <Company>Illuminati Software Inc.</Company>
