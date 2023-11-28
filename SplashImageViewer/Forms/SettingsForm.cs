@@ -111,8 +111,8 @@ public partial class SettingsForm : Form
         try
         {
             AppSettings.ThemeColorArgb = this.colorDialog.Color.ToArgb();
-            AppSettings.SlideshowTransitionSec = (int)this.slideshowTransitionSecComboBox.SelectedItem;
-            AppSettings.CurrentUICulture = (CultureInfo)this.uiLanguageComboBox.SelectedItem;
+            AppSettings.SlideshowTransitionSec = (int)this.slideshowTransitionSecComboBox.SelectedItem!;
+            AppSettings.CurrentUICulture = (CultureInfo)this.uiLanguageComboBox.SelectedItem!;
             AppSettings.SlideshowOrderIsRandom = this.randomizeCheckBox.Checked;
             AppSettings.SearchInSubdirs = this.searchOptionCheckBox.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
             AppSettings.ShowFileDeletePrompt = this.showFileDeletePromptCheckBox.Checked;

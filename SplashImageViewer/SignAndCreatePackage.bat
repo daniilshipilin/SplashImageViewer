@@ -3,8 +3,7 @@
 set "cert=%CodesignCertPath%"
 set "timestamp=http://timestamp.digicert.com"
 
-set "bin=.\bin"
-set "src=%bin%\Release\publish"
+set "src=.\bin\publish"
 
 signtool.exe sign /fd sha256 /a /f "%cert%" "%src%\Splash.exe"
 signtool.exe timestamp /tr "%timestamp%" /td sha256 "%src%\Splash.exe"
@@ -18,8 +17,8 @@ signtool.exe timestamp /tr "%timestamp%" /td sha256 "%src%\en\Splash.resources.d
 signtool.exe sign /fd sha256 /a /f "%cert%" "%src%\ru\Splash.resources.dll"
 signtool.exe timestamp /tr "%timestamp%" /td sha256 "%src%\ru\Splash.resources.dll"
 
-del /S /Q "%bin%\Splash.zip" >nul 2>&1
-7za.exe a -mx0 -tzip "%bin%\Splash.zip" "%src%\*"
-7za.exe h -scrcSHA256 "%bin%\Splash.zip" > "%bin%\sha256.txt"
+del /S /Q ".\bin\Splash.zip" >nul 2>&1
+7za.exe a -mx0 -tzip ".\bin\Splash.zip" "%src%\*" -xr!*.pdb
+7za.exe h -scrcSHA256 ".\bin\Splash.zip" > ".\bin\sha256.txt"
 
 pause

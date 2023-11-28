@@ -1,6 +1,6 @@
 namespace SplashImageViewer.Helpers;
 
-public static class Screensaver
+public static partial class Screensaver
 {
     [Flags]
     private enum EXECUTION_STATE : uint
@@ -21,6 +21,6 @@ public static class Screensaver
     /// </summary>
     public static void Reset() => SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS); // Re-enabling the screensaver requires that we clear the ES_DISPLAY_REQUIRED state flag. We can do this by passing the ES_CONTINUOUS flag alone
 
-    [DllImport("kernel32.dll")]
-    private static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
+    [LibraryImport("kernel32.dll")]
+    private static partial EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
 }

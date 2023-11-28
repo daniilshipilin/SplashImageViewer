@@ -162,7 +162,7 @@ public partial class FullscreenForm : Form
         // check if caller is on a different thread (invoke required)
         if (this.InvokeRequired)
         {
-            this.Invoke(new MethodInvoker(this.UpdatePictureBox));
+            this.Invoke(new System.Windows.Forms.MethodInvoker(this.UpdatePictureBox));
         }
         else
         {

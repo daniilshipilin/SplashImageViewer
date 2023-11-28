@@ -264,8 +264,8 @@ public partial class MainForm : Form
 
         // center form
         this.Location = new Point(
-            (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
-            (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2);
+            (Screen.PrimaryScreen!.WorkingArea.Width - this.Width) / 2,
+            (Screen.PrimaryScreen!.WorkingArea.Height - this.Height) / 2);
     }
 
     private void SaveScreenDimensions()
@@ -321,7 +321,7 @@ public partial class MainForm : Form
 
         for (int i = 0; i < this.recentItemsMenuItem.DropDownItems.Count; i++)
         {
-            items.Add(this.recentItemsMenuItem.DropDownItems[i].Text);
+            items.Add(this.recentItemsMenuItem.DropDownItems[i].Text!);
         }
 
         AppSettings.WriteRecentItemsToRegistry(items);
@@ -332,7 +332,7 @@ public partial class MainForm : Form
         // check if caller is on a different thread (invoke required)
         if (this.InvokeRequired)
         {
-            this.Invoke(new MethodInvoker(this.UpdateRecentItems));
+            this.Invoke(new System.Windows.Forms.MethodInvoker(this.UpdateRecentItems));
         }
         else
         {
@@ -360,7 +360,7 @@ public partial class MainForm : Form
         // add / remove items
         for (int i = 0; i < this.recentItemsMenuItem.DropDownItems.Count; i++)
         {
-            if (this.recentItemsMenuItem.DropDownItems[i].Text.Equals(path))
+            if (this.recentItemsMenuItem.DropDownItems[i].Text!.Equals(path))
             {
                 addItem = false;
                 break;
@@ -389,7 +389,7 @@ public partial class MainForm : Form
         // check if caller is on a different thread (invoke required)
         if (this.InvokeRequired)
         {
-            this.Invoke(new MethodInvoker(this.UpdatePictureBox));
+            this.Invoke(new System.Windows.Forms.MethodInvoker(this.UpdatePictureBox));
         }
         else
         {
@@ -830,7 +830,7 @@ public partial class MainForm : Form
 
         if (sender is ToolStripMenuItem item)
         {
-            this.OpenImage(item.Text);
+            this.OpenImage(item.Text!);
         }
     }
 

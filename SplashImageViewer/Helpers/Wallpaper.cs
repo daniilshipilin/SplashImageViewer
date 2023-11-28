@@ -1,6 +1,6 @@
 namespace SplashImageViewer.Helpers;
 
-public class Wallpaper
+public partial class Wallpaper
 {
     private const int SPISETDESKWALLPAPER = 20;
     private const int SPIFUPDATEINIFILE = 0x01;
@@ -77,6 +77,6 @@ public class Wallpaper
         }
     }
 
-    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-    private static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+    [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16)]
+    private static partial int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
 }
