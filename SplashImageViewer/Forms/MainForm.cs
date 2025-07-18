@@ -522,7 +522,7 @@ public partial class MainForm : Form
         {
             this.updater = new Updater(
                 ApplicationInfo.BaseDirectory,
-                Version.Parse(GitVersionInformation.SemVer),
+                Version.Parse(""),
                 ApplicationInfo.AppGUID,
                 ApplicationInfo.ExePath);
         }

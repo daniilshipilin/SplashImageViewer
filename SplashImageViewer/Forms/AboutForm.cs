@@ -153,7 +153,7 @@ public partial class AboutForm : Form
         {
             Size = new Size(300, 100),
             TextAlign = ContentAlignment.MiddleCenter,
-            Text = $"{Resources.UpdateInProgress}. {ApplicationInfo.AppTitle} v{GitVersionInformation.SemVer} => v{this.updater?.ServerVersion}"
+            Text = $"{Resources.UpdateInProgress}. {ApplicationInfo.AppTitle} v => v{this.updater?.ServerVersion}"
         };
 
         updateForm.Controls.Add(label);
@@ -164,13 +164,8 @@ public partial class AboutForm : Form
     {
         try
         {
-            if (string.IsNullOrEmpty(ApplicationInfo.GitHubUrl))
-            {
-                throw new ArgumentException(nameof(ApplicationInfo.GitHubUrl));
-            }
-
             // use cmd to launch system default browser to navigate to a URL
-            Utils.OpenLinkInBrowser(ApplicationInfo.GitHubUrl);
+            Utils.OpenLinkInBrowser("");
 
             // specify that the link was visited
             this.linkLabel.LinkVisited = true;

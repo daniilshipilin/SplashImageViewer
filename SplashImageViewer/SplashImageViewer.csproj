@@ -1,31 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0-windows</TargetFramework>
+        <TargetFramework>net8-windows</TargetFramework>
         <UseWindowsForms>true</UseWindowsForms>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <AssemblyName>Splash</AssemblyName>
-        <RootNamespace>SplashImageViewer</RootNamespace>
         <ApplicationIcon>Images\splash.ico</ApplicationIcon>
         <Description>A simple image viewer with slideshow feature.</Description>
         <Company>Illuminati Software Inc.</Company>
-        <Version>1.0.0</Version>
+        <Version>0.18.0</Version>
         <Product>Splash Image Viewer</Product>
-        <RepositoryUrl>https://github.com/daniilshipilin/SplashImageViewer</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/daniilshipilin/SplashImageViewer</PackageProjectUrl>
         <PackageIcon>splash.png</PackageIcon>
-        <NeutralLanguage>en</NeutralLanguage>
+        <NeutralLanguage>en-US</NeutralLanguage>
         <ImplicitUsings>enable</ImplicitUsings>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="ApplicationUpdater" Version="0.6.0" />
-        <PackageReference Include="GitVersion.MsBuild" Version="6.1.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

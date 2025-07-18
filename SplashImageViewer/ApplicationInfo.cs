@@ -6,7 +6,6 @@ public static class ApplicationInfo
     private static readonly AssemblyTitleAttribute? Title = Ass.GetCustomAttributes<AssemblyTitleAttribute>().FirstOrDefault();
     private static readonly AssemblyProductAttribute? Product = Ass.GetCustomAttributes<AssemblyProductAttribute>().FirstOrDefault();
     private static readonly AssemblyDescriptionAttribute? Description = Ass.GetCustomAttributes<AssemblyDescriptionAttribute>().FirstOrDefault();
-    private static readonly AssemblyCopyrightAttribute? Copyright = Ass.GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault();
 
     public const string AppBuild =
 #if DEBUG
@@ -25,9 +24,7 @@ public static class ApplicationInfo
 
     public static string AppProduct { get; } = Product?.Product ?? string.Empty;
 
-    public static string AppHeader { get; } = $"{AppTitle} v{GitVersionInformation.SemVer}{AppBuild}";
-
-    public static string AppAuthor { get; } = Copyright?.Copyright ?? string.Empty;
+    public static string AppHeader { get; } = $"{AppTitle} v{Ass.GetName().Version}{AppBuild}";
 
     public static string AppDescription { get; } = Description?.Description ?? string.Empty;
 
@@ -35,15 +32,11 @@ public static class ApplicationInfo
 
     public const string GlobalMutexName = "Global\\Splash_6EC07BB4D546FF848DAE296A150DFCB0F968EAE2";
 
-    public const string GitHubUrl = "https://github.com/daniilshipilin/SplashImageViewer";
-
     /// <summary>
     /// Gets application info formatted string.
     /// </summary>
     public static string AppInfoFormatted =>
-        $"{AppHeader}{Environment.NewLine}" +
-        $"{GitVersionInformation.InformationalVersion}{Environment.NewLine}" +
-        $"{Resources.Author}: {AppAuthor}{Environment.NewLine}{Environment.NewLine}" +
+        $"{AppHeader}{Environment.NewLine}{Environment.NewLine}" +
         $"{Resources.Description}:{Environment.NewLine}" +
         $"  {Resources.AppDescription}";
 
