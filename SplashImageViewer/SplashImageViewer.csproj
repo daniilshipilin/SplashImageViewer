@@ -13,13 +13,8 @@
         <Product>Splash Image Viewer</Product>
         <PackageIcon>splash.png</PackageIcon>
         <NeutralLanguage>en-US</NeutralLanguage>
-        <ImplicitUsings>enable</ImplicitUsings>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="ApplicationUpdater" Version="0.6.0" />
-    </ItemGroup>
 
     <ItemGroup>
         <None Include="Images\splash.png">

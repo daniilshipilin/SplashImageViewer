@@ -1,11 +1,19 @@
 namespace SplashImageViewer.Forms;
 
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+using SplashImageViewer.Helpers;
+using SplashImageViewer.Models;
+using SplashImageViewer.Properties;
+
 public partial class MainForm : Form
 {
     private readonly System.Windows.Forms.Timer slideshowTimer = new();
     private readonly System.Windows.Forms.Timer allocatedMemoryTimer = new();
     private readonly System.Windows.Forms.Timer slideshowProgressBarTimer = new();
-    private IUpdater? updater;
     private DateTime nextSlideshowTransitionDate;
     private bool fullscreenFormIsActive;
     private bool imageIsModified;
@@ -137,7 +145,7 @@ public partial class MainForm : Form
                 : $"{bytes / 1048576D:0.00} {Resources.MByte}";
     }
 
-    private async void MainForm_Load(object sender, EventArgs e)
+    private void MainForm_Load(object sender, EventArgs e)
     {
         AppSettings.CheckSettings();
 
@@ -187,12 +195,6 @@ public partial class MainForm : Form
             // cmd provided filename/folder path
             this.OpenImage(Path.GetFullPath(ApplicationInfo.Args[0]));
         }
-
-        // init program updater
-        this.InitUpdater();
-
-        // check for updates
-        await this.CheckUpdates();
     }
 
     private void LocalizeUIElements()
@@ -514,61 +516,6 @@ public partial class MainForm : Form
 
         this.slideshowProgressBarTimer.Tick += this.SlideshowProgressBarHandler;
         this.slideshowProgressBarTimer.Interval = AppSettings.MainFormSlideshowProgressBarUpdateMs;
-    }
-
-    private void InitUpdater()
-    {
-        try
-        {
-            this.updater = new Updater(
-                ApplicationInfo.BaseDirectory,
-                Version.Parse(""),
-                ApplicationInfo.AppGUID,
-                ApplicationInfo.ExePath);
-        }
-        catch (Exception ex)
-        {
-            this.ShowExceptionMessage(ex);
-        }
-    }
-
-    private async Task CheckUpdates()
-    {
-        if (this.updater is null)
-        {
-            return;
-        }
-
-        try
-        {
-            this.aboutToolStripMenuItem.Enabled = false;
-
-            if ((DateTime.Now - AppSettings.UpdatesLastCheckedTimestamp).Days >= 1 ||
-                AppSettings.ForceCheckUpdates)
-            {
-                AppSettings.UpdateUpdatesLastCheckedTimestamp();
-
-                if (await this.updater.CheckUpdateIsAvailable())
-                {
-                    var dr = MessageBox.Show(
-                        new Form { TopMost = true },
-                        $"{Resources.NewerProgramVersionAvailable}{Environment.NewLine}" +
-                        $"{Resources.Current}: {this.updater.ClientVersion}{Environment.NewLine}" +
-                        $"{Resources.Available}: {this.updater.ServerVersion}",
-                        Resources.ProgramUpdate,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            this.ShowExceptionMessage(ex);
-        }
-        finally
-        {
-            this.aboutToolStripMenuItem.Enabled = true;
-        }
     }
 
     private void CheckMemoryAllocated(object? sender, EventArgs e) => this.memoryAllocatedValueLabel.Text = $"{Utils.GetTotalAllocatedMemoryInBytes() / 1048576D:0.00} {Resources.MByte}";
@@ -1005,7 +952,7 @@ public partial class MainForm : Form
 
     private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        using var aboutForm = new AboutForm(this.updater);
+        using var aboutForm = new AboutForm();
         aboutForm.ShowDialog();
     }
 

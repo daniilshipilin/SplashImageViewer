@@ -618,32 +618,6 @@
         hY13izpPP8vSj1u8eHXQg8x5NwzXTZ/68tfUz85Y/f+GdK1u87czLwAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="checkUpdatesButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4yMfEgaZUAAAR8SURBVFhH7Vfd
-        a1xFFN/UJinZM/duN2nSSmQlxlZWCMiKFWm5uffMrosEKso+aILBYpcm5u49s6v4ZvIu2tY3H8Q3/wdF
-        +oGK0toHfRECLT6FtgQ/W4vWpHJ2927mTuam+QN64HDvnJkzv9+cOXPP3EzmoWxJXyaT2dN9xsrtLZvn
-        7XWRJrIYTYOMXhFSvckK2HiVbY4fPlEs1gZS/TOZPvCWngKvOWKCs+yp1WqPeJ63l5/1er2f32N1UFWF
-        VJcEqjVAug1IG0Kq+x2ljY5NrQlJF4RUL5n+POcIhs9AEF1zK62SCc7SFw9cXl5uO5VKpf6cVJ5A9cUW
-        mLoPstl7T1OQ9KUbLPilLhE3iF4WSLe4z5H0rAnO0qeDFzxvHwTqfZDqtweB22xdEr8LP1pxUb0LqP6I
-        x6ZGIA4bgwtUKwLpHwvQJki1LpB+Eqi+Eai+FlL9CJLWuc8kodtiomkR2BOHXWBkBYeAfhUyohFsHh4N
-        GmMT8j234M3nxsqt0eEXoyOirBoC1Q0LiWSUyq2jJjhLm4BbUX47dAlndQ+QPhs5fuqQnlhmzrDuryw8
-        BkhfpYJ39HkTnKWdhIB03gD/N4sUTpVbWR3UBs6aCxamAGl1B/B0AoDhCZM5SPpUB9dJ6EetWKsNuEgS
-        kK4/ADyFQLE2AAF9l3BGdYv32rZy85w7qF4H5BxJB9ds2wkIbB4WspNAnYG06WC0YFu5GXZXNjCL9HP7
-        yCJt2MAN3U4giyQF0t89Z6SbTmVx0ly5Cc628YrK56vh+LB/+kh+OjoKkt5yJJ0TZbqYDWgdth9PCwHZ
-        fM0YePVgNTygA+lh53ZMTLfpbVY+1nkvHHcxmnalOgUYfSBk40kTP+NItZRkSReKtUWwgZs2BrGBp+VM
-        tzAZBJBCg8D5/HOzjhn23a5c7zP9rQREWc3F4O3jh+rKo/j2sG3P9WJlA9dXbvO3EhjyqSKkutuLAKq1
-        UaQJ3dEEM9tmX1rOWAlA0CoCqpvaFmyIoDFnm3A3K0/LmdQIHJqpDwFGV/Q84E/qwWPhARPMbJt9cdjz
-        1VlH8Kc9oMsC6XMucq5PQfeWtE36RJnmk4nIJNTZahgO8oS7WXkMzlczkNHHZonmumKNABur1XAQJF1O
-        kqC/BEYnC978Phu4TmJri+r9LlJdIN1JLCag1cKJKJdGoF2OBTZm+H5nkLgLkj4cK88lipJtz4dfOCkg
-        UB9tA0d1OxuEPo/ZkQCvFJDOCFT/9ZzjmxDS9wKjN/b7i09PyLrLW8I+k9XQyQdh0UGaBaRvuY4kwKXa
-        dJDOlGbqQzsR6F1Kp+Za2fb+WQsL3ePTAqhWQdIPgOpqt/7f4L7k2A64kNEnTDKOXCoBfY8LXpSDgM4B
-        0p/mpLtVkOqOg+qsDr4jAfOcT1bDQcenCkj6pTOhGY10Bamuubgk47DH0d2JQOLHRGc82TnPSiBd7N4Z
-        zPLa+XBxH9Il4dM7/BnX59BJpBHo/T6lKWd4zm8VQDaPQUCns6hWWB1sLkBAxwe96HEeY/pZ9KH05H/n
-        I300pVuVawAAAABJRU5ErkJggg==
-</value>
-  </data>
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

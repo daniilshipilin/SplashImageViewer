@@ -1,9 +1,17 @@
 namespace SplashImageViewer.Forms;
 
+using System;
+using System.Drawing;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using SplashImageViewer.Helpers;
+using SplashImageViewer.Models;
+using SplashImageViewer.Properties;
+
 public partial class FullscreenForm : Form
 {
-    private readonly System.Windows.Forms.Timer hideInfoLabelTimer = new();
-    private readonly System.Windows.Forms.Timer hideBottomLabelsTimer = new();
+    private readonly Timer hideInfoLabelTimer = new();
+    private readonly Timer hideBottomLabelsTimer = new();
     private readonly Screen screen;
     private readonly bool slideshowIsEnabled;
 

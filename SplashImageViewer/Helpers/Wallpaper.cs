@@ -1,5 +1,12 @@
 namespace SplashImageViewer.Helpers;
 
+using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Runtime.InteropServices;
+using Microsoft.Win32;
+
 public partial class Wallpaper
 {
     private const int SPISETDESKWALLPAPER = 20;

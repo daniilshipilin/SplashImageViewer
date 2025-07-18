@@ -1,5 +1,12 @@
 namespace SplashImageViewer.Helpers;
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using Microsoft.Win32;
+
 public static class AppSettings
 {
     public const string RegistryBaseKey = @"SOFTWARE\Illuminati Software Inc.";

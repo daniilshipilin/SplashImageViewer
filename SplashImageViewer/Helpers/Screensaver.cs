@@ -1,5 +1,8 @@
 namespace SplashImageViewer.Helpers;
 
+using System;
+using System.Runtime.InteropServices;
+
 public static partial class Screensaver
 {
     [Flags]

@@ -1,5 +1,8 @@
 namespace SplashImageViewer.Forms
 {
+    using System.Drawing;
+    using System.Windows.Forms;
+
     partial class AboutForm
     {
         /// <summary>
@@ -33,8 +36,6 @@ namespace SplashImageViewer.Forms
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
             this.logoPictureBox = new PictureBox();
             this.aboutLabel = new Label();
-            this.updatesInfoLabel = new Label();
-            this.checkUpdatesButton = new Button();
             this.toolTip = new ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)this.logoPictureBox).BeginInit();
             this.SuspendLayout();
@@ -59,39 +60,11 @@ namespace SplashImageViewer.Forms
             this.aboutLabel.TabIndex = 0;
             this.aboutLabel.Text = "aboutLabel";
             // 
-            // updatesInfoLabel
-            // 
-            this.updatesInfoLabel.Font = new Font("Segoe UI", 9.75F, FontStyle.Italic);
-            this.updatesInfoLabel.Location = new Point(14, 217);
-            this.updatesInfoLabel.Margin = new Padding(5);
-            this.updatesInfoLabel.Name = "updatesInfoLabel";
-            this.updatesInfoLabel.Size = new Size(556, 30);
-            this.updatesInfoLabel.TabIndex = 0;
-            this.updatesInfoLabel.Text = "updatesInfoLabel";
-            this.updatesInfoLabel.TextAlign = ContentAlignment.MiddleRight;
-            this.updatesInfoLabel.Click += this.UpdatesInfoLabel_Click;
-            // 
-            // checkUpdatesButton
-            // 
-            this.checkUpdatesButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            this.checkUpdatesButton.FlatAppearance.BorderSize = 0;
-            this.checkUpdatesButton.FlatStyle = FlatStyle.Flat;
-            this.checkUpdatesButton.Image = (Image)resources.GetObject("checkUpdatesButton.Image");
-            this.checkUpdatesButton.Location = new Point(276, 177);
-            this.checkUpdatesButton.Name = "checkUpdatesButton";
-            this.checkUpdatesButton.Size = new Size(32, 32);
-            this.checkUpdatesButton.TabIndex = 2;
-            this.checkUpdatesButton.TabStop = false;
-            this.checkUpdatesButton.UseVisualStyleBackColor = true;
-            this.checkUpdatesButton.Click += this.CheckUpdatesButton_Click;
-            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new SizeF(96F, 96F);
             this.AutoScaleMode = AutoScaleMode.Dpi;
             this.ClientSize = new Size(584, 261);
-            this.Controls.Add(this.checkUpdatesButton);
-            this.Controls.Add(this.updatesInfoLabel);
             this.Controls.Add(this.aboutLabel);
             this.Controls.Add(this.logoPictureBox);
             this.Font = new Font("Segoe UI", 9.75F);
@@ -114,8 +87,6 @@ namespace SplashImageViewer.Forms
 
         private System.Windows.Forms.PictureBox logoPictureBox;
         private System.Windows.Forms.Label aboutLabel;
-        private System.Windows.Forms.Label updatesInfoLabel;
-        private System.Windows.Forms.Button checkUpdatesButton;
         private System.Windows.Forms.ToolTip toolTip;
     }
 }

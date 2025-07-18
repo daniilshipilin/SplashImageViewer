@@ -1,5 +1,11 @@
 namespace SplashImageViewer;
 
+using System;
+using System.Threading;
+using System.Windows.Forms;
+using SplashImageViewer.Forms;
+using SplashImageViewer.Helpers;
+
 public static class Program
 {
     [STAThread]

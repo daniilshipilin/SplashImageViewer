@@ -1,5 +1,13 @@
 namespace SplashImageViewer;
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using SplashImageViewer.Properties;
+
 public static class ApplicationInfo
 {
     private static readonly Assembly Ass = Assembly.GetExecutingAssembly();
