@@ -597,7 +597,7 @@ public partial class MainForm : Form
         else
         {
             // default text
-            this.Text = ApplicationInfo.AppProduct;
+            this.Text = ApplicationInfo.AppTitle;
         }
     }
 

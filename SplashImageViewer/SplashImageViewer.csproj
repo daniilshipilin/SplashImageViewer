@@ -13,6 +13,7 @@
         <PackageIcon>splash.png</PackageIcon>
         <NeutralLanguage>en-US</NeutralLanguage>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="MinVer" Version="7.0.0">
