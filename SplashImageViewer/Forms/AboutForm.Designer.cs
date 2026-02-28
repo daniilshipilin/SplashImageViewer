@@ -47,7 +47,6 @@ namespace SplashImageViewer.Forms
             this.logoPictureBox.Margin = new Padding(5);
             this.logoPictureBox.Name = "logoPictureBox";
             this.logoPictureBox.Size = new Size(100, 100);
-            this.logoPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             this.logoPictureBox.TabIndex = 0;
             this.logoPictureBox.TabStop = false;
             // 
@@ -56,7 +55,7 @@ namespace SplashImageViewer.Forms
             this.aboutLabel.Location = new Point(124, 14);
             this.aboutLabel.Margin = new Padding(5);
             this.aboutLabel.Name = "aboutLabel";
-            this.aboutLabel.Size = new Size(446, 155);
+            this.aboutLabel.Size = new Size(246, 133);
             this.aboutLabel.TabIndex = 0;
             this.aboutLabel.Text = "aboutLabel";
             // 
@@ -64,7 +63,7 @@ namespace SplashImageViewer.Forms
             // 
             this.AutoScaleDimensions = new SizeF(96F, 96F);
             this.AutoScaleMode = AutoScaleMode.Dpi;
-            this.ClientSize = new Size(584, 261);
+            this.ClientSize = new Size(384, 161);
             this.Controls.Add(this.aboutLabel);
             this.Controls.Add(this.logoPictureBox);
             this.Font = new Font("Segoe UI", 9.75F);
