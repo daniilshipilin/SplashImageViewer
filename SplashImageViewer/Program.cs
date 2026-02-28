@@ -43,8 +43,7 @@ public static class Program
             Utils.ProgramExit(ExitCode.AnotherInstanceRunning);
         }
 
-        ApplicationInfo.SetArgs(args);
-        Application.Run(new MainForm());
+        Application.Run(new MainForm(args));
         Utils.ProgramExit(ExitCode.Success);
     }
 }

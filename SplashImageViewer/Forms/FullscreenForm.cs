@@ -70,7 +70,7 @@ public partial class FullscreenForm : Form
             this.components.Dispose();
         }
 
-        this.fullscreenPictureBox.Image.Dispose();
+        this.fullscreenPictureBox.Image?.Dispose();
 
         this.hideInfoLabelTimer.Tick -= this.HideInfoLabel;
         this.hideBottomLabelsTimer.Tick -= this.HideBottomLabels;
@@ -199,8 +199,8 @@ public partial class FullscreenForm : Form
 
     private void CheckFormSize()
     {
-        this.fullscreenPictureBox.SizeMode = this.fullscreenPictureBox.ClientSize.Width < this.fullscreenPictureBox.Image.Width ||
-            this.fullscreenPictureBox.ClientSize.Height < this.fullscreenPictureBox.Image.Height
+        this.fullscreenPictureBox.SizeMode = this.fullscreenPictureBox.ClientSize.Width < this.fullscreenPictureBox.Image?.Width ||
+            this.fullscreenPictureBox.ClientSize.Height < this.fullscreenPictureBox.Image?.Height
             ? PictureBoxSizeMode.Zoom
             : PictureBoxSizeMode.CenterImage;
     }

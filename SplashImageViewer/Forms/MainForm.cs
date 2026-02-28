@@ -11,16 +11,18 @@ using SplashImageViewer.Properties;
 
 public partial class MainForm : Form
 {
-    private readonly System.Windows.Forms.Timer slideshowTimer = new();
-    private readonly System.Windows.Forms.Timer allocatedMemoryTimer = new();
-    private readonly System.Windows.Forms.Timer slideshowProgressBarTimer = new();
+    private readonly Timer slideshowTimer = new();
+    private readonly Timer allocatedMemoryTimer = new();
+    private readonly Timer slideshowProgressBarTimer = new();
+    private readonly string[] args;
     private DateTime nextSlideshowTransitionDate;
     private bool fullscreenFormIsActive;
     private bool imageIsModified;
     private bool eventsSubscribed;
 
-    public MainForm()
+    public MainForm(string[] args)
     {
+        this.args = args;
         this.InitializeComponent();
     }
 
@@ -190,10 +192,10 @@ public partial class MainForm : Form
         this.PopulateRecentItemsList();
 
         // check, if args exist
-        if (ApplicationInfo.Args.Count > 0)
+        if (this.args.Length > 0)
         {
             // cmd provided filename/folder path
-            this.OpenImage(Path.GetFullPath(ApplicationInfo.Args[0]));
+            this.OpenImage(Path.GetFullPath(this.args[0]));
         }
     }
 
